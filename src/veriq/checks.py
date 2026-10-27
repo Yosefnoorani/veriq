@@ -346,7 +346,8 @@ def metrics_check(qc: QuantumCircuit, compiled: list[tuple[str, QuantumCircuit]]
     t0 = time.perf_counter()
     m = {"source": circuit_metrics(qc), "compiled": {label: circuit_metrics(tq) for label, tq in compiled}}
     src = m["source"]
-    parts = [f"{src['qubits']} qubits, depth {src['depth']}, {src['two_qubit_gates']} two-qubit gates"]
+    multi = f" + {src['multi_qubit_gates']} 3+-qubit gates" if src["multi_qubit_gates"] else ""
+    parts = [f"{src['qubits']} qubits, depth {src['depth']}, {src['two_qubit_gates']} two-qubit gates{multi}"]
     for label, cm in m["compiled"].items():
         parts.append(f"compiled: depth {cm['depth']}, {cm['two_qubit_gates']} 2q gates")
         break
