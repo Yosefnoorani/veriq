@@ -1,0 +1,251 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Veriq report: /workspace/veriq/benchmark/llm/raw/perplexity.py::build_grover3</title>
+<style>
+*{box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#f6f7f9;color:#1f2328}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+h1{font-size:22px;margin:0}h1 small{font-weight:400;color:#57606a;font-size:14px;margin-left:8px}
+h2{font-size:16px;margin:0 0 10px}
+.meta{color:#57606a;font-size:13px;margin-top:4px}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:700;font-size:12px;letter-spacing:.04em}
+.verdict{font-size:20px;padding:10px 22px;border-radius:12px;font-weight:800;letter-spacing:.05em}
+.card{background:#fff;border:1px solid #d8dee4;border-radius:12px;padding:16px 18px;margin:14px 0}
+.check-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.check-head h2{margin:0}.time{color:#57606a;font-size:12px}
+.summary{margin:8px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+th,td{border-bottom:1px solid #eaeef2;padding:6px 8px;text-align:left;vertical-align:top}th{background:#f6f8fa;font-weight:600}
+pre{background:#0d1117;color:#e6edf3;padding:12px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.35}
+details summary{cursor:pointer;color:#0969da;font-size:13px;margin-top:6px}
+.bar{display:flex;align-items:center;gap:6px;font-family:ui-monospace,Menlo,monospace;font-size:12px;margin:2px 0}
+.bar .lab{width:90px;text-align:right}.bar .track{flex:1;position:relative;height:16px;background:#f0f2f5;border-radius:4px}
+.bar .obs{position:absolute;left:0;top:0;bottom:0;background:#4c8bf5;border-radius:4px;opacity:.85}
+.bar .exp{position:absolute;top:-2px;bottom:-2px;width:2px;background:#d1242f}
+.bar .val{width:120px;color:#57606a}
+.legend{font-size:12px;color:#57606a;margin:6px 0}.legend i{display:inline-block;width:10px;height:10px;margin:0 4px 0 10px;vertical-align:middle}
+.cex{border-left:4px solid #b42318;background:#fff5f4;padding:10px 12px;border-radius:6px;margin-top:8px;font-size:13px}
+footer{color:#57606a;font-size:12px;margin-top:24px}
+code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+</style></head><body><div class="wrap">
+<header><div><h1>Veriq report<small>truth layer for AI-written quantum code</small></h1>
+<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/perplexity.py::build_grover3</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.09s &middot; 2026-10-27 19:49</div></div>
+<div><span class="verdict" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span></div></header>
+<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.011s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0014</td></tr></table></section><section class="card"><div class="check-head"><h2>State equivalence (from |0...0&gt;)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.005s</span></div></div><p class="summary">Prepares the reference state up to global phase (fidelity 1.000000).</p><table><tr><th>engine</th><td><code>qiskit.Statevector (exact)</code></td></tr><tr><th>fidelity</th><td><code>1.0</code></td></tr><tr><th>tolerance</th><td><code>1e-08</code></td></tr><tr><th>candidate_state_top</th><td><code>{&quot;101&quot;: 0.945312, &quot;001&quot;: 0.007812, &quot;011&quot;: 0.007812, &quot;111&quot;: 0.007812, &quot;000&quot;: 0.007812, &quot;010&quot;: 0.007812, &quot;100&quot;: 0.007812, &quot;110&quot;: 0.007812}</code></td></tr><tr><th>reference_state_top</th><td><code>{&quot;101&quot;: 0.945312, &quot;111&quot;: 0.007812, &quot;010&quot;: 0.007812, &quot;011&quot;: 0.007812, &quot;110&quot;: 0.007812, &quot;000&quot;: 0.007812, &quot;100&quot;: 0.007812, &quot;001&quot;: 0.007812}</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.067s</span></div></div><p class="summary">Consistent with expectation: TVD=0.008, chi2 p=0.23.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.0083</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>9.3611</code></td></tr><tr><th>p_value</th><td><code>0.2278</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|101&gt;</span><div class="track"><div class="obs" style="width:93.70%"></div><div class="exp" style="left:94.53%"></div></div><span class="val">0.937 / 0.945</span></div><div class="bar"><span class="lab">|110&gt;</span><div class="track"><div class="obs" style="width:1.12%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.011 / 0.008</span></div><div class="bar"><span class="lab">|100&gt;</span><div class="track"><div class="obs" style="width:0.98%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.010 / 0.008</span></div><div class="bar"><span class="lab">|011&gt;</span><div class="track"><div class="obs" style="width:0.85%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.009 / 0.008</span></div><div class="bar"><span class="lab">|001&gt;</span><div class="track"><div class="obs" style="width:0.85%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.009 / 0.008</span></div><div class="bar"><span class="lab">|010&gt;</span><div class="track"><div class="obs" style="width:0.83%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.008 / 0.008</span></div><div class="bar"><span class="lab">|111&gt;</span><div class="track"><div class="obs" style="width:0.83%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.008 / 0.008</span></div><div class="bar"><span class="lab">|000&gt;</span><div class="track"><div class="obs" style="width:0.83%"></div><div class="exp" style="left:0.78%"></div></div><span class="val">0.008 / 0.008</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.001s</span></div></div><p class="summary">3 qubits, depth 21, 0 two-qubit gates + 4 3+-qubit gates; compiled: depth 94, 37 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3</th><th>reference</th></tr><tr><th>qubits</th><td>3</td><td>3</td><td>3</td></tr><tr><th>depth</th><td>21</td><td>94</td><td>9</td></tr><tr><th>size</th><td>43</td><td>127</td><td>19</td></tr><tr><th>two_qubit_gates</th><td>0</td><td>37</td><td>0</td></tr><tr><th>multi_qubit_gates</th><td>4</td><td>0</td><td>4</td></tr><tr><th>gate counts</th><td><code>ccx:4, h:23, x:16</code></td><td><code>cx:37, rz:58, sx:32</code></td><td><code>diagonal:4, h:15</code></td></tr></table></section>
+<section class="card"><h2>Circuits</h2><details open><summary>Candidate circuit</summary><pre>     ┌───┐          ┌───┐┌───┐               ┌───┐┌───┐               ┌───┐┌───┐               ┌───┐┌───┐»
+q_0: ┤ H ├───────■──┤ H ├┤ X ├────────────■──┤ X ├┤ H ├────────────■──┤ H ├┤ X ├────────────■──┤ X ├┤ H ├»
+     ├───┤┌───┐  │  ├───┤├───┤┌───┐       │  ├───┤├───┤┌───┐       │  ├───┤├───┤┌───┐       │  ├───┤├───┤»
+q_1: ┤ H ├┤ X ├──■──┤ X ├┤ H ├┤ X ├───────■──┤ X ├┤ H ├┤ X ├───────■──┤ X ├┤ H ├┤ X ├───────■──┤ X ├┤ H ├»
+     ├───┤├───┤┌─┴─┐├───┤├───┤├───┤┌───┐┌─┴─┐├───┤├───┤├───┤┌───┐┌─┴─┐├───┤├───┤├───┤┌───┐┌─┴─┐├───┤├───┤»
+q_2: ┤ H ├┤ H ├┤ X ├┤ H ├┤ H ├┤ X ├┤ H ├┤ X ├┤ H ├┤ X ├┤ H ├┤ H ├┤ X ├┤ H ├┤ H ├┤ X ├┤ H ├┤ X ├┤ H ├┤ X ├»
+     └───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘└───┘»
+«          
+«q_0: ─────
+«          
+«q_1: ─────
+«     ┌───┐
+«q_2: ┤ H ├
+«     └───┘</pre></details><details><summary>Reference circuit</summary><pre>     ┌───┐┌─────────────────────────────┐┌───┐┌───────────────────────────────────┐┌───┐»
+q_0: ┤ H ├┤0                            ├┤ H ├┤0                                  ├┤ H ├»
+     ├───┤│                             │├───┤│                                   │├───┤»
+q_1: ┤ H ├┤1 Diagonal(1,1,1,1,1,-1,1,1) ├┤ H ├┤1 Diagonal(1,-1,-1,-1,-1,-1,-1,-1) ├┤ H ├»
+     ├───┤│                             │├───┤│                                   │├───┤»
+q_2: ┤ H ├┤2                            ├┤ H ├┤2                                  ├┤ H ├»
+     └───┘└─────────────────────────────┘└───┘└───────────────────────────────────┘└───┘»
+«     ┌─────────────────────────────┐┌───┐┌───────────────────────────────────┐┌───┐
+«q_0: ┤0                            ├┤ H ├┤0                                  ├┤ H ├
+«     │                             │├───┤│                                   │├───┤
+«q_1: ┤1 Diagonal(1,1,1,1,1,-1,1,1) ├┤ H ├┤1 Diagonal(1,-1,-1,-1,-1,-1,-1,-1) ├┤ H ├
+«     │                             │├───┤│                                   │├───┤
+«q_2: ┤2                            ├┤ H ├┤2                                  ├┤ H ├
+«     └─────────────────────────────┘└───┘└───────────────────────────────────┘└───┘</pre></details></section>
+<section class="card"><h2>Raw JSON</h2><details><summary>show</summary><pre>{
+  &quot;target&quot;: &quot;/workspace/veriq/benchmark/llm/raw/perplexity.py::build_grover3&quot;,
+  &quot;reference&quot;: &quot;/workspace/veriq/benchmark/references.py&quot;,
+  &quot;verdict&quot;: &quot;PASS&quot;,
+  &quot;seconds&quot;: 0.087,
+  &quot;checks&quot;: [
+    {
+      &quot;name&quot;: &quot;Transpile integrity&quot;,
+      &quot;status&quot;: &quot;PASS&quot;,
+      &quot;summary&quot;: &quot;Proved equivalent after transpilation on 1 target(s).&quot;,
+      &quot;evidence&quot;: {
+        &quot;targets&quot;: [
+          {
+            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3&quot;,
+            &quot;result&quot;: &quot;equivalent&quot;,
+            &quot;engine&quot;: &quot;mqt.qcec&quot;,
+            &quot;qcec_result&quot;: &quot;equivalent_up_to_global_phase&quot;,
+            &quot;qcec_check_time_s&quot;: 0.0014
+          }
+        ]
+      },
+      &quot;seconds&quot;: 0.0106
+    },
+    {
+      &quot;name&quot;: &quot;State equivalence (from |0...0&gt;)&quot;,
+      &quot;status&quot;: &quot;PASS&quot;,
+      &quot;summary&quot;: &quot;Prepares the reference state up to global phase (fidelity 1.000000).&quot;,
+      &quot;evidence&quot;: {
+        &quot;engine&quot;: &quot;qiskit.Statevector (exact)&quot;,
+        &quot;fidelity&quot;: 1.0,
+        &quot;tolerance&quot;: 1e-08,
+        &quot;candidate_state_top&quot;: {
+          &quot;101&quot;: 0.945312,
+          &quot;001&quot;: 0.007812,
+          &quot;011&quot;: 0.007812,
+          &quot;111&quot;: 0.007812,
+          &quot;000&quot;: 0.007812,
+          &quot;010&quot;: 0.007812,
+          &quot;100&quot;: 0.007812,
+          &quot;110&quot;: 0.007812
+        },
+        &quot;reference_state_top&quot;: {
+          &quot;101&quot;: 0.945312,
+          &quot;111&quot;: 0.007812,
+          &quot;010&quot;: 0.007812,
+          &quot;011&quot;: 0.007812,
+          &quot;110&quot;: 0.007812,
+          &quot;000&quot;: 0.007812,
+          &quot;100&quot;: 0.007812,
+          &quot;001&quot;: 0.007812
+        }
+      },
+      &quot;seconds&quot;: 0.005
+    },
+    {
+      &quot;name&quot;: &quot;Statistical test (Aer)&quot;,
+      &quot;status&quot;: &quot;PASS&quot;,
+      &quot;summary&quot;: &quot;Consistent with expectation: TVD=0.008, chi2 p=0.23.&quot;,
+      &quot;evidence&quot;: {
+        &quot;shots&quot;: 4096,
+        &quot;seed&quot;: 7,
+        &quot;expected_source&quot;: &quot;reference ideal distribution&quot;,
+        &quot;observed_counts&quot;: {
+          &quot;110&quot;: 46,
+          &quot;111&quot;: 34,
+          &quot;011&quot;: 35,
+          &quot;100&quot;: 40,
+          &quot;001&quot;: 35,
+          &quot;010&quot;: 34,
+          &quot;000&quot;: 34,
+          &quot;101&quot;: 3838
+        },
+        &quot;expected_distribution&quot;: {
+          &quot;000&quot;: 0.007812,
+          &quot;001&quot;: 0.007812,
+          &quot;010&quot;: 0.007813,
+          &quot;011&quot;: 0.007813,
+          &quot;100&quot;: 0.007812,
+          &quot;101&quot;: 0.945312,
+          &quot;110&quot;: 0.007813,
+          &quot;111&quot;: 0.007813
+        },
+        &quot;tvd&quot;: 0.0083,
+        &quot;tvd_threshold&quot;: 0.05,
+        &quot;chi2&quot;: 9.3611,
+        &quot;p_value&quot;: 0.2278,
+        &quot;alpha&quot;: 0.001,
+        &quot;impossible_outcomes&quot;: {}
+      },
+      &quot;seconds&quot;: 0.067
+    },
+    {
+      &quot;name&quot;: &quot;Metrics&quot;,
+      &quot;status&quot;: &quot;PASS&quot;,
+      &quot;summary&quot;: &quot;3 qubits, depth 21, 0 two-qubit gates + 4 3+-qubit gates; compiled: depth 94, 37 2q gates.&quot;,
+      &quot;evidence&quot;: {
+        &quot;source&quot;: {
+          &quot;qubits&quot;: 3,
+          &quot;clbits&quot;: 0,
+          &quot;depth&quot;: 21,
+          &quot;size&quot;: 43,
+          &quot;two_qubit_gates&quot;: 0,
+          &quot;multi_qubit_gates&quot;: 4,
+          &quot;gate_counts&quot;: {
+            &quot;ccx&quot;: 4,
+            &quot;h&quot;: 23,
+            &quot;x&quot;: 16
+          }
+        },
+        &quot;compiled&quot;: {
+          &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3&quot;: {
+            &quot;qubits&quot;: 3,
+            &quot;clbits&quot;: 0,
+            &quot;depth&quot;: 94,
+            &quot;size&quot;: 127,
+            &quot;two_qubit_gates&quot;: 37,
+            &quot;multi_qubit_gates&quot;: 0,
+            &quot;gate_counts&quot;: {
+              &quot;cx&quot;: 37,
+              &quot;rz&quot;: 58,
+              &quot;sx&quot;: 32
+            }
+          }
+        },
+        &quot;reference&quot;: {
+          &quot;qubits&quot;: 3,
+          &quot;clbits&quot;: 0,
+          &quot;depth&quot;: 9,
+          &quot;size&quot;: 19,
+          &quot;two_qubit_gates&quot;: 0,
+          &quot;multi_qubit_gates&quot;: 4,
+          &quot;gate_counts&quot;: {
+            &quot;diagonal&quot;: 4,
+            &quot;h&quot;: 15
+          }
+        }
+      },
+      &quot;seconds&quot;: 0.0007
+    }
+  ],
+  &quot;metrics&quot;: {
+    &quot;source&quot;: {
+      &quot;qubits&quot;: 3,
+      &quot;clbits&quot;: 0,
+      &quot;depth&quot;: 21,
+      &quot;size&quot;: 43,
+      &quot;two_qubit_gates&quot;: 0,
+      &quot;multi_qubit_gates&quot;: 4,
+      &quot;gate_counts&quot;: {
+        &quot;ccx&quot;: 4,
+        &quot;h&quot;: 23,
+        &quot;x&quot;: 16
+      }
+    },
+    &quot;compiled&quot;: {
+      &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3&quot;: {
+        &quot;qubits&quot;: 3,
+        &quot;clbits&quot;: 0,
+        &quot;depth&quot;: 94,
+        &quot;size&quot;: 127,
+        &quot;two_qubit_gates&quot;: 37,
+        &quot;multi_qubit_gates&quot;: 0,
+        &quot;gate_counts&quot;: {
+          &quot;cx&quot;: 37,
+          &quot;rz&quot;: 58,
+          &quot;sx&quot;: 32
+        }
+      }
+    },
+    &quot;reference&quot;: {
+      &quot;qubits&quot;: 3,
+      &quot;clbits&quot;: 0,
+      &quot;depth&quot;: 9,
+      &quot;size&quot;: 19,
+      &quot;two_qubit_gates&quot;: 0,
+      &quot;multi_qubit_gates&quot;: 4,
+      &quot;gate_counts&quot;: {
+        &quot;diagonal&quot;: 4,
+        &quot;h&quot;: 15
+      }
+    }
+  },
+  &quot;versions&quot;: {
+    &quot;veriq&quot;: &quot;0.1.0&quot;,
+    &quot;qiskit&quot;: &quot;2.6.1&quot;,
+    &quot;qiskit-aer&quot;: &quot;0.18.2&quot;,
+    &quot;mqt.qcec&quot;: &quot;3.11.0&quot;
+  }
+}</pre></details></section>
+<footer>Generated by Veriq &middot; veriq 0.1.0, qiskit 2.6.1, qiskit-aer 0.18.2, mqt.qcec 3.11.0</footer>
+</div></body></html>

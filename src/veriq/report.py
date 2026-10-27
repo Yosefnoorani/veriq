@@ -125,8 +125,10 @@ def render_html(report: Report) -> str:
             body.append(_kv_table(ev, skip=("observed_counts", "expected_distribution")))
             if "observed_counts" in ev:
                 body.append(_histogram(ev))
-        elif c.name == "Metrics":
+        elif c.name == "Metrics" and ev.get("source"):
             body.append(_metrics_table(ev))
+        elif ev:
+            body.append(_kv_table(ev))
         cards.append(
             f'<section class="card"><div class="check-head"><h2>{_e(c.name)}</h2>'
             f'<div>{_badge(c.status)} <span class="time">{c.seconds:.3f}s</span></div></div>{"".join(body)}</section>')

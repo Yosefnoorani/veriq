@@ -28,6 +28,11 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--shots", type=int, default=4096)
     c.add_argument("--seed", type=int, default=7)
     c.add_argument("--timeout", type=float, default=30.0, help="QCEC timeout per proof (s)")
+    c.add_argument("--function", "-f", help="builder function to call in a multi-function .py candidate")
+    c.add_argument("--reference-function", help="builder function to call in a multi-function .py reference")
+    c.add_argument("--mode", choices=["unitary", "state"], default="unitary",
+                   help="unitary: full unitary equivalence; state: compare states prepared from |0...0>")
+    c.add_argument("--allowed-gates", help="comma-separated gate-set constraint, e.g. h,t,tdg,cx (FAIL if violated)")
     c.add_argument("--quiet", "-q", action="store_true")
     return p
 
@@ -36,7 +41,10 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         report = run_checks(args.file, reference=args.reference, expect=args.expect, backend=args.backend,
-                            shots=args.shots, seed=args.seed, timeout=args.timeout)
+                            shots=args.shots, seed=args.seed, timeout=args.timeout, mode=args.mode,
+                            allowed_gates=[g.strip() for g in args.allowed_gates.split(",") if g.strip()]
+                            if args.allowed_gates else None,
+                            function=args.function, reference_function=args.reference_function)
     except (LoadError, ValueError, OSError) as exc:
         print(f"veriq: error: {exc}", file=sys.stderr)
         return 3

@@ -1,0 +1,189 @@
+{
+  "target": "/workspace/veriq/benchmark/llm/raw/claude.py::build_qft4",
+  "reference": "/workspace/veriq/benchmark/references.py",
+  "verdict": "PASS",
+  "seconds": 0.107,
+  "checks": [
+    {
+      "name": "Transpile integrity",
+      "status": "PASS",
+      "summary": "Proved equivalent after transpilation on 1 target(s).",
+      "evidence": {
+        "targets": [
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3",
+            "result": "equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "equivalent_up_to_global_phase",
+            "qcec_check_time_s": 0.0009
+          }
+        ]
+      },
+      "seconds": 0.0099
+    },
+    {
+      "name": "Reference equivalence",
+      "status": "PASS",
+      "summary": "Candidate is formally equivalent to the reference.",
+      "evidence": {
+        "engine": "mqt.qcec",
+        "qcec_result": "equivalent",
+        "qcec_check_time_s": 0.0012
+      },
+      "seconds": 0.0032
+    },
+    {
+      "name": "Statistical test (Aer)",
+      "status": "PASS",
+      "summary": "Consistent with expectation: TVD=0.022, chi2 p=0.64.",
+      "evidence": {
+        "shots": 4096,
+        "seed": 7,
+        "expected_source": "reference ideal distribution",
+        "observed_counts": {
+          "1010": 260,
+          "0000": 266,
+          "1100": 262,
+          "1000": 241,
+          "0110": 264,
+          "1101": 245,
+          "1111": 275,
+          "0001": 262,
+          "1001": 258,
+          "0101": 269,
+          "1110": 259,
+          "0100": 277,
+          "0010": 223,
+          "1011": 250,
+          "0111": 234,
+          "0011": 251
+        },
+        "expected_distribution": {
+          "0000": 0.0625,
+          "0001": 0.0625,
+          "0010": 0.0625,
+          "0011": 0.0625,
+          "0100": 0.0625,
+          "0101": 0.0625,
+          "0110": 0.0625,
+          "0111": 0.0625,
+          "1000": 0.0625,
+          "1001": 0.0625,
+          "1010": 0.0625,
+          "1011": 0.0625,
+          "1100": 0.0625,
+          "1101": 0.0625,
+          "1110": 0.0625,
+          "1111": 0.0625
+        },
+        "tvd": 0.02246,
+        "tvd_threshold": 0.05,
+        "chi2": 12.5625,
+        "p_value": 0.636,
+        "alpha": 0.001,
+        "impossible_outcomes": {}
+      },
+      "seconds": 0.0879
+    },
+    {
+      "name": "Metrics",
+      "status": "PASS",
+      "summary": "4 qubits, depth 22, 14 two-qubit gates; compiled: depth 32, 15 2q gates.",
+      "evidence": {
+        "source": {
+          "qubits": 4,
+          "clbits": 0,
+          "depth": 22,
+          "size": 36,
+          "two_qubit_gates": 14,
+          "multi_qubit_gates": 0,
+          "gate_counts": {
+            "cx": 12,
+            "h": 4,
+            "p": 18,
+            "swap": 2
+          }
+        },
+        "compiled": {
+          "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3": {
+            "qubits": 4,
+            "clbits": 0,
+            "depth": 32,
+            "size": 49,
+            "two_qubit_gates": 15,
+            "multi_qubit_gates": 0,
+            "gate_counts": {
+              "cx": 15,
+              "rz": 26,
+              "sx": 8
+            }
+          }
+        },
+        "reference": {
+          "qubits": 4,
+          "clbits": 0,
+          "depth": 8,
+          "size": 12,
+          "two_qubit_gates": 8,
+          "multi_qubit_gates": 0,
+          "gate_counts": {
+            "cp": 6,
+            "h": 4,
+            "swap": 2
+          }
+        }
+      },
+      "seconds": 0.0005
+    }
+  ],
+  "metrics": {
+    "source": {
+      "qubits": 4,
+      "clbits": 0,
+      "depth": 22,
+      "size": 36,
+      "two_qubit_gates": 14,
+      "multi_qubit_gates": 0,
+      "gate_counts": {
+        "cx": 12,
+        "h": 4,
+        "p": 18,
+        "swap": 2
+      }
+    },
+    "compiled": {
+      "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3": {
+        "qubits": 4,
+        "clbits": 0,
+        "depth": 32,
+        "size": 49,
+        "two_qubit_gates": 15,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 15,
+          "rz": 26,
+          "sx": 8
+        }
+      }
+    },
+    "reference": {
+      "qubits": 4,
+      "clbits": 0,
+      "depth": 8,
+      "size": 12,
+      "two_qubit_gates": 8,
+      "multi_qubit_gates": 0,
+      "gate_counts": {
+        "cp": 6,
+        "h": 4,
+        "swap": 2
+      }
+    }
+  },
+  "versions": {
+    "veriq": "0.1.0",
+    "qiskit": "2.6.1",
+    "qiskit-aer": "0.18.2",
+    "mqt.qcec": "3.11.0"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "target": "/workspace/veriq/benchmark/llm/raw/chatgpt.py::build_adder2",
+  "reference": "/workspace/veriq/benchmark/references.py",
+  "verdict": "FAIL",
+  "seconds": 0.001,
+  "checks": [
+    {
+      "name": "Build",
+      "status": "FAIL",
+      "summary": "Does not build: chatgpt.py: build_adder2() raised CircuitError('invalid control state specification')",
+      "evidence": {
+        "error_type": "does not build",
+        "exception": "CircuitError",
+        "message": "chatgpt.py: build_adder2() raised CircuitError('invalid control state specification')"
+      },
+      "seconds": 0.0
+    }
+  ],
+  "metrics": {},
+  "versions": {
+    "veriq": "0.1.0",
+    "qiskit": "2.6.1",
+    "qiskit-aer": "0.18.2",
+    "mqt.qcec": "3.11.0"
+  }
+}

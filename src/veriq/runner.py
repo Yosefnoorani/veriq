@@ -10,8 +10,8 @@ from typing import Any
 from qiskit import QuantumCircuit
 
 from . import checks
-from .loader import load_circuit
-from .models import Report, overall_verdict
+from .loader import BuildError, load_circuit
+from .models import CheckResult, Report, Status, overall_verdict
 
 
 def parse_expect(expect: str | dict | None) -> dict[str, Any] | None:
@@ -45,28 +45,64 @@ def _draw(qc: QuantumCircuit) -> str:
         return repr(qc)
 
 
+MODES = ("unitary", "state")
+
+
+def build_failure_report(target: str, exc: BuildError, reference: str | None = None,
+                         seconds: float = 0.0) -> Report:
+    """A candidate that does not build is a FAIL, not an input error."""
+    c = CheckResult("Build", Status.FAIL, f"Does not build: {exc}",
+                    {"error_type": exc.error_type, "exception": exc.exc_type, "message": str(exc)[:500]})
+    return Report(target=target, reference=reference, verdict=Status.FAIL, checks=[c], metrics={},
+                  seconds=seconds, versions=_versions())
+
+
 def run_checks(target: str | QuantumCircuit, reference: str | QuantumCircuit | None = None,
                expect: str | dict | None = None, backend: str | None = None, shots: int = 4096,
-               seed: int = 7, timeout: float = 30.0) -> Report:
+               seed: int = 7, timeout: float = 30.0, mode: str = "unitary",
+               allowed_gates: list[str] | None = None, function: str | None = None,
+               reference_function: str | None = None) -> Report:
+    """Run all checks.
+
+    mode="unitary": the candidate must equal the reference as a unitary (up to global phase).
+    mode="state":   the candidate must prepare the same state from |0...0> (up to global phase).
+    allowed_gates:  optional gate-set constraint; any other instruction is a FAIL.
+    function / reference_function: builder names inside multi-function .py modules.
+    A candidate whose code raises or returns no circuit yields a FAIL report ("does not build").
+    """
+    if mode not in MODES:
+        raise ValueError(f"mode must be one of {MODES}, got {mode!r}")
     t0 = time.perf_counter()
-    cand = load_circuit(target) if not isinstance(target, QuantumCircuit) else target
+    name = str(target if not isinstance(target, QuantumCircuit) else target.name)
+    if function and not isinstance(target, QuantumCircuit):
+        name = f"{name}::{function}"
     ref = None
     if reference is not None:
-        ref = load_circuit(reference) if not isinstance(reference, QuantumCircuit) else reference
+        ref = (load_circuit(reference, reference_function) if not isinstance(reference, QuantumCircuit)
+               else reference)
+    ref_name = None if reference is None else str(reference if not isinstance(reference, QuantumCircuit) else reference.name)
+    try:
+        cand = load_circuit(target, function) if not isinstance(target, QuantumCircuit) else target
+    except BuildError as exc:
+        return build_failure_report(name, exc, ref_name, time.perf_counter() - t0)
     exp = parse_expect(expect)
 
     ti, compiled = checks.transpile_integrity(cand, backend=backend, timeout=timeout)
-    re_ = checks.reference_equivalence(cand, ref, timeout=timeout)
+    if mode == "state":
+        re_ = checks.state_equivalence(cand, ref)
+    else:
+        re_ = checks.reference_equivalence(cand, ref, timeout=timeout)
+    gs = checks.gate_set_check(cand, allowed_gates)
     st = checks.statistical_test(cand, exp, ref, shots=shots, seed=seed)
     mt, metrics = checks.metrics_check(cand, compiled)
     if ref is not None:
         metrics["reference"] = checks.circuit_metrics(ref)
 
-    results = [ti, re_, st, mt]
+    results = [ti, re_, gs, st, mt] if allowed_gates else [ti, re_, st, mt]
     return Report(
-        target=str(target if not isinstance(target, QuantumCircuit) else target.name),
-        reference=None if reference is None else str(reference if not isinstance(reference, QuantumCircuit) else reference.name),
-        verdict=overall_verdict([ti, re_, st]),
+        target=name,
+        reference=ref_name,
+        verdict=overall_verdict([ti, re_, gs, st]),
         checks=results,
         metrics=metrics,
         circuit_text=_draw(cand),

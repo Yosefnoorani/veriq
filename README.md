@@ -89,6 +89,23 @@ Note how the histogram test alone would have *passed* this buggy QFT — that is
 
 `demo.sh` exits non-zero if any example gets the wrong verdict.
 
+## Week 2: modes, gate-set constraints, LLM benchmark
+
+New options for `veriq check`:
+- `--function NAME` / `--reference-function NAME`: pick a builder inside a multi-function `.py` file.
+- `--mode state`: compare the states prepared from |0...0> (fidelity, up to global phase) instead of
+  full unitaries — the right check when the spec is a state (GHZ, W, Grover output).
+- `--allowed-gates h,t,tdg,cx`: gate-set constraint; any other instruction is a **FAIL**.
+- Candidate code that raises or returns no circuit is a **FAIL** with error type `does not build`
+  (a missing file is still an input error, exit 3).
+
+`benchmark/` holds 28 circuits written by ChatGPT, Claude, Gemini and Perplexity (verbatim in
+`benchmark/llm/raw/`), independently verified references (`benchmark/references.py`), and the harness:
+
+```bash
+.venv/bin/python benchmark/run_llm.py   # -> benchmark/results/{results.json,results.md,reports/*.html}
+```
+
 ## Project layout
 
 ```

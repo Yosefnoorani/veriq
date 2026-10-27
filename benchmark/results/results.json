@@ -1,0 +1,950 @@
+{
+  "generated": "2026-10-27T19:49:22+02:00",
+  "prompt_date": "2026-10-27",
+  "assistants": {
+    "chatgpt": "ChatGPT (free, Think)",
+    "claude": "Claude (Sonnet 5.5, free)",
+    "gemini": "Gemini (Pro, free; errored twice, answered on 3rd try)",
+    "perplexity": "Perplexity (default, free)"
+  },
+  "tasks": {
+    "ghz5": {
+      "mode": "state",
+      "qubits": 5,
+      "function": "build_ghz5"
+    },
+    "w3": {
+      "mode": "state",
+      "qubits": 3,
+      "function": "build_w3"
+    },
+    "qft4": {
+      "mode": "unitary",
+      "qubits": 4,
+      "function": "build_qft4"
+    },
+    "iqft3": {
+      "mode": "unitary",
+      "qubits": 3,
+      "function": "build_iqft3"
+    },
+    "grover3": {
+      "mode": "state",
+      "qubits": 3,
+      "function": "build_grover3"
+    },
+    "toffoli": {
+      "mode": "unitary",
+      "qubits": 3,
+      "allowed_gates": [
+        "h",
+        "t",
+        "tdg",
+        "s",
+        "sdg",
+        "cx"
+      ],
+      "function": "build_toffoli"
+    },
+    "adder2": {
+      "mode": "unitary",
+      "qubits": 5,
+      "function": "build_adder2"
+    }
+  },
+  "reference_verification": {
+    "ghz5": "statevector == (|00000>+|11111>)/sqrt2",
+    "w3": "statevector == (|001>+|010>+|100>)/sqrt3",
+    "qft4": "unitary == explicit DFT matrix e^{2pi i xk/16}/4 (exact) == QFTGate(4)",
+    "iqft3": "unitary == DFT(8)^dagger (exact) == QFTGate(3).inverse()",
+    "grover3": "statevector == numpy (DO)^2 H|000>, P(|101>) = 0.945312",
+    "toffoli": "unitary == CCXGate (exact, incl. global phase); gates within {h,t,tdg,s,sdg,cx}",
+    "adder2": "unitary == 32x32 permutation from exhaustive truth table (a, (a+b) mod 4, c XOR carry)"
+  },
+  "score": {
+    "chatgpt": 6,
+    "claude": 7,
+    "gemini": 7,
+    "perplexity": 7
+  },
+  "total_pass": 27,
+  "total": 28,
+  "seconds_total": 4.35,
+  "diagnostics": {
+    "chatgpt/adder2": {
+      "lenient_ccx_as_mcx_equivalent_to_reference": true,
+      "lenient_gate_counts": {
+        "ccx": 2,
+        "mcx": 2,
+        "cx": 2
+      }
+    }
+  },
+  "results": [
+    {
+      "assistant": "chatgpt",
+      "task": "ghz5",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.14,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/chatgpt_ghz5.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 5,
+        "depth": 5,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 4,
+          "h": 1
+        },
+        "compiled_cx": 10,
+        "compiled_depth": 13,
+        "compiled_size": 13
+      }
+    },
+    {
+      "assistant": "chatgpt",
+      "task": "w3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.075,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/chatgpt_w3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 6,
+        "depth": 6,
+        "two_qubit_gates": 2,
+        "multi_qubit_gates": 1,
+        "gate_counts": {
+          "ccx": 1,
+          "cry": 1,
+          "cx": 1,
+          "ry": 1,
+          "x": 2
+        },
+        "compiled_cx": 13,
+        "compiled_depth": 30,
+        "compiled_size": 46
+      }
+    },
+    {
+      "assistant": "chatgpt",
+      "task": "qft4",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.084,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/chatgpt_qft4.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 12,
+        "depth": 8,
+        "two_qubit_gates": 8,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cp": 6,
+          "h": 4,
+          "swap": 2
+        },
+        "compiled_cx": 17,
+        "compiled_depth": 35,
+        "compiled_size": 55
+      }
+    },
+    {
+      "assistant": "chatgpt",
+      "task": "iqft3",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.091,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/chatgpt_iqft3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 7,
+        "depth": 6,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cp": 3,
+          "h": 3,
+          "swap": 1
+        },
+        "compiled_cx": 7,
+        "compiled_depth": 17,
+        "compiled_size": 22
+      }
+    },
+    {
+      "assistant": "chatgpt",
+      "task": "grover3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.114,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/chatgpt_grover3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 43,
+        "depth": 21,
+        "two_qubit_gates": 0,
+        "multi_qubit_gates": 4,
+        "gate_counts": {
+          "ccx": 4,
+          "h": 23,
+          "x": 16
+        },
+        "compiled_cx": 37,
+        "compiled_depth": 94,
+        "compiled_size": 127
+      }
+    },
+    {
+      "assistant": "chatgpt",
+      "task": "toffoli",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.078,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Gate-set constraint": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/chatgpt_toffoli.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 19,
+        "depth": 16,
+        "two_qubit_gates": 10,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 10,
+          "h": 2,
+          "t": 4,
+          "tdg": 3
+        },
+        "compiled_cx": 9,
+        "compiled_depth": 23,
+        "compiled_size": 32
+      }
+    },
+    {
+      "assistant": "chatgpt",
+      "task": "adder2",
+      "mode": "unitary",
+      "verdict": "FAIL",
+      "seconds": 0.001,
+      "checks": {
+        "Build": "FAIL"
+      },
+      "report_html": "reports/chatgpt_adder2.html",
+      "error_type": "does not build",
+      "build_error": "chatgpt.py: build_adder2() raised CircuitError('invalid control state specification')",
+      "histogram_alone": "n/a (no circuit to run)",
+      "histogram_alone_would_catch": null,
+      "root_cause": "build_adder2 calls qc.ccx(1, 0, 2, 4) and qc.ccx(3, 0, 2, 4) with four qubits, but Qiskit's ccx takes exactly two controls and a target, so the 4th argument is read as ctrl_state=4 and the call raises CircuitError('invalid control state specification'); no circuit is ever produced. If those two calls are read as 3-control X gates (mcx), the adder logic is correct, so the bug is purely the API misuse."
+    },
+    {
+      "assistant": "claude",
+      "task": "ghz5",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.069,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_ghz5.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 5,
+        "depth": 5,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 4,
+          "h": 1
+        },
+        "compiled_cx": 4,
+        "compiled_depth": 7,
+        "compiled_size": 7
+      }
+    },
+    {
+      "assistant": "claude",
+      "task": "w3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.074,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_w3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 26,
+        "depth": 17,
+        "two_qubit_gates": 8,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 8,
+          "h": 2,
+          "ry": 3,
+          "t": 4,
+          "tdg": 3,
+          "x": 6
+        },
+        "compiled_cx": 12,
+        "compiled_depth": 27,
+        "compiled_size": 44
+      }
+    },
+    {
+      "assistant": "claude",
+      "task": "qft4",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.107,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_qft4.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 36,
+        "depth": 22,
+        "two_qubit_gates": 14,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 12,
+          "h": 4,
+          "p": 18,
+          "swap": 2
+        },
+        "compiled_cx": 15,
+        "compiled_depth": 32,
+        "compiled_size": 49
+      }
+    },
+    {
+      "assistant": "claude",
+      "task": "iqft3",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.079,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_iqft3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 19,
+        "depth": 16,
+        "two_qubit_gates": 7,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 6,
+          "h": 3,
+          "p": 9,
+          "swap": 1
+        },
+        "compiled_cx": 9,
+        "compiled_depth": 18,
+        "compiled_size": 22
+      }
+    },
+    {
+      "assistant": "claude",
+      "task": "grover3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.112,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_grover3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 43,
+        "depth": 21,
+        "two_qubit_gates": 0,
+        "multi_qubit_gates": 4,
+        "gate_counts": {
+          "ccx": 4,
+          "h": 23,
+          "x": 16
+        },
+        "compiled_cx": 37,
+        "compiled_depth": 94,
+        "compiled_size": 127
+      }
+    },
+    {
+      "assistant": "claude",
+      "task": "toffoli",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.073,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Gate-set constraint": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_toffoli.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 15,
+        "depth": 11,
+        "two_qubit_gates": 6,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 6,
+          "h": 2,
+          "t": 4,
+          "tdg": 3
+        },
+        "compiled_cx": 7,
+        "compiled_depth": 19,
+        "compiled_size": 27
+      }
+    },
+    {
+      "assistant": "claude",
+      "task": "adder2",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.102,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/claude_adder2.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 108,
+        "depth": 90,
+        "two_qubit_gates": 72,
+        "multi_qubit_gates": 2,
+        "gate_counts": {
+          "ccx": 2,
+          "cx": 72,
+          "h": 4,
+          "p": 30
+        },
+        "compiled_cx": 121,
+        "compiled_depth": 162,
+        "compiled_size": 222
+      },
+      "strict_gate_set_x_cx_ccx": {
+        "status": "FAIL",
+        "violations": {
+          "h": 4,
+          "p": 30
+        }
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "ghz5",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.079,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_ghz5.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 5,
+        "depth": 5,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 4,
+          "h": 1
+        },
+        "compiled_cx": 4,
+        "compiled_depth": 7,
+        "compiled_size": 7
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "w3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.08,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_w3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 7,
+        "depth": 7,
+        "two_qubit_gates": 3,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "ch": 1,
+          "cx": 2,
+          "ry": 1,
+          "x": 3
+        },
+        "compiled_cx": 6,
+        "compiled_depth": 16,
+        "compiled_size": 21
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "qft4",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.088,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_qft4.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 12,
+        "depth": 8,
+        "two_qubit_gates": 8,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cp": 6,
+          "h": 4,
+          "swap": 2
+        },
+        "compiled_cx": 15,
+        "compiled_depth": 33,
+        "compiled_size": 48
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "iqft3",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.079,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_iqft3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 7,
+        "depth": 6,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cp": 3,
+          "h": 3,
+          "swap": 1
+        },
+        "compiled_cx": 9,
+        "compiled_depth": 19,
+        "compiled_size": 23
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "grover3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.085,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_grover3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 43,
+        "depth": 21,
+        "two_qubit_gates": 0,
+        "multi_qubit_gates": 4,
+        "gate_counts": {
+          "ccx": 4,
+          "h": 23,
+          "x": 16
+        },
+        "compiled_cx": 37,
+        "compiled_depth": 94,
+        "compiled_size": 127
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "toffoli",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.082,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Gate-set constraint": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_toffoli.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 15,
+        "depth": 11,
+        "two_qubit_gates": 6,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 6,
+          "h": 2,
+          "t": 4,
+          "tdg": 3
+        },
+        "compiled_cx": 7,
+        "compiled_depth": 19,
+        "compiled_size": 27
+      }
+    },
+    {
+      "assistant": "gemini",
+      "task": "adder2",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.092,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/gemini_adder2.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 9,
+        "depth": 7,
+        "two_qubit_gates": 2,
+        "multi_qubit_gates": 5,
+        "gate_counts": {
+          "ccx": 5,
+          "cx": 2,
+          "x": 2
+        },
+        "compiled_cx": 45,
+        "compiled_depth": 96,
+        "compiled_size": 154
+      },
+      "strict_gate_set_x_cx_ccx": {
+        "status": "PASS",
+        "violations": {}
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "ghz5",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.078,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_ghz5.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 5,
+        "depth": 5,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 4,
+          "h": 1
+        },
+        "compiled_cx": 10,
+        "compiled_depth": 13,
+        "compiled_size": 13
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "w3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.076,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_w3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 9,
+        "depth": 7,
+        "two_qubit_gates": 5,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 5,
+          "ry": 3,
+          "x": 1
+        },
+        "compiled_cx": 7,
+        "compiled_depth": 16,
+        "compiled_size": 23
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "qft4",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.083,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_qft4.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 12,
+        "depth": 8,
+        "two_qubit_gates": 8,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cp": 6,
+          "h": 4,
+          "swap": 2
+        },
+        "compiled_cx": 15,
+        "compiled_depth": 33,
+        "compiled_size": 48
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "iqft3",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.074,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_iqft3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 7,
+        "depth": 6,
+        "two_qubit_gates": 4,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cp": 3,
+          "h": 3,
+          "swap": 1
+        },
+        "compiled_cx": 9,
+        "compiled_depth": 19,
+        "compiled_size": 23
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "grover3",
+      "mode": "state",
+      "verdict": "PASS",
+      "seconds": 0.087,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "State equivalence (from |0...0>)": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_grover3.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "fidelity": 1.0,
+      "metrics": {
+        "size": 43,
+        "depth": 21,
+        "two_qubit_gates": 0,
+        "multi_qubit_gates": 4,
+        "gate_counts": {
+          "ccx": 4,
+          "h": 23,
+          "x": 16
+        },
+        "compiled_cx": 37,
+        "compiled_depth": 94,
+        "compiled_size": 127
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "toffoli",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.077,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Gate-set constraint": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_toffoli.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 15,
+        "depth": 11,
+        "two_qubit_gates": 6,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 6,
+          "h": 2,
+          "t": 4,
+          "tdg": 3
+        },
+        "compiled_cx": 7,
+        "compiled_depth": 19,
+        "compiled_size": 27
+      }
+    },
+    {
+      "assistant": "perplexity",
+      "task": "adder2",
+      "mode": "unitary",
+      "verdict": "PASS",
+      "seconds": 0.08,
+      "checks": {
+        "Transpile integrity": "PASS",
+        "Reference equivalence": "PASS",
+        "Statistical test (Aer)": "PASS",
+        "Metrics": "PASS"
+      },
+      "report_html": "reports/perplexity_adder2.html",
+      "histogram_alone": "PASS",
+      "histogram_alone_would_catch": null,
+      "metrics": {
+        "size": 8,
+        "depth": 8,
+        "two_qubit_gates": 2,
+        "multi_qubit_gates": 6,
+        "gate_counts": {
+          "ccx": 6,
+          "cx": 2
+        },
+        "compiled_cx": 58,
+        "compiled_depth": 109,
+        "compiled_size": 167
+      },
+      "strict_gate_set_x_cx_ccx": {
+        "status": "PASS",
+        "violations": {}
+      }
+    }
+  ]
+}

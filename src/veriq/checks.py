@@ -235,6 +235,58 @@ def reference_equivalence(cand: QuantumCircuit, ref: QuantumCircuit | None, time
     return res
 
 
+def state_equivalence(cand: QuantumCircuit, ref: QuantumCircuit | None, tol: float = 1e-8) -> CheckResult:
+    """State-preparation mode: compare the states both circuits prepare from |0...0>, up to global phase.
+
+    Use this when the spec is about the prepared state (GHZ, W, Grover output) rather than the full unitary:
+    two different but valid preparation circuits generally have different unitaries.
+    """
+    t0 = time.perf_counter()
+    name = "State equivalence (from |0...0>)"
+    if ref is None:
+        return CheckResult(name, Status.SKIPPED, "No --reference given.")
+    a, b = unitary_part(cand), unitary_part(ref)
+    if a.num_qubits != b.num_qubits:
+        return CheckResult(name, Status.FAIL,
+                           f"Qubit count differs: candidate {a.num_qubits} vs reference {b.num_qubits}.",
+                           {"candidate_qubits": a.num_qubits, "reference_qubits": b.num_qubits})
+    if non_unitary_ops(a) or non_unitary_ops(b):
+        return CheckResult(name, Status.INCONCLUSIVE, "Circuits contain mid-circuit non-unitary operations.",
+                           {"candidate_non_unitary": non_unitary_ops(a), "reference_non_unitary": non_unitary_ops(b)})
+    if a.num_qubits > 20:
+        return CheckResult(name, Status.INCONCLUSIVE, "Too many qubits for exact statevector comparison.")
+    sa, sb = Statevector(a), Statevector(b)
+    fid = float(abs(np.vdot(sa.data, sb.data)) ** 2)
+    ev = {"engine": "qiskit.Statevector (exact)", "fidelity": round(fid, 10), "tolerance": tol,
+          "candidate_state_top": _top(sa.probabilities_dict(), 8),
+          "reference_state_top": _top(sb.probabilities_dict(), 8)}
+    if fid >= 1 - tol:
+        res = CheckResult(name, Status.PASS, f"Prepares the reference state up to global phase (fidelity {fid:.6f}).", ev)
+    else:
+        res = CheckResult(name, Status.FAIL, f"Prepared state differs from the reference: fidelity {fid:.6f}.", ev)
+    res.seconds = round(time.perf_counter() - t0, 4)
+    return res
+
+
+def gate_set_check(qc: QuantumCircuit, allowed: list[str] | None) -> CheckResult:
+    """FAIL if the circuit uses any instruction outside the allowed gate list (as written, not decomposed)."""
+    t0 = time.perf_counter()
+    name = "Gate-set constraint"
+    if not allowed:
+        return CheckResult(name, Status.SKIPPED, "No --allowed-gates given.")
+    allow = set(allowed) | {"barrier"}
+    used = {k: int(v) for k, v in unitary_part(qc).count_ops().items()}
+    bad = {k: v for k, v in sorted(used.items()) if k not in allow}
+    ev = {"allowed": sorted(set(allowed)), "used": dict(sorted(used.items())), "violations": bad}
+    if bad:
+        res = CheckResult(name, Status.FAIL,
+                          "Uses gates outside the allowed set: " + ", ".join(f"{k} x{v}" for k, v in bad.items()) + ".", ev)
+    else:
+        res = CheckResult(name, Status.PASS, "All gates are inside the allowed set.", ev)
+    res.seconds = round(time.perf_counter() - t0, 4)
+    return res
+
+
 # --------------------------------------------------------------------------- 3. statistical test
 
 

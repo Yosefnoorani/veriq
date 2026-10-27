@@ -11,23 +11,39 @@ from qiskit import QuantumCircuit
 
 
 class LoadError(Exception):
-    pass
+    """Input problem: file missing, unsupported type, unparsable."""
 
 
-def load_circuit(path: str | Path) -> QuantumCircuit:
+class BuildError(LoadError):
+    """The candidate's own code failed to produce a circuit ("does not build").
+
+    Raised when executing the module or calling its builder raises, when the requested
+    builder is missing, or when it returns something that is not a QuantumCircuit.
+    """
+
+    error_type = "does not build"
+
+    def __init__(self, message: str, exc_type: str | None = None):
+        super().__init__(message)
+        self.exc_type = exc_type
+
+
+def load_circuit(path: str | Path, function: str | None = None) -> QuantumCircuit:
+    """Load a circuit. For .py files, `function` names a builder to call (default: build/circuit)."""
     p = Path(path)
     if not p.exists():
         raise LoadError(f"file not found: {p}")
     suffix = p.suffix.lower()
     if suffix == ".py":
-        return _load_py(p)
+        return _load_py(p, function)
     if suffix in (".qasm", ".qasm2", ".qasm3"):
         return _load_qasm(p)
     raise LoadError(f"unsupported file type '{suffix}' (expected .py or .qasm)")
 
 
-def _load_py(p: Path) -> QuantumCircuit:
-    """Convention: the module exposes `circuit` (a QuantumCircuit) or `build()` returning one."""
+def _load_py(p: Path, function: str | None = None) -> QuantumCircuit:
+    """Convention: the module exposes `circuit` (a QuantumCircuit) or `build()` returning one,
+    or the caller names a builder function with `function`."""
     mod_name = f"_veriq_user_{abs(hash(str(p.resolve())))}"
     spec = importlib.util.spec_from_file_location(mod_name, p)
     if spec is None or spec.loader is None:
@@ -37,17 +53,28 @@ def _load_py(p: Path) -> QuantumCircuit:
     try:
         spec.loader.exec_module(module)
     except Exception as exc:  # user code may raise anything
-        raise LoadError(f"error while executing {p.name}: {exc!r}") from exc
+        raise BuildError(f"error while executing {p.name}: {exc!r}", type(exc).__name__) from exc
     finally:
         sys.path.pop(0)
-    if hasattr(module, "build") and callable(module.build):
-        qc = module.build()
-    elif hasattr(module, "circuit"):
-        qc = module.circuit
-    else:
-        raise LoadError(f"{p.name} must define `circuit` or a `build()` function")
+    try:
+        if function is not None:
+            fn = getattr(module, function, None)
+            if not callable(fn):
+                raise BuildError(f"{p.name} does not define a function `{function}()`", "MissingFunction")
+            qc = fn()
+        elif hasattr(module, "build") and callable(module.build):
+            qc = module.build()
+        elif hasattr(module, "circuit"):
+            qc = module.circuit
+        else:
+            raise BuildError(f"{p.name} must define `circuit` or a `build()` function", "MissingFunction")
+    except BuildError:
+        raise
+    except Exception as exc:
+        where = f"{function}()" if function else "build()"
+        raise BuildError(f"{p.name}: {where} raised {exc!r}", type(exc).__name__) from exc
     if not isinstance(qc, QuantumCircuit):
-        raise LoadError(f"{p.name}: expected a QuantumCircuit, got {type(qc).__name__}")
+        raise BuildError(f"{p.name}: expected a QuantumCircuit, got {type(qc).__name__}", "WrongReturnType")
     if not qc.name or qc.name.startswith("circuit-"):
         qc.name = p.stem
     return qc
