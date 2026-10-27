@@ -148,6 +148,20 @@ Findings (details in `benchmark/hard/results/results.md`):
   - in 4 QPE circuits, π written as 3.14 moves the output distribution by a TVD of about 1e-6, far below
     shot noise.
 
+## Showcase: the silent transpile footgun
+
+`examples/transpile_hazard/` contains a 5-qubit `mcx([0,1,2], 3)` block. After a default
+`transpile()` it passes Aer sampling (TVD 0), yet Veriq proves it NOT equivalent, with
+counterexample |10100>. Reused via `to_gate()`, it gives the wrong output.
+
+This is documented Qiskit behaviour (`qubits_initially_zero=True` since 1.3), not a Qiskit
+bug. The fix is `qubits_initially_zero=False`. See that folder's README. Post drafts are in
+`docs/posts/transpile_hazard_{en,he}.md`.
+
+```
+python examples/transpile_hazard/demo.py
+```
+
 ## Project layout
 
 ```

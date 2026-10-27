@@ -22,6 +22,9 @@ CASES=(
   "qft_buggy|FAIL|$E/qft_buggy.py --reference $E/qft_reference.py"
   "grover_correct|PASS|$E/grover_correct.py --reference $E/grover_reference.py --expect $E/expect/grover3_101.json"
   "grover_buggy|FAIL|$E/grover_buggy.py --reference $E/grover_reference.py --expect $E/expect/grover3_101.json"
+  "hazard_block|PASS|$E/transpile_hazard/block.py"
+  "hazard_compiled|FAIL|$E/transpile_hazard/compiled.py --reference $E/transpile_hazard/block.py"
+  "hazard_safe|PASS|$E/transpile_hazard/compiled.py --function build_safe --reference $E/transpile_hazard/block.py"
 )
 
 bad=0
@@ -38,6 +41,15 @@ for c in "${CASES[@]}"; do
   rows+=("$(printf '%-16s %-8s %-13s %6.2fs  %s' "$name" "$want" "$got" "$(awk "BEGIN{print $end - $start}")" "$ok")")
   echo
 done
+
+echo "=== transpile_hazard/demo.py (sampling PASS, proof FAIL, sub-block reuse wrong)"
+PY=python3; [ -x .venv/bin/python ] && PY=.venv/bin/python
+if $PY examples/transpile_hazard/demo.py 2>&1 | grep -v '^ZX'; [ "${PIPESTATUS[0]}" -eq 0 ]; then
+  rows+=("$(printf '%-16s %-8s %-13s %7s  %s' hazard_demo.py ok ok - ok)")
+else
+  rows+=("$(printf '%-16s %-8s %-13s %7s  %s' hazard_demo.py ok ERROR - MISMATCH)"); bad=1
+fi
+echo
 
 echo "================ Veriq demo summary ================"
 printf '%-16s %-8s %-13s %7s  %s\n' example expected verdict time status
