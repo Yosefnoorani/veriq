@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "veriq"
+version = "0.1.0"
+description = "A neutral truth layer for AI-written quantum code: formal equivalence, transpile integrity and statistical checks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "qiskit==2.6.1",
+  "qiskit-aer==0.18.2",
+  "mqt.qcec==3.11.0",
+  "qiskit-qasm3-import>=0.6",
+  "scipy>=1.11",
+  "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+veriq = "veriq.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
