@@ -68,6 +68,8 @@ Veriq  examples/qft_buggy.py  vs  examples/qft_reference.py
 ```
 Note how the histogram test alone would have *passed* this buggy QFT — that is the point of Veriq.
 
+![Sample report](docs/sample_report_qft_buggy.png)
+
 ## Demo and tests
 
 ```bash
