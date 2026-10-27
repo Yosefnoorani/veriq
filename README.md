@@ -242,21 +242,46 @@ a read-only filesystem except a temp dir, and a scrubbed environment. The checks
 process, so user code can't forge the verdict. `scripts/agent_loop_demo.py` shows the loop end to end with a
 simulated model (FAIL → FAIL → PASS). Full reference: [docs/mcp.md](docs/mcp.md).
 
+## Large circuits (20–50+ qubits)
+
+Above 12 qubits a brute-force truth table is impossible, so `veriq.scale.decide_equivalence` runs a tiered
+engine (the CLI, the CI action and the MCP tools use it automatically):
+
+1. **Partitioning:** if the joint interaction graph splits into independent blocks, each block is checked on its own.
+2. **Exact Clifford check:** stabilizer tableaux are compared (equal up to global phase). For 100-200 qubits this takes seconds. On a mismatch, a stabilizer-input witness is attached.
+3. **Operator** (≤10 qubits).
+4. **mqt.qcec**, with configurable strategies (`zx`, `alternating`, `construction`, `simulation`). Each strategy runs in its own subprocess with a **hard** timeout, because QCEC's own timeout does not stop a large check.
+5. **MPS falsification** (Aer matrix-product states): basis, `|+…+>` and random product inputs, with fidelity |⟨ψ|B†A|ψ⟩|². In state mode (`zero_input_equal`), the untruncated MPS overlap from |0…0⟩ is exact.
+
+Every result has one of three statuses. **PROVEN** and **NOT** are decided. **PROBABLY** means only that the
+simulated inputs (or QCEC's random simulations) found no difference. It is **falsification only** and veriq
+reports it as `INCONCLUSIVE`, never as a proof.
+
+```bash
+python benchmark/scale/run.py          # GHZ, QFT, AQFT, oracle, Clifford+T, Clifford, Cuccaro, blocks; n=8..50
+python benchmark/scale/report.py       # -> benchmark/scale/results.md, time_vs_qubits.png
+```
+
+Results: [benchmark/scale/results.md](benchmark/scale/results.md) and [the chart](benchmark/scale/time_vs_qubits.png).
+
 ## Project layout
 
 ```
 src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.py
              mcp_server.py  tools.py  sandbox.py  _sandbox_worker.py   (MCP server)
+             scale.py   (large-circuit engine)
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
 scripts/     demo.sh  simulate_action.py  agent_loop_demo.py
 action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 ```
 
-## Limitations (week 1)
+## Limitations
 
 - Formal checks cover the **unitary part** only; mid-circuit measurement, reset and classical control flow give `INCONCLUSIVE`.
-- Counterexample search is exhaustive over basis states (plus `|+…+>`) only up to 12 qubits; the Operator fallback is capped at 10 qubits.
+- The exhaustive basis-state counterexample search goes up to 12 qubits, and the Operator check to 10. Above that, equivalence is *proven* only by the Clifford tableau, by QCEC (ZX, alternating or construction) or, for states, by exact MPS overlap. Everything else is MPS / random-simulation falsification (`PROBABLY`), which is reported as INCONCLUSIVE. Some bugs are invisible to product-state inputs, for example swapping the marked string of a 50-qubit phase oracle. These stay INCONCLUSIVE: they are not reported as PASS.
+- MPS falsification is exact for low-entanglement circuits but slows down sharply as entanglement grows. Highly entangling 40-50 qubit circuits may hit the time cap.
+- For more than 20 qubits the statistical test is a two-sample chi² on sampled outcomes. When the outputs are spread out (distinct outcomes > shots/10) it returns INCONCLUSIVE.
 - The statistical test uses a noiseless simulator; noise-aware thresholds come later.
 - Fake-backend support is `GenericBackendV2` only (no vendor calibration snapshots yet).
 - Qiskit is the only front-end today (OpenQASM 2/3 as interchange).
@@ -266,6 +291,8 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - **Week 1 (this release):** CLI, four checks, HTML/JSON report, examples, tests.
 - **Week 2 — benchmark:** collect ~20 circuits written by different LLMs (ChatGPT, Claude, Gemini, …) for standard tasks, run Veriq on all of them, and publish the bug-catch rate — the first evidence that the tool is needed.
 - **Week 3 — QML claim audit:** check "quantum advantage" claims of quantum-ML notebooks against strong classical baselines on the same data, with fair hyper-parameter budgets and statistical significance.
+- **MCP server:** ✅ `veriq mcp` (verify / check_transpile / compare / metrics / explain; sandboxed).
+- **Large circuits:** ✅ Clifford tableau, QCEC strategies with hard timeouts, MPS falsification, partitioning, and a scaling benchmark up to 50 qubits (200 for Clifford). Next: decision-diagram (DD) simulation of counterexamples, and noise-aware statistics.
 - **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
 
 ## License

@@ -362,7 +362,7 @@ def _exhaustive(a: QuantumCircuit, b: QuantumCircuit, budget: float, t0: float) 
 
     n = a.num_qubits
     la, lb = (transpile(c, basis_gates=["u", "cx"], optimization_level=0) for c in (a, b))
-    labels = [format(i, f"0{n}b") for i in range(2 ** n)] + ["+" * n]
+    labels = ["+" * n] + [format(i, f"0{n}b") for i in range(2 ** n)]  # |+...+> first: cheap phase check
     ev: dict[str, Any] = {"method": "exhaustive-basis", "engine": "qiskit.Statevector"}
     tried = 0
     for label in labels:
@@ -381,7 +381,7 @@ def _exhaustive(a: QuantumCircuit, b: QuantumCircuit, budget: float, t0: float) 
     if tried == 0:
         ev["note"] = "no input finished inside the budget"
         return {"status": UNKNOWN, "method": "exhaustive-basis", "evidence": ev}
-    ev["note"] = (f"{tried} of {len(labels)} inputs (basis states, then |+...+>) agree. This is falsification, "
+    ev["note"] = (f"{tried} of {len(labels)} inputs (|+...+>, then basis states) agree. This is falsification, "
                   "NOT a proof: relative phases between basis inputs are only partly covered.")
     return {"status": PROBABLY, "method": "exhaustive-basis", "evidence": ev}
 
@@ -463,16 +463,17 @@ def _mps_worker_main() -> None:  # pragma: no cover - runs in a child process
         return
     trials = int(payload["trials"])
     k_basis = max(1, trials // 2)
-    for t in range(k_basis):
-        bits = 0 if t == 0 else int.from_bytes(rng.bytes((n + 7) // 8), "little") & ((1 << n) - 1)
+    emit("|" + "0" * n + ">", None)
+    prep = QuantumCircuit(n)  # |+...+> early: it exposes phase bugs that every basis input hides
+    prep.h(range(n))
+    emit("|" + "+" * n + ">", prep)
+    for t in range(1, k_basis):
+        bits = int.from_bytes(rng.bytes((n + 7) // 8), "little") & ((1 << n) - 1)
         prep = QuantumCircuit(n)
         for q in range(n):
             if bits >> q & 1:
                 prep.x(q)
         emit(f"|{_label(bits, n)}>", prep)
-    prep = QuantumCircuit(n)
-    prep.h(range(n))
-    emit("|" + "+" * n + ">", prep)
     for t in range(trials - k_basis - 1):
         ang = rng.uniform(0, 2 * np.pi, size=(n, 3))
         prep = QuantumCircuit(n)
@@ -571,7 +572,7 @@ def _decide_block(a, b, mode, timeout, strategies, trials, seed, layout, t0) -> 
     q = [s for s in strategies if s in QCEC_STRATEGIES]
     if q and (mode == "unitary" or a.num_qubits == b.num_qubits):
         # In state mode QCEC compares unitaries: "equivalent" proves the states equal; anything else is not used.
-        frac = 0.6 if "falsify" in strategies else 1.0
+        frac = 0.5 if "falsify" in strategies else 1.0
         r = qcec_decide(a, b, q, max(0.5, left() * frac))
         tiers.append(r)
         if r["status"] == PROVEN:

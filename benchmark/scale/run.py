@@ -52,7 +52,10 @@ def run_case(family: str, n: int, bug: bool, method: str, cap: float) -> dict:
     a, b, mode = build(family, n, bug)
     build_s = time.perf_counter() - t
     strategies = METHODS[method]
-    r = scale.decide_equivalence(a, b, mode, timeout=cap - 10 if method == "auto" else cap - 8,
+    import psutil
+    started = time.time() - psutil.Process().create_time()  # imports + build already used part of the cap
+    budget = cap - (10 if method == "auto" else 8) - started
+    r = scale.decide_equivalence(a, b, mode, timeout=budget,
                                  strategies=strategies, use_partition=(method == "auto"))
     ev = r.get("evidence", {})
     ce = ev.get("counterexample") or {}
