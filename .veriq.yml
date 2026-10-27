@@ -1,0 +1,71 @@
+# Veriq CI config for this repo (dogfood). Run locally with:  veriq ci
+# Entries marked `expect: fail` are deliberately buggy examples: CI stays green only if Veriq
+# keeps catching them. Paths are relative to this file.
+version: 1
+changed-only: false          # the workflow turns this on for pull requests
+report-dir: reports/ci
+run-all-on:                  # a change here re-runs every check, even with changed-only
+  - src/veriq/**
+  - pyproject.toml
+defaults:
+  shots: 4096
+  seed: 7
+checks:
+  - name: bell_correct
+    file: examples/bell_correct.py
+    distribution: examples/expect/bell.json
+  - name: bell_qasm2
+    file: examples/bell.qasm
+    distribution: examples/expect/bell.json
+    backend: generic
+  - name: ghz_qasm3
+    file: examples/ghz3.qasm3
+    reference: examples/ghz_correct.py
+  - name: ghz_buggy
+    file: examples/ghz_buggy.py
+    reference: examples/ghz_correct.py
+    distribution: examples/expect/ghz3.json
+    expect: fail
+  - name: qft_correct
+    file: examples/qft_correct.py
+    reference: examples/qft_reference.py
+  - name: qft_buggy
+    file: examples/qft_buggy.py
+    reference: examples/qft_reference.py
+    expect: fail
+  - name: grover_correct
+    file: examples/grover_correct.py
+    reference: examples/grover_reference.py
+    distribution: examples/expect/grover3_101.json
+    watch: [examples/_grover.py]
+  - name: grover_buggy
+    file: examples/grover_buggy.py
+    reference: examples/grover_reference.py
+    distribution: examples/expect/grover3_101.json
+    watch: [examples/_grover.py]
+    expect: fail
+  - name: hazard_block
+    file: examples/transpile_hazard/block.py
+  - name: hazard_compiled
+    file: examples/transpile_hazard/compiled.py
+    reference: examples/transpile_hazard/block.py
+    expect: fail
+  - name: hazard_safe
+    file: examples/transpile_hazard/compiled.py
+    function: build_safe
+    reference: examples/transpile_hazard/block.py
+  # Hard round: LLM-written circuits checked against the verified references.
+  - name: hard_claude_c3x_linear
+    file: benchmark/hard/raw/claude.py
+    function: build_c3x_linear
+    reference: benchmark/hard/references.py
+    reference-function: build_c3x_linear
+    allowed-gates: [cx, h, x, s, sdg, t, tdg, rz, p]
+    coupling: linear
+    no-black-boxes: true
+  - name: hard_chatgpt_maj5
+    file: benchmark/hard/raw/chatgpt.py
+    function: build_maj5_oracle
+    reference: benchmark/hard/references.py
+    reference-function: build_maj5_oracle
+    no-black-boxes: true

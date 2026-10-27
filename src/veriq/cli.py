@@ -38,11 +38,32 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--no-black-boxes", action="store_true",
                    help="FAIL on UnitaryGate, initialize, StatePreparation, PermutationGate, QFTGate or other library blocks")
     c.add_argument("--quiet", "-q", action="store_true")
+
+    ci = sub.add_parser("ci", help="run every check listed in a .veriq.yml config (for CI)")
+    ci.add_argument("--config", "-c", default=".veriq.yml", help="config file (default .veriq.yml)")
+    ci.add_argument("--fail-on", choices=["fail", "inconclusive"], default="fail",
+                    help="fail: only unexpected FAILs fail the run; inconclusive: unexpected INCONCLUSIVE too")
+    co = ci.add_mutually_exclusive_group()
+    co.add_argument("--changed-only", dest="changed_only", action="store_true", default=None,
+                    help="only run entries whose files changed vs --base (overrides the config)")
+    co.add_argument("--all", dest="changed_only", action="store_false", help="run every entry")
+    ci.add_argument("--base", help="git ref to diff against (default origin/$GITHUB_BASE_REF)")
+    ci.add_argument("--changed-files", help="file listing changed paths, one per line (instead of git diff)")
+    ci.add_argument("--report-dir", help="HTML/JSON reports directory (default: report-dir from the config)")
+    ci.add_argument("--json", dest="json_out", help="write the combined JSON summary here")
+    ci.add_argument("--markdown", help="write the Markdown summary here")
+    ci.add_argument("--github-output", help="append exit-code/ran/unexpected/skipped to this file ($GITHUB_OUTPUT)")
+    ci.add_argument("--artifact-hint", help=argparse.SUPPRESS)
+    ci.add_argument("--quiet", "-q", action="store_true")
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.cmd == "ci":
+        from . import ci
+
+        return ci.main(args)
     try:
         report = run_checks(args.file, reference=args.reference, expect=args.expect, backend=args.backend,
                             shots=args.shots, seed=args.seed, timeout=args.timeout, mode=args.mode,

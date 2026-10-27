@@ -1,0 +1,160 @@
+name: Veriq quantum circuit checks
+description: >
+  Verify Qiskit / OpenQASM circuits against references, distributions and compile constraints on every PR.
+  Writes a job summary, uploads HTML reports, and keeps one sticky PR comment up to date.
+author: Yosef
+branding:
+  icon: check-circle
+  color: purple
+
+inputs:
+  config:
+    description: Path to the Veriq config file.
+    default: .veriq.yml
+  python-version:
+    description: Python version for the checks.
+    default: "3.12"
+  fail-on:
+    description: "`fail` = only unexpected FAILs fail the job; `inconclusive` = unexpected INCONCLUSIVE fails it too."
+    default: fail
+  comment:
+    description: Create/update one sticky PR comment with the results (pull_request events only).
+    default: "true"
+  qiskit-version:
+    description: Optional exact Qiskit version to install (e.g. 1.4.3). Empty = whatever veriq resolves.
+    default: ""
+  changed-only:
+    description: "`true`/`false` overrides the config's changed-only; empty = use the config."
+    default: ""
+  base-ref:
+    description: Git ref to diff against for changed-only. Default origin/<PR base branch>. Needs fetch-depth 0.
+    default: ""
+  report-dir:
+    description: Directory for HTML/JSON reports. Empty = the config's report-dir.
+    default: ""
+  artifact-name:
+    description: Name of the uploaded report artifact.
+    default: veriq-reports
+  github-token:
+    description: Token used for the PR comment.
+    default: ${{ github.token }}
+
+outputs:
+  exit-code:
+    description: 0 all as expected, 1 unexpected FAIL / expectation mismatch, 2 unexpected INCONCLUSIVE, 3 config/input error.
+    value: ${{ steps.run.outputs.exit-code }}
+  unexpected:
+    description: Number of checks whose verdict differed from `expect`.
+    value: ${{ steps.run.outputs.unexpected }}
+  summary-path:
+    description: Path of the Markdown summary file.
+    value: ${{ steps.run.outputs.summary-path }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install veriq
+      shell: bash
+      env:
+        QISKIT_VERSION: ${{ inputs.qiskit-version }}
+      run: |
+        set -euo pipefail
+        python -m pip install --quiet --upgrade pip
+        python -m pip install --quiet "$GITHUB_ACTION_PATH"
+        if [ -n "$QISKIT_VERSION" ]; then
+          python -m pip install --quiet "qiskit==$QISKIT_VERSION"
+        fi
+        python -c "import veriq, qiskit; print('veriq', veriq.__version__, '| qiskit', qiskit.__version__)"
+
+    - name: Run veriq ci
+      id: run
+      shell: bash
+      env:
+        VERIQ_CONFIG: ${{ inputs.config }}
+        VERIQ_FAIL_ON: ${{ inputs.fail-on }}
+        VERIQ_CHANGED_ONLY: ${{ inputs.changed-only }}
+        VERIQ_BASE: ${{ inputs.base-ref }}
+        VERIQ_REPORT_DIR: ${{ inputs.report-dir }}
+        VERIQ_ARTIFACT: ${{ inputs.artifact-name }}
+      run: |
+        set +e -uo pipefail   # GitHub runs bash with -e; we need the exit code
+        md="$RUNNER_TEMP/veriq-summary.md"
+        args=(ci --config "$VERIQ_CONFIG" --fail-on "$VERIQ_FAIL_ON"
+              --markdown "$md" --json "$RUNNER_TEMP/veriq-summary.json"
+              --github-output "$GITHUB_OUTPUT" --artifact-hint "$VERIQ_ARTIFACT")
+        case "$VERIQ_CHANGED_ONLY" in
+          true) args+=(--changed-only) ;;
+          false) args+=(--all) ;;
+          "") ;;
+          *) echo "::error::changed-only must be true, false or empty"; echo "exit-code=3" >> "$GITHUB_OUTPUT"; exit 0 ;;
+        esac
+        [ -n "$VERIQ_BASE" ] && args+=(--base "$VERIQ_BASE")
+        [ -n "$VERIQ_REPORT_DIR" ] && args+=(--report-dir "$VERIQ_REPORT_DIR")
+        veriq "${args[@]}"
+        code=$?
+        # veriq ci already wrote exit-code etc.; re-assert in case it died before writing them.
+        echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+        echo "summary-path=$md" >> "$GITHUB_OUTPUT"
+        if [ -f "$md" ]; then
+          cat "$md" >> "$GITHUB_STEP_SUMMARY"
+        else
+          printf '## Veriq\n\n⚠️ veriq ci exited with %s before writing a summary. See the step log.\n' "$code" >> "$GITHUB_STEP_SUMMARY"
+        fi
+        # veriq ci writes report-dir= itself; on a config error there is nothing to upload.
+        grep -q '^report-dir=' "$GITHUB_OUTPUT" || echo "report-dir=$RUNNER_TEMP/veriq-no-reports" >> "$GITHUB_OUTPUT"
+        exit 0
+
+    - name: Upload HTML reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ steps.run.outputs.report-dir }}
+        if-no-files-found: ignore
+
+    - name: Sticky PR comment
+      if: always() && inputs.comment == 'true' && (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
+      continue-on-error: true   # fork PRs get a read-only token; the job summary still has the results
+      uses: actions/github-script@v7
+      env:
+        SUMMARY_PATH: ${{ steps.run.outputs.summary-path }}
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const fs = require('fs');
+          const marker = '<!-- veriq-ci-comment -->';
+          const p = process.env.SUMMARY_PATH;
+          if (!p || !fs.existsSync(p)) { core.info('no summary to post'); return; }
+          let body = fs.readFileSync(p, 'utf8');
+          if (!body.includes(marker)) body = marker + '\n' + body;
+          const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+          body += `\n<sub>[Workflow run](${runUrl}) · commit ${context.sha.slice(0, 7)}</sub>\n`;
+          const { owner, repo } = context.repo;
+          const issue_number = context.issue.number;
+          const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+          const mine = comments.find(c => c.body && c.body.includes(marker));
+          if (mine) {
+            await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            core.info(`updated comment ${mine.id}`);
+          } else {
+            const r = await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            core.info(`created comment ${r.data.id}`);
+          }
+
+    - name: Set result
+      shell: bash
+      env:
+        CODE: ${{ steps.run.outputs.exit-code }}
+      run: |
+        case "$CODE" in
+          0) echo "Veriq: all checks as expected." ;;
+          1) echo "::error::Veriq: unexpected FAIL (or an expected failure that now passes). See the job summary." ;;
+          2) echo "::error::Veriq: unexpected INCONCLUSIVE with fail-on=inconclusive." ;;
+          *) echo "::error::Veriq: configuration or input error (exit ${CODE:-unknown})." ;;
+        esac
+        exit "${CODE:-3}"

@@ -1,0 +1,30 @@
+name: veriq
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write   # sticky PR comment (read-only on fork PRs; the comment step then just warns)
+
+concurrency:
+  group: veriq-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  veriq:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       # changed-only needs the PR base commit
+      - uses: ./
+        with:
+          config: .veriq.yml
+          python-version: "3.12"
+          fail-on: fail
+          comment: "true"
+          # PRs check only circuits whose files changed; pushes to main run everything.
+          changed-only: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}

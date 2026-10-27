@@ -162,13 +162,71 @@ bug. The fix is `qubits_initially_zero=False`. See that folder's README. Post dr
 python examples/transpile_hazard/demo.py
 ```
 
+## Use in CI (GitHub Action)
+
+Veriq ships a composite action (`action.yml` at the repo root). List your circuits in `.veriq.yml`:
+
+```yaml
+version: 1
+changed-only: true            # on PRs, run only checks whose files changed (needs fetch-depth: 0)
+run-all-on: [src/**, requirements.txt]
+checks:
+  - name: qft
+    file: circuits/qft.py
+    reference: circuits/qft_reference.py
+  - name: bell
+    file: circuits/bell.py
+    distribution: tests/expect/bell.json
+  - name: c3x_linear
+    file: circuits/c3x.py
+    reference: circuits/c3x_reference.py
+    allowed-gates: [cx, h, t, tdg, rz]
+    coupling: linear
+    no-black-boxes: true
+  - name: known_bug           # a deliberately broken circuit; CI stays green only while Veriq catches it
+    file: circuits/qft_buggy.py
+    reference: circuits/qft_reference.py
+    expect: fail
+```
+
+Then add `.github/workflows/veriq.yml`:
+
+```yaml
+name: veriq
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  pull-requests: write        # for the sticky PR comment
+jobs:
+  veriq:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: <owner>/veriq@v0
+        with:
+          config: .veriq.yml
+          fail-on: fail       # or `inconclusive` to also fail on INCONCLUSIVE
+          comment: "true"
+```
+
+Each run writes a results table to the job summary, uploads the HTML reports as the `veriq-reports`
+artifact, and creates or updates **one** PR comment ([sample](docs/sample_pr_comment.md)). The job fails on any
+verdict that differs from `expect`. Locally, `veriq ci` runs the same thing. Full reference: [docs/ci.md](docs/ci.md).
+This repo dogfoods it: [.veriq.yml](.veriq.yml) and [.github/workflows/](.github/workflows/).
+
 ## Project layout
 
 ```
-src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py
+src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.py
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
-scripts/     demo.sh
+scripts/     demo.sh  simulate_action.py
+action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 ```
 
 ## Limitations (week 1)
@@ -184,7 +242,7 @@ scripts/     demo.sh
 - **Week 1 (this release):** CLI, four checks, HTML/JSON report, examples, tests.
 - **Week 2 — benchmark:** collect ~20 circuits written by different LLMs (ChatGPT, Claude, Gemini, …) for standard tasks, run Veriq on all of them, and publish the bug-catch rate — the first evidence that the tool is needed.
 - **Week 3 — QML claim audit:** check "quantum advantage" claims of quantum-ML notebooks against strong classical baselines on the same data, with fair hyper-parameter budgets and statistical significance.
-- **Week 4 — CI integration:** a GitHub Action that runs `veriq check` on pull requests and posts the report, plus a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
+- **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
 
 ## License
 
