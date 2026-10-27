@@ -19,7 +19,7 @@ from .models import CheckResult, Status
 GENERIC_BASIS = ["rz", "sx", "x", "cx"]
 OPERATOR_FALLBACK_MAX_QUBITS = 10
 COUNTEREXAMPLE_MAX_QUBITS = 12
-NON_UNITARY = {"measure", "reset", "barrier", "delay"}
+NON_UNITARY = {"measure", "reset", "barrier", "delay", "initialize"}
 
 
 # --------------------------------------------------------------------------- helpers
@@ -165,7 +165,17 @@ def make_targets(qc: QuantumCircuit, backend: str | None, seed: int) -> list[tup
 
 
 def transpile_integrity(qc: QuantumCircuit, backend: str | None = None, seed: int = 1234,
-                        timeout: float = 30.0) -> tuple[CheckResult, list[tuple[str, QuantumCircuit]]]:
+                        timeout: float = 30.0, mode: str = "unitary"
+                        ) -> tuple[CheckResult, list[tuple[str, QuantumCircuit]]]:
+    """Compile the circuit and prove the result equivalent to the source.
+
+    mode="unitary": the circuit is a block (oracle, adder, ...) that must be correct for EVERY input, so it is
+    compiled with qubits_initially_zero=False. Qiskit's default (True) lets the synthesis borrow qubits that
+    are still untouched as *clean* ancillas, which is only valid when the block runs first, on |0...0>.
+    Veriq also compiles once with the default and records `zero_init_hazard` when that output is not a valid
+    standalone block (informational: the source is fine, but `transpile(block).to_gate()` would be wrong).
+    mode="state": only the state prepared from |0...0> matters, so the default is kept.
+    """
     t0 = time.perf_counter()
     name = "Transpile integrity"
     u = unitary_part(qc)
@@ -173,7 +183,10 @@ def transpile_integrity(qc: QuantumCircuit, backend: str | None = None, seed: in
     compiled: list[tuple[str, QuantumCircuit]] = []
     runs = []
     statuses = []
+    zero_init = mode != "unitary"
     for label, kwargs in make_targets(u, backend, seed):
+        kwargs = dict(kwargs, qubits_initially_zero=zero_init)
+        label = label + ("" if zero_init else ", qubits_initially_zero=False")
         try:
             tq = transpile(u, **kwargs)
         except Exception as exc:
@@ -188,13 +201,27 @@ def transpile_integrity(qc: QuantumCircuit, backend: str | None = None, seed: in
         verdict, ev = prove_equivalence(u, tq, timeout)
         runs.append({"target": label, "result": verdict, **ev})
         statuses.append(verdict)
+    hazard = None
+    if not zero_init and not nu and compiled:
+        label0, kwargs0 = make_targets(u, backend, seed)[0]
+        try:
+            tq0 = transpile(u, **kwargs0)
+            v0, ev0 = prove_equivalence(u, tq0, timeout)
+            hazard = v0 == "not_equivalent"
+            runs.append({"target": label0 + " [qiskit default qubits_initially_zero=True, informational]",
+                         "result": v0, **ev0})
+        except Exception as exc:  # informational only
+            runs.append({"target": "default-transpile probe", "result": "error", "error": repr(exc)[:200]})
     if "not_equivalent" in statuses:
         status, summary = Status.FAIL, "Compiled circuit is NOT equivalent to the source circuit."
     elif statuses and all(s == "equivalent" for s in statuses):
         status, summary = Status.PASS, f"Proved equivalent after transpilation on {len(statuses)} target(s)."
     else:
         status, summary = Status.INCONCLUSIVE, "Could not prove equivalence after transpilation."
-    res = CheckResult(name, status, summary, {"targets": runs})
+    if hazard:
+        summary += (" Note: Qiskit's default transpile (qubits_initially_zero=True) borrows untouched qubits as"
+                    " clean ancillas, so its output is only valid on |0...0> input, not as a standalone block.")
+    res = CheckResult(name, status, summary, {"targets": runs, "mode": mode, "zero_init_hazard": hazard})
     res.seconds = round(time.perf_counter() - t0, 4)
     return res, compiled
 
@@ -406,3 +433,130 @@ def metrics_check(qc: QuantumCircuit, compiled: list[tuple[str, QuantumCircuit]]
     res = CheckResult("Metrics", Status.PASS, "; ".join(parts) + ".", m)
     res.seconds = round(time.perf_counter() - t0, 4)
     return res, m
+
+
+# --------------------------------------------------------------------------- week 3: structural constraints
+
+# Instructions that hide the logic inside a matrix / vector / library block. A circuit that uses one of
+# these is not "written by hand" and the spec usually forbids them.
+KNOWN_BLACK_BOXES = {
+    "unitary": "UnitaryGate (explicit matrix)",
+    "initialize": "Initialize (state vector + reset)",
+    "state_preparation": "StatePreparation (state vector)",
+    "isometry": "Isometry (explicit matrix)",
+    "permutation": "PermutationGate (explicit permutation)",
+    "qft": "QFTGate (library algorithm)",
+    "diagonal": "DiagonalGate (explicit diagonal)",
+    "hamiltonian": "HamiltonianGate (explicit matrix)",
+    "linear_function": "LinearFunction (explicit matrix)",
+    "pauli_evolution": "PauliEvolutionGate (library)",
+}
+HAND_WRITTEN_EXTRA = {"mcx", "mcphase", "mcp", "mcu1", "barrier"}
+
+
+def _standard_names() -> set[str]:
+    from qiskit.circuit.library import get_standard_gate_name_mapping
+
+    return set(get_standard_gate_name_mapping()) | HAND_WRITTEN_EXTRA
+
+
+def black_box_check(qc: QuantumCircuit, enabled: bool) -> CheckResult:
+    """FAIL if the circuit (as written, not decomposed) contains a matrix/vector/library black box:
+    UnitaryGate, Initialize, StatePreparation, PermutationGate, QFTGate, any other non-standard
+    composite instruction (e.g. a library circuit appended with .to_gate()). mcx/mcphase are allowed."""
+    t0 = time.perf_counter()
+    name = "No black boxes"
+    if not enabled:
+        return CheckResult(name, Status.SKIPPED, "Black-box check not requested (--no-black-boxes).")
+    std = _standard_names()
+    found: dict[str, int] = {}
+    for inst in qc.data:
+        n = inst.operation.name
+        if n not in std:
+            found[n] = found.get(n, 0) + 1
+    ev = {"black_boxes": found,
+          "explanations": {k: KNOWN_BLACK_BOXES.get(k, "non-standard / library instruction") for k in found}}
+    if found:
+        res = CheckResult(name, Status.FAIL, "Uses black-box / library instructions: " +
+                          ", ".join(f"{k} x{v} ({ev['explanations'][k]})" for k, v in found.items()) + ".", ev)
+    else:
+        res = CheckResult(name, Status.PASS, "Only standard gates (plus mcx/mcphase); no matrices, vectors or "
+                                             "library blocks.", ev)
+    res.seconds = round(time.perf_counter() - t0, 4)
+    return res
+
+
+def parse_coupling(spec: str | list | None, num_qubits: int) -> list[tuple[int, int]] | None:
+    """'linear' -> 0-1,1-2,...; 'ring' -> linear + (n-1)-0; '0-1,1-2' or [[0,1],[1,2]] -> explicit.
+    Edges are undirected (cx direction is free)."""
+    if spec is None:
+        return None
+    if isinstance(spec, (list, tuple)):
+        edges = [tuple(int(x) for x in e) for e in spec]
+    else:
+        s = spec.strip().lower()
+        if s == "linear":
+            edges = [(i, i + 1) for i in range(num_qubits - 1)]
+        elif s == "ring":
+            edges = [(i, i + 1) for i in range(num_qubits - 1)] + ([(num_qubits - 1, 0)] if num_qubits > 2 else [])
+        else:
+            edges = []
+            for part in s.replace(";", ",").split(","):
+                part = part.strip()
+                if not part:
+                    continue
+                bits = part.replace(":", "-").split("-")
+                if len(bits) != 2:
+                    raise ValueError(f"bad coupling edge {part!r}; use 'a-b' pairs, 'linear' or 'ring'")
+                edges.append((int(bits[0]), int(bits[1])))
+    for a, b in edges:
+        if a == b or min(a, b) < 0 or max(a, b) >= num_qubits:
+            raise ValueError(f"bad coupling edge {a}-{b} for a {num_qubits}-qubit circuit")
+    return sorted({tuple(sorted(e)) for e in edges})
+
+
+def coupling_check(qc: QuantumCircuit, coupling: str | list | None) -> CheckResult:
+    """Check the ORIGINAL circuit (before any transpilation): every 2-qubit gate must act on a coupling
+    edge (either direction), and no gate may act on 3+ qubits (it cannot be native on the device)."""
+    t0 = time.perf_counter()
+    name = "Coupling-map constraint"
+    edges = parse_coupling(coupling, qc.num_qubits)
+    if edges is None:
+        return CheckResult(name, Status.SKIPPED, "No --coupling given.")
+    eset = set(edges)
+    bad_2q: dict[str, int] = {}
+    multi: dict[str, int] = {}
+    first: list[dict[str, Any]] = []
+    checked = 0
+    for pos, inst in enumerate(unitary_part(qc).data):
+        op = inst.operation
+        if op.name == "barrier":
+            continue
+        qs = [qc.find_bit(q).index for q in inst.qubits]
+        if len(qs) == 2:
+            checked += 1
+            if tuple(sorted(qs)) not in eset:
+                key = f"{op.name}({qs[0]},{qs[1]})"
+                bad_2q[key] = bad_2q.get(key, 0) + 1
+                if len(first) < 5:
+                    first.append({"position": pos, "gate": op.name, "qubits": qs})
+        elif len(qs) > 2:
+            key = f"{op.name}{tuple(qs)}"
+            multi[key] = multi.get(key, 0) + 1
+            if len(first) < 5:
+                first.append({"position": pos, "gate": op.name, "qubits": qs})
+    ev = {"edges": [list(e) for e in edges], "two_qubit_gates_checked": checked,
+          "off_edge_two_qubit_gates": bad_2q, "multi_qubit_gates": multi, "first_violations": first}
+    if bad_2q or multi:
+        parts = []
+        if bad_2q:
+            parts.append(f"{sum(bad_2q.values())} two-qubit gate(s) off the coupling map: " +
+                         ", ".join(f"{k} x{v}" for k, v in list(bad_2q.items())[:6]))
+        if multi:
+            parts.append(f"{sum(multi.values())} gate(s) on 3+ qubits: " +
+                         ", ".join(f"{k} x{v}" for k, v in list(multi.items())[:6]))
+        res = CheckResult(name, Status.FAIL, "; ".join(parts) + ".", ev)
+    else:
+        res = CheckResult(name, Status.PASS, f"All {checked} two-qubit gates act on coupling edges.", ev)
+    res.seconds = round(time.perf_counter() - t0, 4)
+    return res

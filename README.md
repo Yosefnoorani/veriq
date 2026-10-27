@@ -106,6 +106,48 @@ New options for `veriq check`:
 .venv/bin/python benchmark/run_llm.py   # -> benchmark/results/{results.json,results.md,reports/*.html}
 ```
 
+## Hard round: 7 non-standard tasks, proof-only bugs
+
+New options for `veriq check`:
+- `--coupling linear|ring|0-1,1-2,...`: coupling-map constraint checked on the circuit **as written**
+  (before any transpilation, so a router cannot "fix" it). Any 2-qubit gate off an edge, or any gate on
+  3+ qubits, is a **FAIL**. A malformed edge or a qubit index out of range is an input error (exit 3).
+- `--no-black-boxes`: **FAIL** on `UnitaryGate`, `initialize`, `StatePreparation`, `PermutationGate`,
+  `QFTGate`, isometries and other library blocks, so the circuit must be built from elementary gates
+  (`mcx`/`mcp` are allowed).
+- Exit codes are unchanged: 0 PASS, 1 FAIL, 2 INCONCLUSIVE, 3 input error.
+- **Transpile integrity now uses `qubits_initially_zero=False` in unitary mode.** Qiskit's default
+  `transpile()` assumes all qubits start in |0> and may borrow idle qubits as clean ancillas when it
+  synthesises an `mcx`. The output is then right from |0...0> but wrong as a unitary (e.g. `mcx([0,3,4],5)`
+  on 6 qubits). Veriq proves the safe compile and reports the default-compile hazard as information
+  (`zero_init_hazard` in the evidence). State mode keeps the default.
+
+`benchmark/hard/` holds the 7-task prompt (`prompt.md`, reconstructed), the four assistants' answers
+verbatim (`raw/*.py`, never edited), references proven against exhaustive truth tables
+(`references.py`), and the harness:
+
+```bash
+.venv/bin/python benchmark/hard/run_hard.py              # ~2 min incl. mutation study
+.venv/bin/python benchmark/hard/run_hard.py --no-mutants # ~10 s, verdicts and costs only
+# -> benchmark/hard/results/{results.json,results.md,mutation.json,reports/*.html}
+```
+
+Findings (details in `benchmark/hard/results/results.md`):
+- All 28 circuits are correct (28/28 PASS, proved). Gemini's C3X uses `rz` instead of `p` and differs by
+  the global phase e^{-iπ/16}, which is allowed.
+- The costs are very different: after transpiling to {cx, rz, sx, x}, cmul7 ranges from 70 to 1116 CX
+  (15.9x), maj5 from 240 to 1312 (5.5x), and C3X on a linear chain from 24 to 150 (6.2x).
+- In 5 of 28 circuits, Qiskit's default compile is not unitary-equivalent (the `qubits_initially_zero`
+  hazard). Only a unitary proof sees this.
+- Mutation study: 1036 injected bugs (deleted gate, negated angle, π written as 3.14, flipped CX,
+  cp→crz, p→rz) were added to the 28 correct circuits. Of 966 truly wrong mutants, the usual Aer
+  histogram from |0...0> catches only 327 (34%). 596 more need an exhaustive basis-input sweep. 43 are
+  caught by the proof alone:
+  - 39 phase errors in the C3X circuits leave every basis-input distribution unchanged, so no sampling
+    test can catch them;
+  - in 4 QPE circuits, π written as 3.14 moves the output distribution by a TVD of about 1e-6, far below
+    shot noise.
+
 ## Project layout
 
 ```

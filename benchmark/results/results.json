@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-27T19:49:22+02:00",
+  "generated": "2026-10-27T20:14:01+02:00",
   "prompt_date": "2026-10-27",
   "assistants": {
     "chatgpt": "ChatGPT (free, Think)",
@@ -69,7 +69,7 @@
   },
   "total_pass": 27,
   "total": 28,
-  "seconds_total": 4.35,
+  "seconds_total": 4.31,
   "diagnostics": {
     "chatgpt/adder2": {
       "lenient_ccx_as_mcx_equivalent_to_reference": true,
@@ -86,7 +86,7 @@
       "task": "ghz5",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.14,
+      "seconds": 0.127,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -116,7 +116,7 @@
       "task": "w3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.075,
+      "seconds": 0.077,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -149,7 +149,7 @@
       "task": "qft4",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.084,
+      "seconds": 0.088,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -179,7 +179,7 @@
       "task": "iqft3",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.091,
+      "seconds": 0.089,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -209,7 +209,7 @@
       "task": "grover3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.114,
+      "seconds": 0.094,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -240,7 +240,7 @@
       "task": "toffoli",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.078,
+      "seconds": 0.092,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -288,7 +288,7 @@
       "task": "ghz5",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.069,
+      "seconds": 0.082,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -318,7 +318,7 @@
       "task": "w3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.074,
+      "seconds": 0.077,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -352,7 +352,7 @@
       "task": "qft4",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.107,
+      "seconds": 0.097,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -383,7 +383,7 @@
       "task": "iqft3",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.079,
+      "seconds": 0.093,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -414,7 +414,7 @@
       "task": "grover3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.112,
+      "seconds": 0.085,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -445,7 +445,7 @@
       "task": "toffoli",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.073,
+      "seconds": 0.097,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -477,7 +477,7 @@
       "task": "adder2",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.102,
+      "seconds": 0.116,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -515,7 +515,7 @@
       "task": "ghz5",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.079,
+      "seconds": 0.075,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -545,7 +545,7 @@
       "task": "w3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.08,
+      "seconds": 0.078,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -577,7 +577,7 @@
       "task": "qft4",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.088,
+      "seconds": 0.102,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -607,7 +607,7 @@
       "task": "iqft3",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.079,
+      "seconds": 0.081,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -637,7 +637,7 @@
       "task": "grover3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.085,
+      "seconds": 0.096,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -668,7 +668,7 @@
       "task": "toffoli",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.082,
+      "seconds": 0.089,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -700,7 +700,7 @@
       "task": "adder2",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.092,
+      "seconds": 0.102,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -734,7 +734,7 @@
       "task": "ghz5",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.078,
+      "seconds": 0.089,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -764,7 +764,7 @@
       "task": "w3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.076,
+      "seconds": 0.078,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -795,7 +795,7 @@
       "task": "qft4",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.083,
+      "seconds": 0.091,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -825,7 +825,7 @@
       "task": "iqft3",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.074,
+      "seconds": 0.115,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -855,7 +855,7 @@
       "task": "grover3",
       "mode": "state",
       "verdict": "PASS",
-      "seconds": 0.087,
+      "seconds": 0.091,
       "checks": {
         "Transpile integrity": "PASS",
         "State equivalence (from |0...0>)": "PASS",
@@ -886,7 +886,7 @@
       "task": "toffoli",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.077,
+      "seconds": 0.089,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",
@@ -918,7 +918,7 @@
       "task": "adder2",
       "mode": "unitary",
       "verdict": "PASS",
-      "seconds": 0.08,
+      "seconds": 0.104,
       "checks": {
         "Transpile integrity": "PASS",
         "Reference equivalence": "PASS",

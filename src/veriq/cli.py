@@ -33,6 +33,10 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--mode", choices=["unitary", "state"], default="unitary",
                    help="unitary: full unitary equivalence; state: compare states prepared from |0...0>")
     c.add_argument("--allowed-gates", help="comma-separated gate-set constraint, e.g. h,t,tdg,cx (FAIL if violated)")
+    c.add_argument("--coupling", help="coupling-map constraint on the circuit as written: 'linear', 'ring' or "
+                                      "edges like '0-1,1-2,2-3' (FAIL on any 2-qubit gate off an edge or any 3+-qubit gate)")
+    c.add_argument("--no-black-boxes", action="store_true",
+                   help="FAIL on UnitaryGate, initialize, StatePreparation, PermutationGate, QFTGate or other library blocks")
     c.add_argument("--quiet", "-q", action="store_true")
     return p
 
@@ -44,7 +48,8 @@ def main(argv: list[str] | None = None) -> int:
                             shots=args.shots, seed=args.seed, timeout=args.timeout, mode=args.mode,
                             allowed_gates=[g.strip() for g in args.allowed_gates.split(",") if g.strip()]
                             if args.allowed_gates else None,
-                            function=args.function, reference_function=args.reference_function)
+                            function=args.function, reference_function=args.reference_function,
+                            coupling=args.coupling, no_black_boxes=args.no_black_boxes)
     except (LoadError, ValueError, OSError) as exc:
         print(f"veriq: error: {exc}", file=sys.stderr)
         return 3

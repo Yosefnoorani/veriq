@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/chatgpt.py::build_grover3",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.114,
+  "seconds": 0.094,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -17,9 +17,11 @@
             "qcec_result": "equivalent_up_to_global_phase",
             "qcec_check_time_s": 0.0014
           }
-        ]
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
       },
-      "seconds": 0.0118
+      "seconds": 0.012
     },
     {
       "name": "State equivalence (from |0...0>)",
@@ -50,7 +52,7 @@
           "001": 0.007812
         }
       },
-      "seconds": 0.0052
+      "seconds": 0.0054
     },
     {
       "name": "Statistical test (Aer)",
@@ -87,7 +89,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.0883
+      "seconds": 0.0721
     },
     {
       "name": "Metrics",

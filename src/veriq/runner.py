@@ -61,13 +61,17 @@ def run_checks(target: str | QuantumCircuit, reference: str | QuantumCircuit | N
                expect: str | dict | None = None, backend: str | None = None, shots: int = 4096,
                seed: int = 7, timeout: float = 30.0, mode: str = "unitary",
                allowed_gates: list[str] | None = None, function: str | None = None,
-               reference_function: str | None = None) -> Report:
+               reference_function: str | None = None, coupling: str | list | None = None,
+               no_black_boxes: bool = False) -> Report:
     """Run all checks.
 
     mode="unitary": the candidate must equal the reference as a unitary (up to global phase).
     mode="state":   the candidate must prepare the same state from |0...0> (up to global phase).
     allowed_gates:  optional gate-set constraint; any other instruction is a FAIL.
     function / reference_function: builder names inside multi-function .py modules.
+    coupling:       optional coupling map ('linear', 'ring', '0-1,1-2' or edge list), checked on the
+                    circuit AS WRITTEN: any 2-qubit gate off an edge, or any 3+-qubit gate, is a FAIL.
+    no_black_boxes: FAIL on UnitaryGate / Initialize / StatePreparation / PermutationGate / library blocks.
     A candidate whose code raises or returns no circuit yields a FAIL report ("does not build").
     """
     if mode not in MODES:
@@ -87,22 +91,24 @@ def run_checks(target: str | QuantumCircuit, reference: str | QuantumCircuit | N
         return build_failure_report(name, exc, ref_name, time.perf_counter() - t0)
     exp = parse_expect(expect)
 
-    ti, compiled = checks.transpile_integrity(cand, backend=backend, timeout=timeout)
+    ti, compiled = checks.transpile_integrity(cand, backend=backend, timeout=timeout, mode=mode)
     if mode == "state":
         re_ = checks.state_equivalence(cand, ref)
     else:
         re_ = checks.reference_equivalence(cand, ref, timeout=timeout)
     gs = checks.gate_set_check(cand, allowed_gates)
+    cp = checks.coupling_check(cand, coupling)
+    bb = checks.black_box_check(cand, no_black_boxes)
     st = checks.statistical_test(cand, exp, ref, shots=shots, seed=seed)
     mt, metrics = checks.metrics_check(cand, compiled)
     if ref is not None:
         metrics["reference"] = checks.circuit_metrics(ref)
 
-    results = [ti, re_, gs, st, mt] if allowed_gates else [ti, re_, st, mt]
+    results = [ti, re_] + [c for c in (gs, cp, bb) if c.status != Status.SKIPPED] + [st, mt]
     return Report(
         target=name,
         reference=ref_name,
-        verdict=overall_verdict([ti, re_, gs, st]),
+        verdict=overall_verdict([ti, re_, gs, cp, bb, st]),
         checks=results,
         metrics=metrics,
         circuit_text=_draw(cand),

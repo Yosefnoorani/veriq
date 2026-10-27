@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/gemini.py::build_grover3",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.085,
+  "seconds": 0.096,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -15,11 +15,13 @@
             "result": "equivalent",
             "engine": "mqt.qcec",
             "qcec_result": "equivalent_up_to_global_phase",
-            "qcec_check_time_s": 0.0015
+            "qcec_check_time_s": 0.0014
           }
-        ]
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
       },
-      "seconds": 0.0125
+      "seconds": 0.0115
     },
     {
       "name": "State equivalence (from |0...0>)",
@@ -50,7 +52,7 @@
           "001": 0.007812
         }
       },
-      "seconds": 0.0055
+      "seconds": 0.0051
     },
     {
       "name": "Statistical test (Aer)",
@@ -87,7 +89,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.0623
+      "seconds": 0.0747
     },
     {
       "name": "Metrics",

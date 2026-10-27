@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/gemini.py::build_ghz5",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.079,
+  "seconds": 0.075,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -17,9 +17,11 @@
             "qcec_result": "equivalent_up_to_global_phase",
             "qcec_check_time_s": 0.0011
           }
-        ]
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
       },
-      "seconds": 0.0083
+      "seconds": 0.011
     },
     {
       "name": "State equivalence (from |0...0>)",
@@ -38,7 +40,7 @@
           "11111": 0.5
         }
       },
-      "seconds": 0.0012
+      "seconds": 0.0011
     },
     {
       "name": "Statistical test (Aer)",
@@ -63,7 +65,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.0674
+      "seconds": 0.0613
     },
     {
       "name": "Metrics",
@@ -110,7 +112,7 @@
           }
         }
       },
-      "seconds": 0.0002
+      "seconds": 0.0001
     }
   ],
   "metrics": {

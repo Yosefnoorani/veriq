@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/perplexity.py::build_grover3",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.087,
+  "seconds": 0.091,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -17,9 +17,11 @@
             "qcec_result": "equivalent_up_to_global_phase",
             "qcec_check_time_s": 0.0014
           }
-        ]
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
       },
-      "seconds": 0.0106
+      "seconds": 0.0111
     },
     {
       "name": "State equivalence (from |0...0>)",
@@ -50,7 +52,7 @@
           "001": 0.007812
         }
       },
-      "seconds": 0.005
+      "seconds": 0.0053
     },
     {
       "name": "Statistical test (Aer)",
@@ -87,7 +89,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.067
+      "seconds": 0.0703
     },
     {
       "name": "Metrics",
@@ -135,7 +137,7 @@
           }
         }
       },
-      "seconds": 0.0007
+      "seconds": 0.0008
     }
   ],
   "metrics": {

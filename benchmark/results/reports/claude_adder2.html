@@ -28,9 +28,9 @@ footer{color:#57606a;font-size:12px;margin-top:24px}
 code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
 </style></head><body><div class="wrap">
 <header><div><h1>Veriq report<small>truth layer for AI-written quantum code</small></h1>
-<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/claude.py::build_adder2</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.10s &middot; 2026-10-27 19:49</div></div>
+<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/claude.py::build_adder2</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.12s &middot; 2026-10-27 20:13</div></div>
 <div><span class="verdict" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span></div></header>
-<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.015s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0026</td></tr></table></section><section class="card"><div class="check-head"><h2>Reference equivalence</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.005s</span></div></div><p class="summary">Candidate is formally equivalent to the reference.</p><table><tr><th>engine</th><td><code>mqt.qcec</code></td></tr><tr><th>qcec_result</th><td><code>equivalent</code></td></tr><tr><th>qcec_check_time_s</th><td><code>0.0022</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.071s</span></div></div><p class="summary">Consistent with expectation: TVD=0.000, chi2 p=1.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.0</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>0.0</code></td></tr><tr><th>p_value</th><td><code>1.0</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|00000&gt;</span><div class="track"><div class="obs" style="width:100.00%"></div><div class="exp" style="left:100.00%"></div></div><span class="val">1.000 / 1.000</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.002s</span></div></div><p class="summary">5 qubits, depth 90, 72 two-qubit gates + 2 3+-qubit gates; compiled: depth 162, 121 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3</th><th>reference</th></tr><tr><th>qubits</th><td>5</td><td>5</td><td>5</td></tr><tr><th>depth</th><td>90</td><td>162</td><td>5</td></tr><tr><th>size</th><td>108</td><td>222</td><td>6</td></tr><tr><th>two_qubit_gates</th><td>72</td><td>121</td><td>2</td></tr><tr><th>multi_qubit_gates</th><td>2</td><td>0</td><td>4</td></tr><tr><th>gate counts</th><td><code>ccx:2, cx:72, h:4, p:30</code></td><td><code>cx:121, rz:74, sx:27</code></td><td><code>ccx:2, cx:2, mcx:2</code></td></tr></table></section>
+<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.026s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3, qubits_initially_zero=False</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0024</td></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3 [qiskit default qubits_initially_zero=True, informational]</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0024</td></tr></table></section><section class="card"><div class="check-head"><h2>Reference equivalence</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.013s</span></div></div><p class="summary">Candidate is formally equivalent to the reference.</p><table><tr><th>engine</th><td><code>qiskit.Operator (up to global phase)</code></td></tr><tr><th>qcec_result</th><td><code>no_information</code></td></tr><tr><th>qcec_check_time_s</th><td><code>0.003</code></td></tr><tr><th>fallback</th><td><code>True</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.067s</span></div></div><p class="summary">Consistent with expectation: TVD=0.000, chi2 p=1.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.0</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>0.0</code></td></tr><tr><th>p_value</th><td><code>1.0</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|00000&gt;</span><div class="track"><div class="obs" style="width:100.00%"></div><div class="exp" style="left:100.00%"></div></div><span class="val">1.000 / 1.000</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.002s</span></div></div><p class="summary">5 qubits, depth 90, 72 two-qubit gates + 2 3+-qubit gates; compiled: depth 162, 121 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3, qubits_initially_zero=False</th><th>reference</th></tr><tr><th>qubits</th><td>5</td><td>5</td><td>5</td></tr><tr><th>depth</th><td>90</td><td>162</td><td>5</td></tr><tr><th>size</th><td>108</td><td>222</td><td>6</td></tr><tr><th>two_qubit_gates</th><td>72</td><td>121</td><td>2</td></tr><tr><th>multi_qubit_gates</th><td>2</td><td>0</td><td>4</td></tr><tr><th>gate counts</th><td><code>ccx:2, cx:72, h:4, p:30</code></td><td><code>cx:121, rz:74, sx:27</code></td><td><code>ccx:2, cx:2, mcx:2</code></td></tr></table></section>
 <section class="card"><h2>Circuits</h2><details open><summary>Candidate circuit</summary><pre>     ┌────────┐                                ┌───┐   ┌─────────┐┌───┐                                     »
 q_0: ┤ P(π/8) ├────────────────────────────────┤ X ├───┤ P(-π/8) ├┤ X ├───────────────────────────────■─────»
      └────────┘                    ┌────────┐  └─┬─┘   └─────────┘└─┬─┘                               │     »
@@ -122,7 +122,7 @@ q_4: ┤ X ├┤ X ├┤ X ├───────────────
   &quot;target&quot;: &quot;/workspace/veriq/benchmark/llm/raw/claude.py::build_adder2&quot;,
   &quot;reference&quot;: &quot;/workspace/veriq/benchmark/references.py&quot;,
   &quot;verdict&quot;: &quot;PASS&quot;,
-  &quot;seconds&quot;: 0.102,
+  &quot;seconds&quot;: 0.116,
   &quot;checks&quot;: [
     {
       &quot;name&quot;: &quot;Transpile integrity&quot;,
@@ -131,26 +131,36 @@ q_4: ┤ X ├┤ X ├┤ X ├───────────────
       &quot;evidence&quot;: {
         &quot;targets&quot;: [
           {
-            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3&quot;,
+            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3, qubits_initially_zero=False&quot;,
             &quot;result&quot;: &quot;equivalent&quot;,
             &quot;engine&quot;: &quot;mqt.qcec&quot;,
             &quot;qcec_result&quot;: &quot;equivalent_up_to_global_phase&quot;,
-            &quot;qcec_check_time_s&quot;: 0.0026
+            &quot;qcec_check_time_s&quot;: 0.0024
+          },
+          {
+            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3 [qiskit default qubits_initially_zero=True, informational]&quot;,
+            &quot;result&quot;: &quot;equivalent&quot;,
+            &quot;engine&quot;: &quot;mqt.qcec&quot;,
+            &quot;qcec_result&quot;: &quot;equivalent_up_to_global_phase&quot;,
+            &quot;qcec_check_time_s&quot;: 0.0024
           }
-        ]
+        ],
+        &quot;mode&quot;: &quot;unitary&quot;,
+        &quot;zero_init_hazard&quot;: false
       },
-      &quot;seconds&quot;: 0.0147
+      &quot;seconds&quot;: 0.0262
     },
     {
       &quot;name&quot;: &quot;Reference equivalence&quot;,
       &quot;status&quot;: &quot;PASS&quot;,
       &quot;summary&quot;: &quot;Candidate is formally equivalent to the reference.&quot;,
       &quot;evidence&quot;: {
-        &quot;engine&quot;: &quot;mqt.qcec&quot;,
-        &quot;qcec_result&quot;: &quot;equivalent&quot;,
-        &quot;qcec_check_time_s&quot;: 0.0022
+        &quot;engine&quot;: &quot;qiskit.Operator (up to global phase)&quot;,
+        &quot;qcec_result&quot;: &quot;no_information&quot;,
+        &quot;qcec_check_time_s&quot;: 0.003,
+        &quot;fallback&quot;: true
       },
-      &quot;seconds&quot;: 0.005
+      &quot;seconds&quot;: 0.013
     },
     {
       &quot;name&quot;: &quot;Statistical test (Aer)&quot;,
@@ -173,7 +183,7 @@ q_4: ┤ X ├┤ X ├┤ X ├───────────────
         &quot;alpha&quot;: 0.001,
         &quot;impossible_outcomes&quot;: {}
       },
-      &quot;seconds&quot;: 0.0711
+      &quot;seconds&quot;: 0.0668
     },
     {
       &quot;name&quot;: &quot;Metrics&quot;,
@@ -195,7 +205,7 @@ q_4: ┤ X ├┤ X ├┤ X ├───────────────
           }
         },
         &quot;compiled&quot;: {
-          &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3&quot;: {
+          &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3, qubits_initially_zero=False&quot;: {
             &quot;qubits&quot;: 5,
             &quot;clbits&quot;: 0,
             &quot;depth&quot;: 162,
@@ -223,7 +233,7 @@ q_4: ┤ X ├┤ X ├┤ X ├───────────────
           }
         }
       },
-      &quot;seconds&quot;: 0.0016
+      &quot;seconds&quot;: 0.0015
     }
   ],
   &quot;metrics&quot;: {
@@ -242,7 +252,7 @@ q_4: ┤ X ├┤ X ├┤ X ├───────────────
       }
     },
     &quot;compiled&quot;: {
-      &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3&quot;: {
+      &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3, qubits_initially_zero=False&quot;: {
         &quot;qubits&quot;: 5,
         &quot;clbits&quot;: 0,
         &quot;depth&quot;: 162,

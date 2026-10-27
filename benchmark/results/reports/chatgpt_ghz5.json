@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/chatgpt.py::build_ghz5",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.14,
+  "seconds": 0.127,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -15,11 +15,13 @@
             "result": "equivalent",
             "engine": "mqt.qcec",
             "qcec_result": "equivalent_up_to_global_phase",
-            "qcec_check_time_s": 0.0003
+            "qcec_check_time_s": 0.001
           }
-        ]
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
       },
-      "seconds": 0.0369
+      "seconds": 0.0375
     },
     {
       "name": "State equivalence (from |0...0>)",
@@ -63,7 +65,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.1005
+      "seconds": 0.0863
     },
     {
       "name": "Metrics",

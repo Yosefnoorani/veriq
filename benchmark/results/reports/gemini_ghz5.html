@@ -28,9 +28,9 @@ footer{color:#57606a;font-size:12px;margin-top:24px}
 code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
 </style></head><body><div class="wrap">
 <header><div><h1>Veriq report<small>truth layer for AI-written quantum code</small></h1>
-<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/gemini.py::build_ghz5</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.08s &middot; 2026-10-27 19:49</div></div>
+<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/gemini.py::build_ghz5</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.08s &middot; 2026-10-27 20:13</div></div>
 <div><span class="verdict" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span></div></header>
-<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.008s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0011</td></tr></table></section><section class="card"><div class="check-head"><h2>State equivalence (from |0...0&gt;)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.001s</span></div></div><p class="summary">Prepares the reference state up to global phase (fidelity 1.000000).</p><table><tr><th>engine</th><td><code>qiskit.Statevector (exact)</code></td></tr><tr><th>fidelity</th><td><code>1.0</code></td></tr><tr><th>tolerance</th><td><code>1e-08</code></td></tr><tr><th>candidate_state_top</th><td><code>{&quot;00000&quot;: 0.5, &quot;11111&quot;: 0.5}</code></td></tr><tr><th>reference_state_top</th><td><code>{&quot;00000&quot;: 0.5, &quot;11111&quot;: 0.5}</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.067s</span></div></div><p class="summary">Consistent with expectation: TVD=0.004, chi2 p=0.57.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.00439</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>0.3164</code></td></tr><tr><th>p_value</th><td><code>0.5738</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|11111&gt;</span><div class="track"><div class="obs" style="width:50.44%"></div><div class="exp" style="left:50.00%"></div></div><span class="val">0.504 / 0.500</span></div><div class="bar"><span class="lab">|00000&gt;</span><div class="track"><div class="obs" style="width:49.56%"></div><div class="exp" style="left:50.00%"></div></div><span class="val">0.496 / 0.500</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.000s</span></div></div><p class="summary">5 qubits, depth 5, 4 two-qubit gates; compiled: depth 7, 4 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3</th><th>reference</th></tr><tr><th>qubits</th><td>5</td><td>5</td><td>5</td></tr><tr><th>depth</th><td>5</td><td>7</td><td>5</td></tr><tr><th>size</th><td>5</td><td>7</td><td>5</td></tr><tr><th>two_qubit_gates</th><td>4</td><td>4</td><td>4</td></tr><tr><th>multi_qubit_gates</th><td>0</td><td>0</td><td>0</td></tr><tr><th>gate counts</th><td><code>cx:4, h:1</code></td><td><code>cx:4, rz:2, sx:1</code></td><td><code>cx:4, h:1</code></td></tr></table></section>
+<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.011s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0011</td></tr></table></section><section class="card"><div class="check-head"><h2>State equivalence (from |0...0&gt;)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.001s</span></div></div><p class="summary">Prepares the reference state up to global phase (fidelity 1.000000).</p><table><tr><th>engine</th><td><code>qiskit.Statevector (exact)</code></td></tr><tr><th>fidelity</th><td><code>1.0</code></td></tr><tr><th>tolerance</th><td><code>1e-08</code></td></tr><tr><th>candidate_state_top</th><td><code>{&quot;00000&quot;: 0.5, &quot;11111&quot;: 0.5}</code></td></tr><tr><th>reference_state_top</th><td><code>{&quot;00000&quot;: 0.5, &quot;11111&quot;: 0.5}</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.061s</span></div></div><p class="summary">Consistent with expectation: TVD=0.004, chi2 p=0.57.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.00439</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>0.3164</code></td></tr><tr><th>p_value</th><td><code>0.5738</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|11111&gt;</span><div class="track"><div class="obs" style="width:50.44%"></div><div class="exp" style="left:50.00%"></div></div><span class="val">0.504 / 0.500</span></div><div class="bar"><span class="lab">|00000&gt;</span><div class="track"><div class="obs" style="width:49.56%"></div><div class="exp" style="left:50.00%"></div></div><span class="val">0.496 / 0.500</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.000s</span></div></div><p class="summary">5 qubits, depth 5, 4 two-qubit gates; compiled: depth 7, 4 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (5q), opt=3</th><th>reference</th></tr><tr><th>qubits</th><td>5</td><td>5</td><td>5</td></tr><tr><th>depth</th><td>5</td><td>7</td><td>5</td></tr><tr><th>size</th><td>5</td><td>7</td><td>5</td></tr><tr><th>two_qubit_gates</th><td>4</td><td>4</td><td>4</td></tr><tr><th>multi_qubit_gates</th><td>0</td><td>0</td><td>0</td></tr><tr><th>gate counts</th><td><code>cx:4, h:1</code></td><td><code>cx:4, rz:2, sx:1</code></td><td><code>cx:4, h:1</code></td></tr></table></section>
 <section class="card"><h2>Circuits</h2><details open><summary>Candidate circuit</summary><pre>     ┌───┐                    
 q_0: ┤ H ├──■─────────────────
      └───┘┌─┴─┐               
@@ -56,7 +56,7 @@ q_4: ────────────────────┤ X ├
   &quot;target&quot;: &quot;/workspace/veriq/benchmark/llm/raw/gemini.py::build_ghz5&quot;,
   &quot;reference&quot;: &quot;/workspace/veriq/benchmark/references.py&quot;,
   &quot;verdict&quot;: &quot;PASS&quot;,
-  &quot;seconds&quot;: 0.079,
+  &quot;seconds&quot;: 0.075,
   &quot;checks&quot;: [
     {
       &quot;name&quot;: &quot;Transpile integrity&quot;,
@@ -71,9 +71,11 @@ q_4: ────────────────────┤ X ├
             &quot;qcec_result&quot;: &quot;equivalent_up_to_global_phase&quot;,
             &quot;qcec_check_time_s&quot;: 0.0011
           }
-        ]
+        ],
+        &quot;mode&quot;: &quot;state&quot;,
+        &quot;zero_init_hazard&quot;: null
       },
-      &quot;seconds&quot;: 0.0083
+      &quot;seconds&quot;: 0.011
     },
     {
       &quot;name&quot;: &quot;State equivalence (from |0...0&gt;)&quot;,
@@ -92,7 +94,7 @@ q_4: ────────────────────┤ X ├
           &quot;11111&quot;: 0.5
         }
       },
-      &quot;seconds&quot;: 0.0012
+      &quot;seconds&quot;: 0.0011
     },
     {
       &quot;name&quot;: &quot;Statistical test (Aer)&quot;,
@@ -117,7 +119,7 @@ q_4: ────────────────────┤ X ├
         &quot;alpha&quot;: 0.001,
         &quot;impossible_outcomes&quot;: {}
       },
-      &quot;seconds&quot;: 0.0674
+      &quot;seconds&quot;: 0.0613
     },
     {
       &quot;name&quot;: &quot;Metrics&quot;,
@@ -164,7 +166,7 @@ q_4: ────────────────────┤ X ├
           }
         }
       },
-      &quot;seconds&quot;: 0.0002
+      &quot;seconds&quot;: 0.0001
     }
   ],
   &quot;metrics&quot;: {

@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/perplexity.py::build_adder2",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.08,
+  "seconds": 0.104,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -11,15 +11,24 @@
       "evidence": {
         "targets": [
           {
-            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3",
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3, qubits_initially_zero=False",
             "result": "equivalent",
             "engine": "mqt.qcec",
             "qcec_result": "equivalent",
-            "qcec_check_time_s": 0.0024
+            "qcec_check_time_s": 0.0023
+          },
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3 [qiskit default qubits_initially_zero=True, informational]",
+            "result": "equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "equivalent_up_to_global_phase",
+            "qcec_check_time_s": 0.0027
           }
-        ]
+        ],
+        "mode": "unitary",
+        "zero_init_hazard": false
       },
-      "seconds": 0.0152
+      "seconds": 0.0253
     },
     {
       "name": "Reference equivalence",
@@ -28,9 +37,9 @@
       "evidence": {
         "engine": "mqt.qcec",
         "qcec_result": "equivalent",
-        "qcec_check_time_s": 0.0012
+        "qcec_check_time_s": 0.003
       },
-      "seconds": 0.0032
+      "seconds": 0.005
     },
     {
       "name": "Statistical test (Aer)",
@@ -53,7 +62,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.0584
+      "seconds": 0.0712
     },
     {
       "name": "Metrics",
@@ -73,7 +82,7 @@
           }
         },
         "compiled": {
-          "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3": {
+          "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3, qubits_initially_zero=False": {
             "qubits": 5,
             "clbits": 0,
             "depth": 109,
@@ -101,7 +110,7 @@
           }
         }
       },
-      "seconds": 0.0008
+      "seconds": 0.0009
     }
   ],
   "metrics": {
@@ -118,7 +127,7 @@
       }
     },
     "compiled": {
-      "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3": {
+      "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (5q), opt=3, qubits_initially_zero=False": {
         "qubits": 5,
         "clbits": 0,
         "depth": 109,

@@ -2,7 +2,7 @@
   "target": "/workspace/veriq/benchmark/llm/raw/gemini.py::build_w3",
   "reference": "/workspace/veriq/benchmark/references.py",
   "verdict": "PASS",
-  "seconds": 0.08,
+  "seconds": 0.078,
   "checks": [
     {
       "name": "Transpile integrity",
@@ -15,11 +15,13 @@
             "result": "equivalent",
             "engine": "mqt.qcec",
             "qcec_result": "equivalent",
-            "qcec_check_time_s": 0.0012
+            "qcec_check_time_s": 0.0013
           }
-        ]
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
       },
-      "seconds": 0.0142
+      "seconds": 0.0139
     },
     {
       "name": "State equivalence (from |0...0>)",
@@ -67,7 +69,7 @@
         "alpha": 0.001,
         "impossible_outcomes": {}
       },
-      "seconds": 0.0624
+      "seconds": 0.0602
     },
     {
       "name": "Metrics",
@@ -119,7 +121,7 @@
           }
         }
       },
-      "seconds": 0.0002
+      "seconds": 0.0003
     }
   ],
   "metrics": {

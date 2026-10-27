@@ -28,9 +28,9 @@ footer{color:#57606a;font-size:12px;margin-top:24px}
 code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
 </style></head><body><div class="wrap">
 <header><div><h1>Veriq report<small>truth layer for AI-written quantum code</small></h1>
-<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/claude.py::build_toffoli</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.07s &middot; 2026-10-27 19:49</div></div>
+<div class="meta">target <code>/workspace/veriq/benchmark/llm/raw/claude.py::build_toffoli</code> &middot; reference <code>/workspace/veriq/benchmark/references.py</code> &middot; 0.10s &middot; 2026-10-27 20:13</div></div>
 <div><span class="verdict" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span></div></header>
-<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.009s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0009</td></tr></table></section><section class="card"><div class="check-head"><h2>Reference equivalence</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.003s</span></div></div><p class="summary">Candidate is formally equivalent to the reference.</p><table><tr><th>engine</th><td><code>mqt.qcec</code></td></tr><tr><th>qcec_result</th><td><code>equivalent</code></td></tr><tr><th>qcec_check_time_s</th><td><code>0.001</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Gate-set constraint</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.000s</span></div></div><p class="summary">All gates are inside the allowed set.</p><table><tr><th>allowed</th><td><code>[&quot;cx&quot;, &quot;h&quot;, &quot;s&quot;, &quot;sdg&quot;, &quot;t&quot;, &quot;tdg&quot;]</code></td></tr><tr><th>used</th><td><code>{&quot;cx&quot;: 6, &quot;h&quot;: 2, &quot;t&quot;: 4, &quot;tdg&quot;: 3}</code></td></tr><tr><th>violations</th><td><code>{}</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.058s</span></div></div><p class="summary">Consistent with expectation: TVD=0.000, chi2 p=1.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.0</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>0.0</code></td></tr><tr><th>p_value</th><td><code>1.0</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|000&gt;</span><div class="track"><div class="obs" style="width:100.00%"></div><div class="exp" style="left:100.00%"></div></div><span class="val">1.000 / 1.000</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.000s</span></div></div><p class="summary">3 qubits, depth 11, 6 two-qubit gates; compiled: depth 19, 7 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3</th><th>reference</th></tr><tr><th>qubits</th><td>3</td><td>3</td><td>3</td></tr><tr><th>depth</th><td>11</td><td>19</td><td>11</td></tr><tr><th>size</th><td>15</td><td>27</td><td>15</td></tr><tr><th>two_qubit_gates</th><td>6</td><td>7</td><td>6</td></tr><tr><th>multi_qubit_gates</th><td>0</td><td>0</td><td>0</td></tr><tr><th>gate counts</th><td><code>cx:6, h:2, t:4, tdg:3</code></td><td><code>cx:7, rz:13, sx:7</code></td><td><code>cx:6, h:2, t:4, tdg:3</code></td></tr></table></section>
+<section class="card"><div class="check-head"><h2>Transpile integrity</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.019s</span></div></div><p class="summary">Proved equivalent after transpilation on 1 target(s).</p><table><tr><th>target</th><th>result</th><th>engine / raw</th><th>check s</th></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3, qubits_initially_zero=False</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.0003</td></tr><tr><td>generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3 [qiskit default qubits_initially_zero=True, informational]</td><td><b>equivalent</b></td><td><code>mqt.qcec equivalent_up_to_global_phase</code></td><td>0.001</td></tr></table></section><section class="card"><div class="check-head"><h2>Reference equivalence</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.005s</span></div></div><p class="summary">Candidate is formally equivalent to the reference.</p><table><tr><th>engine</th><td><code>mqt.qcec</code></td></tr><tr><th>qcec_result</th><td><code>equivalent</code></td></tr><tr><th>qcec_check_time_s</th><td><code>0.0007</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Gate-set constraint</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.000s</span></div></div><p class="summary">All gates are inside the allowed set.</p><table><tr><th>allowed</th><td><code>[&quot;cx&quot;, &quot;h&quot;, &quot;s&quot;, &quot;sdg&quot;, &quot;t&quot;, &quot;tdg&quot;]</code></td></tr><tr><th>used</th><td><code>{&quot;cx&quot;: 6, &quot;h&quot;: 2, &quot;t&quot;: 4, &quot;tdg&quot;: 3}</code></td></tr><tr><th>violations</th><td><code>{}</code></td></tr></table></section><section class="card"><div class="check-head"><h2>Statistical test (Aer)</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.070s</span></div></div><p class="summary">Consistent with expectation: TVD=0.000, chi2 p=1.</p><table><tr><th>shots</th><td><code>4096</code></td></tr><tr><th>seed</th><td><code>7</code></td></tr><tr><th>expected_source</th><td><code>reference ideal distribution</code></td></tr><tr><th>tvd</th><td><code>0.0</code></td></tr><tr><th>tvd_threshold</th><td><code>0.05</code></td></tr><tr><th>chi2</th><td><code>0.0</code></td></tr><tr><th>p_value</th><td><code>1.0</code></td></tr><tr><th>alpha</th><td><code>0.001</code></td></tr><tr><th>impossible_outcomes</th><td><code>{}</code></td></tr></table><div class="legend">observed<i style="background:#4c8bf5"></i> expected<i style="background:#d1242f"></i></div><div class="bar"><span class="lab">|000&gt;</span><div class="track"><div class="obs" style="width:100.00%"></div><div class="exp" style="left:100.00%"></div></div><span class="val">1.000 / 1.000</span></div></section><section class="card"><div class="check-head"><h2>Metrics</h2><div><span class="badge" style="color:#0f7b3f;background:#e3f6ea;border:1px solid #0f7b3f33">PASS</span> <span class="time">0.000s</span></div></div><p class="summary">3 qubits, depth 11, 6 two-qubit gates; compiled: depth 19, 7 2q gates.</p><table><tr><th>metric</th><th>source</th><th>compiled: generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3, qubits_initially_zero=False</th><th>reference</th></tr><tr><th>qubits</th><td>3</td><td>3</td><td>3</td></tr><tr><th>depth</th><td>11</td><td>19</td><td>11</td></tr><tr><th>size</th><td>15</td><td>27</td><td>15</td></tr><tr><th>two_qubit_gates</th><td>6</td><td>7</td><td>6</td></tr><tr><th>multi_qubit_gates</th><td>0</td><td>0</td><td>0</td></tr><tr><th>gate counts</th><td><code>cx:6, h:2, t:4, tdg:3</code></td><td><code>cx:7, rz:13, sx:7</code></td><td><code>cx:6, h:2, t:4, tdg:3</code></td></tr></table></section>
 <section class="card"><h2>Circuits</h2><details open><summary>Candidate circuit</summary><pre>                                                       ┌───┐      
 q_0: ───────────────────■─────────────────────■────■───┤ T ├───■──
                         │             ┌───┐   │  ┌─┴─┐┌┴───┴┐┌─┴─┐
@@ -48,7 +48,7 @@ q_2: ┤ H ├┤ X ├┤ Tdg ├┤ X ├┤ T ├┤ X ├┤ Tdg ├┤ X �
   &quot;target&quot;: &quot;/workspace/veriq/benchmark/llm/raw/claude.py::build_toffoli&quot;,
   &quot;reference&quot;: &quot;/workspace/veriq/benchmark/references.py&quot;,
   &quot;verdict&quot;: &quot;PASS&quot;,
-  &quot;seconds&quot;: 0.073,
+  &quot;seconds&quot;: 0.097,
   &quot;checks&quot;: [
     {
       &quot;name&quot;: &quot;Transpile integrity&quot;,
@@ -57,15 +57,24 @@ q_2: ┤ H ├┤ X ├┤ Tdg ├┤ X ├┤ T ├┤ X ├┤ Tdg ├┤ X �
       &quot;evidence&quot;: {
         &quot;targets&quot;: [
           {
-            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3&quot;,
+            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3, qubits_initially_zero=False&quot;,
             &quot;result&quot;: &quot;equivalent&quot;,
             &quot;engine&quot;: &quot;mqt.qcec&quot;,
             &quot;qcec_result&quot;: &quot;equivalent_up_to_global_phase&quot;,
-            &quot;qcec_check_time_s&quot;: 0.0009
+            &quot;qcec_check_time_s&quot;: 0.0003
+          },
+          {
+            &quot;target&quot;: &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3 [qiskit default qubits_initially_zero=True, informational]&quot;,
+            &quot;result&quot;: &quot;equivalent&quot;,
+            &quot;engine&quot;: &quot;mqt.qcec&quot;,
+            &quot;qcec_result&quot;: &quot;equivalent_up_to_global_phase&quot;,
+            &quot;qcec_check_time_s&quot;: 0.001
           }
-        ]
+        ],
+        &quot;mode&quot;: &quot;unitary&quot;,
+        &quot;zero_init_hazard&quot;: false
       },
-      &quot;seconds&quot;: 0.0091
+      &quot;seconds&quot;: 0.0192
     },
     {
       &quot;name&quot;: &quot;Reference equivalence&quot;,
@@ -74,9 +83,9 @@ q_2: ┤ H ├┤ X ├┤ Tdg ├┤ X ├┤ T ├┤ X ├┤ Tdg ├┤ X �
       &quot;evidence&quot;: {
         &quot;engine&quot;: &quot;mqt.qcec&quot;,
         &quot;qcec_result&quot;: &quot;equivalent&quot;,
-        &quot;qcec_check_time_s&quot;: 0.001
+        &quot;qcec_check_time_s&quot;: 0.0007
       },
-      &quot;seconds&quot;: 0.0033
+      &quot;seconds&quot;: 0.0046
     },
     {
       &quot;name&quot;: &quot;Gate-set constraint&quot;,
@@ -122,7 +131,7 @@ q_2: ┤ H ├┤ X ├┤ Tdg ├┤ X ├┤ T ├┤ X ├┤ Tdg ├┤ X �
         &quot;alpha&quot;: 0.001,
         &quot;impossible_outcomes&quot;: {}
       },
-      &quot;seconds&quot;: 0.0581
+      &quot;seconds&quot;: 0.0703
     },
     {
       &quot;name&quot;: &quot;Metrics&quot;,
@@ -144,7 +153,7 @@ q_2: ┤ H ├┤ X ├┤ Tdg ├┤ X ├┤ T ├┤ X ├┤ Tdg ├┤ X �
           }
         },
         &quot;compiled&quot;: {
-          &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3&quot;: {
+          &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3, qubits_initially_zero=False&quot;: {
             &quot;qubits&quot;: 3,
             &quot;clbits&quot;: 0,
             &quot;depth&quot;: 19,
@@ -192,7 +201,7 @@ q_2: ┤ H ├┤ X ├┤ Tdg ├┤ X ├┤ T ├┤ X ├┤ Tdg ├┤ X �
       }
     },
     &quot;compiled&quot;: {
-      &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3&quot;: {
+      &quot;generic basis [&#x27;rz&#x27;, &#x27;sx&#x27;, &#x27;x&#x27;, &#x27;cx&#x27;] + linear coupling (3q), opt=3, qubits_initially_zero=False&quot;: {
         &quot;qubits&quot;: 3,
         &quot;clbits&quot;: 0,
         &quot;depth&quot;: 19,
