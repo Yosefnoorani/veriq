@@ -148,3 +148,12 @@ def test_qft_50_proven_by_zx():
     a, b, mode = build("qft", 50, False)
     r = scale.decide_equivalence(a, b, mode, timeout=60)
     assert r["status"] == scale.PROVEN
+
+
+def test_budget_respected_on_wide_oracle_12():
+    """Regression: the 12-qubit exhaustive search on a 11-control mcphase used to run unbudgeted (>120 s)."""
+    a, b, mode = build("oracle", 12, False)
+    t = time.perf_counter()
+    r = scale.decide_equivalence(a, b, mode, timeout=15)
+    assert time.perf_counter() - t < 30
+    assert r["status"] in (scale.PROBABLY, scale.PROVEN)

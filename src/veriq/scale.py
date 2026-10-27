@@ -231,10 +231,9 @@ def qcec_decide(a: QuantumCircuit, b: QuantumCircuit, strategies, timeout: float
                 hard: bool | None = None) -> dict[str, Any]:
     """Run mqt.qcec with the chosen checkers.
 
-    Small circuits: one in-process call with all checkers. Large circuits: one checker at a time
-    (ZX, alternating, construction, simulation), each in a killable worker with its share of the budget,
-    because QCEC's cooperative timeout does not stop some large checks and one slow checker must not
-    hide a fast proof from another.
+    One checker at a time (ZX, alternating, construction, simulation), each with its share of the budget,
+    so one slow checker cannot hide a fast proof from another. Large circuits run each checker in a
+    killable worker, because QCEC's cooperative timeout does not stop some large checks.
     """
     strategies = [s for s in QCEC_STRATEGIES if s in strategies]
     order = [s for s in ("zx", "alternating", "construction", "simulation") if s in strategies]
@@ -244,28 +243,18 @@ def qcec_decide(a: QuantumCircuit, b: QuantumCircuit, strategies, timeout: float
     t0 = time.perf_counter()
     ev: dict[str, Any] = {"method": label, "engine": "mqt.qcec", "qcec_strategies": order,
                           "timeout_s": round(timeout, 2), "hard_timeout": hard}
-    if not hard:
-        from mqt import qcec
-
-        try:
-            res = qcec.verify(a, b, timeout=timeout, **qcec_options(order))
-            name = res.equivalence.name
-            ev["qcec_check_time_s"] = round(res.check_time, 4)
-        except Exception as exc:
-            name = "error"
-            ev["qcec_error"] = repr(exc)[:300]
-        ev["qcec_result"] = name
-        ev["seconds"] = round(time.perf_counter() - t0, 4)
-        return {"status": _qcec_name(name), "method": label, "evidence": ev}
+    data = None if not hard else _pack(a, b)
     runs = []
     probable = None
-    data = _pack(a, b)
     for i, strat in enumerate(order):
         left = timeout - (time.perf_counter() - t0)
         if left < 0.5:
             break
         share = left if i == len(order) - 1 else max(0.5, left * QCEC_SHARE[strat])
-        name, secs, err = _qcec_worker_call(data, qcec_options([strat]), share)
+        if hard:
+            name, secs, err = _qcec_worker_call(data, qcec_options([strat]), share)
+        else:
+            name, secs, err = _qcec_inprocess(a, b, strat, share)
         run = {"checker": strat, "result": name, "seconds": secs, "budget_s": round(share, 2)}
         if err:
             run["error"] = err[-300:]
@@ -281,6 +270,17 @@ def qcec_decide(a: QuantumCircuit, b: QuantumCircuit, strategies, timeout: float
     if probable:
         return {"status": PROBABLY, "method": f"qcec-{probable}", "evidence": dict(ev, method=f"qcec-{probable}")}
     return {"status": UNKNOWN, "method": label, "evidence": ev}
+
+
+def _qcec_inprocess(a, b, strat: str, timeout: float) -> tuple[str, float, str]:
+    from mqt import qcec
+
+    t0 = time.perf_counter()
+    try:
+        res = qcec.verify(a, b, timeout=timeout, **qcec_options([strat]))
+        return res.equivalence.name, round(time.perf_counter() - t0, 3), ""
+    except Exception as exc:
+        return "error", round(time.perf_counter() - t0, 3), repr(exc)[:300]
 
 
 def _qcec_worker_call(data: bytes, opts: dict[str, Any], deadline: float) -> tuple[str, float, str]:
@@ -326,17 +326,7 @@ def falsify(a: QuantumCircuit, b: QuantumCircuit, mode: str = "unitary", budget:
         return {"status": UNKNOWN, "method": "falsify",
                 "evidence": {"method": "falsify", "note": "compiled circuit with a layout: falsification skipped"}}
     if mode == "unitary" and n <= EXHAUSTIVE_MAX_QUBITS:
-        from .checks import find_counterexample
-
-        cex = find_counterexample(a, b)
-        ev = {"method": "exhaustive-basis", "engine": "qiskit.Statevector",
-              "inputs_tried": 2 ** n + 1, "seconds": round(time.perf_counter() - t0, 4)}
-        if cex:
-            ev["counterexample"] = cex
-            return {"status": NOT_EQ, "method": "exhaustive-basis", "evidence": ev}
-        ev["note"] = ("all 2^n basis inputs and |+...+> agree; equivalence is still not proven "
-                      "(relative phases between basis inputs are only partly covered)")
-        return {"status": PROBABLY, "method": "exhaustive-basis", "evidence": ev}
+        return _exhaustive(a, b, budget, t0)
     payload = {"mode": mode, "trials": trials, "seed": seed}
     lines, killed, err = _run_mps_worker(_pack(a, b), payload, budget)
     tried = [json.loads(x) for x in lines if x.startswith("{")]
@@ -362,6 +352,38 @@ def falsify(a: QuantumCircuit, b: QuantumCircuit, mode: str = "unitary", budget:
         return {"status": PROBABLY, "method": ev["method"], "evidence": ev}
     ev["note"] = "no simulation finished inside the budget"
     return {"status": UNKNOWN, "method": ev["method"], "evidence": ev}
+
+
+def _exhaustive(a: QuantumCircuit, b: QuantumCircuit, budget: float, t0: float) -> dict[str, Any]:
+    """All 2^n basis inputs, then |+...+>, on circuits lowered once; stops at the budget."""
+    import numpy as np
+    from qiskit import transpile
+    from qiskit.quantum_info import Statevector
+
+    n = a.num_qubits
+    la, lb = (transpile(c, basis_gates=["u", "cx"], optimization_level=0) for c in (a, b))
+    labels = [format(i, f"0{n}b") for i in range(2 ** n)] + ["+" * n]
+    ev: dict[str, Any] = {"method": "exhaustive-basis", "engine": "qiskit.Statevector"}
+    tried = 0
+    for label in labels:
+        if time.perf_counter() - t0 > budget:
+            ev["stopped_by_budget"] = True
+            break
+        sa = Statevector.from_label(label).evolve(la)
+        sb = Statevector.from_label(label).evolve(lb)
+        fid = float(abs(np.vdot(sa.data, sb.data)) ** 2)
+        tried += 1
+        if fid < 1 - FIDELITY_TOL:
+            ev.update(inputs_tried=tried, seconds=round(time.perf_counter() - t0, 4),
+                      counterexample={"input_state": f"|{label}>", "fidelity": round(fid, 6)})
+            return {"status": NOT_EQ, "method": "exhaustive-basis", "evidence": ev}
+    ev.update(inputs_tried=tried, seconds=round(time.perf_counter() - t0, 4))
+    if tried == 0:
+        ev["note"] = "no input finished inside the budget"
+        return {"status": UNKNOWN, "method": "exhaustive-basis", "evidence": ev}
+    ev["note"] = (f"{tried} of {len(labels)} inputs (basis states, then |+...+>) agree. This is falsification, "
+                  "NOT a proof: relative phases between basis inputs are only partly covered.")
+    return {"status": PROBABLY, "method": "exhaustive-basis", "evidence": ev}
 
 
 def _run_mps_worker(data: bytes, payload: dict[str, Any], budget: float) -> tuple[list[str], bool, str]:
