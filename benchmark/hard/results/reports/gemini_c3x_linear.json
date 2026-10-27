@@ -1,0 +1,223 @@
+{
+  "target": "/workspace/veriq/benchmark/hard/raw/gemini.py::build_c3x_linear",
+  "reference": "/workspace/veriq/benchmark/hard/references.py",
+  "verdict": "PASS",
+  "seconds": 0.107,
+  "checks": [
+    {
+      "name": "Transpile integrity",
+      "status": "PASS",
+      "summary": "Proved equivalent after transpilation on 1 target(s).",
+      "evidence": {
+        "targets": [
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3, qubits_initially_zero=False",
+            "result": "equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "equivalent_up_to_global_phase",
+            "qcec_check_time_s": 0.0008
+          },
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3 [qiskit default qubits_initially_zero=True, informational]",
+            "result": "equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "equivalent_up_to_global_phase",
+            "qcec_check_time_s": 0.0013
+          }
+        ],
+        "mode": "unitary",
+        "zero_init_hazard": false
+      },
+      "seconds": 0.0187
+    },
+    {
+      "name": "Reference equivalence",
+      "status": "PASS",
+      "summary": "Candidate is formally equivalent to the reference.",
+      "evidence": {
+        "engine": "mqt.qcec",
+        "qcec_result": "equivalent_up_to_global_phase",
+        "qcec_check_time_s": 0.0012
+      },
+      "seconds": 0.0044
+    },
+    {
+      "name": "Gate-set constraint",
+      "status": "PASS",
+      "summary": "All gates are inside the allowed set.",
+      "evidence": {
+        "allowed": [
+          "cx",
+          "h",
+          "p",
+          "rz",
+          "s",
+          "sdg",
+          "t",
+          "tdg",
+          "x"
+        ],
+        "used": {
+          "cx": 202,
+          "h": 2,
+          "rz": 15
+        },
+        "violations": {}
+      },
+      "seconds": 0.0014
+    },
+    {
+      "name": "Coupling-map constraint",
+      "status": "PASS",
+      "summary": "All 202 two-qubit gates act on coupling edges.",
+      "evidence": {
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "two_qubit_gates_checked": 202,
+        "off_edge_two_qubit_gates": {},
+        "multi_qubit_gates": {},
+        "first_violations": []
+      },
+      "seconds": 0.0015
+    },
+    {
+      "name": "No black boxes",
+      "status": "PASS",
+      "summary": "Only standard gates (plus mcx/mcphase); no matrices, vectors or library blocks.",
+      "evidence": {
+        "black_boxes": {},
+        "explanations": {}
+      },
+      "seconds": 0.0002
+    },
+    {
+      "name": "Statistical test (Aer)",
+      "status": "PASS",
+      "summary": "Consistent with expectation: TVD=0.000, chi2 p=1.",
+      "evidence": {
+        "shots": 4096,
+        "seed": 7,
+        "expected_source": "reference ideal distribution",
+        "observed_counts": {
+          "0000": 4096
+        },
+        "expected_distribution": {
+          "0000": 1.0
+        },
+        "tvd": 0.0,
+        "tvd_threshold": 0.05,
+        "chi2": 0.0,
+        "p_value": 1.0,
+        "alpha": 0.001,
+        "impossible_outcomes": {}
+      },
+      "seconds": 0.0674
+    },
+    {
+      "name": "Metrics",
+      "status": "PASS",
+      "summary": "4 qubits, depth 204, 202 two-qubit gates; compiled: depth 169, 150 2q gates.",
+      "evidence": {
+        "source": {
+          "qubits": 4,
+          "clbits": 0,
+          "depth": 204,
+          "size": 219,
+          "two_qubit_gates": 202,
+          "multi_qubit_gates": 0,
+          "gate_counts": {
+            "cx": 202,
+            "h": 2,
+            "rz": 15
+          }
+        },
+        "compiled": {
+          "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3, qubits_initially_zero=False": {
+            "qubits": 4,
+            "clbits": 0,
+            "depth": 169,
+            "size": 181,
+            "two_qubit_gates": 150,
+            "multi_qubit_gates": 0,
+            "gate_counts": {
+              "cx": 150,
+              "rz": 24,
+              "sx": 7
+            }
+          }
+        },
+        "reference": {
+          "qubits": 4,
+          "clbits": 0,
+          "depth": 1,
+          "size": 1,
+          "two_qubit_gates": 0,
+          "multi_qubit_gates": 1,
+          "gate_counts": {
+            "mcx": 1
+          }
+        }
+      },
+      "seconds": 0.0015
+    }
+  ],
+  "metrics": {
+    "source": {
+      "qubits": 4,
+      "clbits": 0,
+      "depth": 204,
+      "size": 219,
+      "two_qubit_gates": 202,
+      "multi_qubit_gates": 0,
+      "gate_counts": {
+        "cx": 202,
+        "h": 2,
+        "rz": 15
+      }
+    },
+    "compiled": {
+      "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3, qubits_initially_zero=False": {
+        "qubits": 4,
+        "clbits": 0,
+        "depth": 169,
+        "size": 181,
+        "two_qubit_gates": 150,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 150,
+          "rz": 24,
+          "sx": 7
+        }
+      }
+    },
+    "reference": {
+      "qubits": 4,
+      "clbits": 0,
+      "depth": 1,
+      "size": 1,
+      "two_qubit_gates": 0,
+      "multi_qubit_gates": 1,
+      "gate_counts": {
+        "mcx": 1
+      }
+    }
+  },
+  "versions": {
+    "veriq": "0.1.0",
+    "qiskit": "2.6.1",
+    "qiskit-aer": "0.18.2",
+    "mqt.qcec": "3.11.0"
+  }
+}

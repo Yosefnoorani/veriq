@@ -1,0 +1,181 @@
+{
+  "target": "/workspace/veriq/benchmark/hard/raw/perplexity.py::build_qpe_t",
+  "reference": "/workspace/veriq/benchmark/hard/references.py",
+  "verdict": "PASS",
+  "seconds": 0.08,
+  "checks": [
+    {
+      "name": "Transpile integrity",
+      "status": "PASS",
+      "summary": "Proved equivalent after transpilation on 1 target(s).",
+      "evidence": {
+        "targets": [
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3",
+            "result": "equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "equivalent_up_to_global_phase",
+            "qcec_check_time_s": 0.0008
+          }
+        ],
+        "mode": "state",
+        "zero_init_hazard": null
+      },
+      "seconds": 0.0137
+    },
+    {
+      "name": "State equivalence (from |0...0>)",
+      "status": "PASS",
+      "summary": "Prepares the reference state up to global phase (fidelity 1.000000).",
+      "evidence": {
+        "engine": "qiskit.Statevector (exact)",
+        "fidelity": 1.0,
+        "tolerance": 1e-08,
+        "candidate_state_top": {
+          "1001": 1.0
+        },
+        "reference_state_top": {
+          "1001": 1.0
+        }
+      },
+      "seconds": 0.0021
+    },
+    {
+      "name": "No black boxes",
+      "status": "PASS",
+      "summary": "Only standard gates (plus mcx/mcphase); no matrices, vectors or library blocks.",
+      "evidence": {
+        "black_boxes": {},
+        "explanations": {}
+      },
+      "seconds": 0.0002
+    },
+    {
+      "name": "Statistical test (Aer)",
+      "status": "PASS",
+      "summary": "Consistent with expectation: TVD=0.000, chi2 p=1.",
+      "evidence": {
+        "shots": 4096,
+        "seed": 7,
+        "expected_source": "reference ideal distribution",
+        "observed_counts": {
+          "1001": 4096
+        },
+        "expected_distribution": {
+          "1001": 1.0
+        },
+        "tvd": 0.0,
+        "tvd_threshold": 0.05,
+        "chi2": 0.0,
+        "p_value": 1.0,
+        "alpha": 0.001,
+        "impossible_outcomes": {}
+      },
+      "seconds": 0.0595
+    },
+    {
+      "name": "Metrics",
+      "status": "PASS",
+      "summary": "4 qubits, depth 12, 9 two-qubit gates; compiled: depth 42, 18 2q gates.",
+      "evidence": {
+        "source": {
+          "qubits": 4,
+          "clbits": 0,
+          "depth": 12,
+          "size": 16,
+          "two_qubit_gates": 9,
+          "multi_qubit_gates": 0,
+          "gate_counts": {
+            "cp": 6,
+            "cx": 3,
+            "h": 6,
+            "x": 1
+          }
+        },
+        "compiled": {
+          "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3": {
+            "qubits": 4,
+            "clbits": 0,
+            "depth": 42,
+            "size": 53,
+            "two_qubit_gates": 18,
+            "multi_qubit_gates": 0,
+            "gate_counts": {
+              "cx": 18,
+              "rz": 24,
+              "sx": 9,
+              "x": 2
+            }
+          }
+        },
+        "reference": {
+          "qubits": 4,
+          "clbits": 0,
+          "depth": 5,
+          "size": 8,
+          "two_qubit_gates": 3,
+          "multi_qubit_gates": 1,
+          "gate_counts": {
+            "cp": 3,
+            "h": 3,
+            "qft_dg": 1,
+            "x": 1
+          }
+        }
+      },
+      "seconds": 0.0011
+    }
+  ],
+  "metrics": {
+    "source": {
+      "qubits": 4,
+      "clbits": 0,
+      "depth": 12,
+      "size": 16,
+      "two_qubit_gates": 9,
+      "multi_qubit_gates": 0,
+      "gate_counts": {
+        "cp": 6,
+        "cx": 3,
+        "h": 6,
+        "x": 1
+      }
+    },
+    "compiled": {
+      "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (4q), opt=3": {
+        "qubits": 4,
+        "clbits": 0,
+        "depth": 42,
+        "size": 53,
+        "two_qubit_gates": 18,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 18,
+          "rz": 24,
+          "sx": 9,
+          "x": 2
+        }
+      }
+    },
+    "reference": {
+      "qubits": 4,
+      "clbits": 0,
+      "depth": 5,
+      "size": 8,
+      "two_qubit_gates": 3,
+      "multi_qubit_gates": 1,
+      "gate_counts": {
+        "cp": 3,
+        "h": 3,
+        "qft_dg": 1,
+        "x": 1
+      }
+    }
+  },
+  "versions": {
+    "veriq": "0.1.0",
+    "qiskit": "2.6.1",
+    "qiskit-aer": "0.18.2",
+    "mqt.qcec": "3.11.0"
+  }
+}

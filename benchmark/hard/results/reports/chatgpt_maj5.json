@@ -1,0 +1,172 @@
+{
+  "target": "/workspace/veriq/benchmark/hard/raw/chatgpt.py::build_maj5_oracle",
+  "reference": "/workspace/veriq/benchmark/hard/references.py",
+  "verdict": "PASS",
+  "seconds": 0.236,
+  "checks": [
+    {
+      "name": "Transpile integrity",
+      "status": "PASS",
+      "summary": "Proved equivalent after transpilation on 1 target(s). Note: Qiskit's default transpile (qubits_initially_zero=True) borrows untouched qubits as clean ancillas, so its output is only valid on |0...0> input, not as a standalone block.",
+      "evidence": {
+        "targets": [
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (6q), opt=3, qubits_initially_zero=False",
+            "result": "equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "equivalent_up_to_global_phase",
+            "qcec_check_time_s": 0.0215
+          },
+          {
+            "target": "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (6q), opt=3 [qiskit default qubits_initially_zero=True, informational]",
+            "result": "not_equivalent",
+            "engine": "mqt.qcec",
+            "qcec_result": "not_equivalent",
+            "qcec_check_time_s": 0.0044
+          }
+        ],
+        "mode": "unitary",
+        "zero_init_hazard": true
+      },
+      "seconds": 0.1047
+    },
+    {
+      "name": "Reference equivalence",
+      "status": "PASS",
+      "summary": "Candidate is formally equivalent to the reference.",
+      "evidence": {
+        "engine": "mqt.qcec",
+        "qcec_result": "equivalent",
+        "qcec_check_time_s": 0.003
+      },
+      "seconds": 0.0065
+    },
+    {
+      "name": "No black boxes",
+      "status": "PASS",
+      "summary": "Only standard gates (plus mcx/mcphase); no matrices, vectors or library blocks.",
+      "evidence": {
+        "black_boxes": {},
+        "explanations": {}
+      },
+      "seconds": 0.0003
+    },
+    {
+      "name": "Statistical test (Aer)",
+      "status": "PASS",
+      "summary": "Consistent with expectation: TVD=0.000, chi2 p=1.",
+      "evidence": {
+        "shots": 4096,
+        "seed": 7,
+        "expected_source": "reference ideal distribution",
+        "observed_counts": {
+          "000000": 4096
+        },
+        "expected_distribution": {
+          "000000": 1.0
+        },
+        "tvd": 0.0,
+        "tvd_threshold": 0.05,
+        "chi2": 0.0,
+        "p_value": 1.0,
+        "alpha": 0.001,
+        "impossible_outcomes": {}
+      },
+      "seconds": 0.1124
+    },
+    {
+      "name": "Metrics",
+      "status": "PASS",
+      "summary": "6 qubits, depth 15, 0 two-qubit gates + 15 3+-qubit gates; compiled: depth 937, 512 2q gates.",
+      "evidence": {
+        "source": {
+          "qubits": 6,
+          "clbits": 0,
+          "depth": 15,
+          "size": 15,
+          "two_qubit_gates": 0,
+          "multi_qubit_gates": 15,
+          "gate_counts": {
+            "mcx": 15
+          }
+        },
+        "compiled": {
+          "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (6q), opt=3, qubits_initially_zero=False": {
+            "qubits": 6,
+            "clbits": 0,
+            "depth": 937,
+            "size": 1282,
+            "two_qubit_gates": 512,
+            "multi_qubit_gates": 0,
+            "gate_counts": {
+              "cx": 512,
+              "rz": 485,
+              "sx": 284,
+              "x": 1
+            }
+          }
+        },
+        "reference": {
+          "qubits": 6,
+          "clbits": 0,
+          "depth": 42,
+          "size": 66,
+          "two_qubit_gates": 0,
+          "multi_qubit_gates": 16,
+          "gate_counts": {
+            "mcx": 16,
+            "x": 50
+          }
+        }
+      },
+      "seconds": 0.0052
+    }
+  ],
+  "metrics": {
+    "source": {
+      "qubits": 6,
+      "clbits": 0,
+      "depth": 15,
+      "size": 15,
+      "two_qubit_gates": 0,
+      "multi_qubit_gates": 15,
+      "gate_counts": {
+        "mcx": 15
+      }
+    },
+    "compiled": {
+      "generic basis ['rz', 'sx', 'x', 'cx'] + linear coupling (6q), opt=3, qubits_initially_zero=False": {
+        "qubits": 6,
+        "clbits": 0,
+        "depth": 937,
+        "size": 1282,
+        "two_qubit_gates": 512,
+        "multi_qubit_gates": 0,
+        "gate_counts": {
+          "cx": 512,
+          "rz": 485,
+          "sx": 284,
+          "x": 1
+        }
+      }
+    },
+    "reference": {
+      "qubits": 6,
+      "clbits": 0,
+      "depth": 42,
+      "size": 66,
+      "two_qubit_gates": 0,
+      "multi_qubit_gates": 16,
+      "gate_counts": {
+        "mcx": 16,
+        "x": 50
+      }
+    }
+  },
+  "versions": {
+    "veriq": "0.1.0",
+    "qiskit": "2.6.1",
+    "qiskit-aer": "0.18.2",
+    "mqt.qcec": "3.11.0"
+  }
+}
