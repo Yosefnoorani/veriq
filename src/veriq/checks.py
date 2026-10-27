@@ -71,18 +71,35 @@ def _operator_verify(a: QuantumCircuit, b: QuantumCircuit) -> tuple[str, dict[st
 
 
 def prove_equivalence(a: QuantumCircuit, b: QuantumCircuit, timeout: float = 30.0) -> tuple[str, dict[str, Any]]:
-    """QCEC first; fall back to dense Operator comparison for small circuits."""
+    """Return ('equivalent' | 'not_equivalent' | 'unknown', evidence).
+
+    Up to COUNTEREXAMPLE_MAX_QUBITS: QCEC, then a dense Operator fallback (n <= 10).
+    Larger circuits: the tiered scale pipeline (veriq.scale.decide_equivalence: partitioning, Clifford tableaus,
+    QCEC strategies under hard timeouts, MPS falsification). A falsification-only result is 'unknown' with
+    evidence["scale_status"] == "PROBABLY_EQUIVALENT"; it is never reported as a proof.
+    """
+    n = max(a.num_qubits, b.num_qubits)
+    if n > COUNTEREXAMPLE_MAX_QUBITS:
+        from .scale import NOT_EQ, PROVEN, decide_equivalence
+
+        r = decide_equivalence(a, b, "unitary", timeout)
+        ev = dict(r["evidence"], method=r["method"], scale_status=r["status"])
+        if r["status"] == "PROBABLY_EQUIVALENT":
+            ev["probably_equivalent"] = True
+        return {PROVEN: "equivalent", NOT_EQ: "not_equivalent"}.get(r["status"], "unknown"), ev
     evidence: dict[str, Any] = {}
     try:
         verdict, evidence = _qcec_verify(a, b, timeout)
         if verdict != "unknown":
+            evidence["method"] = "qcec"
             return verdict, evidence
     except Exception as exc:  # QCEC may not support some instruction
         evidence = {"qcec_error": repr(exc)[:300]}
-    if max(a.num_qubits, b.num_qubits) <= OPERATOR_FALLBACK_MAX_QUBITS:
+    if n <= OPERATOR_FALLBACK_MAX_QUBITS:
         v, ev = _operator_verify(a, b)
         evidence.update(ev)
         evidence["fallback"] = True
+        evidence["method"] = "operator"
         return v, evidence
     return "unknown", evidence
 
@@ -104,9 +121,14 @@ def equivalence_status(a: QuantumCircuit, b: QuantumCircuit, timeout: float = 30
 
 
 def zero_input_equal(a: QuantumCircuit, b: QuantumCircuit, max_qubits: int = 20) -> bool | None:
-    """Do a and b prepare the same state from |0...0> (up to global phase)? None if too large."""
+    """Do a and b prepare the same state from |0...0> (up to global phase)? None if undecided."""
     if a.num_qubits > max_qubits:
-        return None
+        if b.layout is not None or a.num_qubits != b.num_qubits:
+            return None
+        from .scale import NOT_EQ, PROVEN, decide_equivalence
+
+        st = decide_equivalence(a, b, "state", 30.0)["status"]
+        return {PROVEN: True, NOT_EQ: False}.get(st)
     try:
         sa = Statevector(a).data
         if b.layout is not None:  # compiled circuit: undo the layout permutation exactly
@@ -136,7 +158,9 @@ def _top(probs: dict[str, float], k: int = 4) -> dict[str, float]:
 
 
 def find_counterexample(cand: QuantumCircuit, ref: QuantumCircuit) -> dict[str, Any] | None:
-    """Search computational-basis inputs (then |+>^n) for an input where the output states differ."""
+    """Exhaustive search over computational-basis inputs (then |+>^n) for n <= 12.
+
+    Larger circuits get their counterexample from veriq.scale (random basis / product states via MPS)."""
     n = cand.num_qubits
     if n > COUNTEREXAMPLE_MAX_QUBITS:
         return None
@@ -291,7 +315,7 @@ def reference_equivalence(cand: QuantumCircuit, ref: QuantumCircuit | None, time
         if verdict == "equivalent":
             res = CheckResult(name, Status.PASS, "Candidate is formally equivalent to the reference.", ev)
         elif verdict == "not_equivalent":
-            cex = find_counterexample(a, b)
+            cex = ev.get("counterexample") or find_counterexample(a, b)
             if cex:
                 ev["counterexample"] = cex
                 summary = (f"NOT equivalent. Counterexample: on input {cex['input_state']} the outputs "
@@ -299,6 +323,10 @@ def reference_equivalence(cand: QuantumCircuit, ref: QuantumCircuit | None, time
             else:
                 summary = "NOT equivalent (no small counterexample searched/found)."
             res = CheckResult(name, Status.FAIL, summary, ev)
+        elif ev.get("probably_equivalent"):
+            res = CheckResult(name, Status.INCONCLUSIVE,
+                              f"PROBABLY equivalent: {ev.get('inputs_tried', 'several')} simulated inputs found no "
+                              "difference, but this is falsification only, NOT a proof.", ev)
         else:
             res = CheckResult(name, Status.INCONCLUSIVE, "Equivalence could not be decided.", ev)
     res.seconds = round(time.perf_counter() - t0, 4)
@@ -324,7 +352,20 @@ def state_equivalence(cand: QuantumCircuit, ref: QuantumCircuit | None, tol: flo
         return CheckResult(name, Status.INCONCLUSIVE, "Circuits contain mid-circuit non-unitary operations.",
                            {"candidate_non_unitary": non_unitary_ops(a), "reference_non_unitary": non_unitary_ops(b)})
     if a.num_qubits > 20:
-        return CheckResult(name, Status.INCONCLUSIVE, "Too many qubits for exact statevector comparison.")
+        from .scale import NOT_EQ, PROVEN, decide_equivalence
+
+        r = decide_equivalence(a, b, "state", 60.0)
+        ev = dict(r["evidence"], method=r["method"], scale_status=r["status"])
+        if r["status"] == PROVEN:
+            res = CheckResult(name, Status.PASS, f"Prepares the reference state up to global phase ({r['method']}).", ev)
+        elif r["status"] == NOT_EQ:
+            fid = (ev.get("counterexample") or {}).get("fidelity")
+            res = CheckResult(name, Status.FAIL, "Prepared state differs from the reference"
+                              + (f": fidelity {fid:.6f}." if fid is not None else "."), ev)
+        else:
+            res = CheckResult(name, Status.INCONCLUSIVE, f"Could not decide state equality at {a.num_qubits} qubits.", ev)
+        res.seconds = round(time.perf_counter() - t0, 4)
+        return res
     sa, sb = Statevector(a), Statevector(b)
     fid = float(abs(np.vdot(sa.data, sb.data)) ** 2)
     ev = {"engine": "qiskit.Statevector (exact)", "fidelity": round(fid, 10), "tolerance": tol,
@@ -365,12 +406,22 @@ def ideal_distribution(qc: QuantumCircuit) -> dict[str, float]:
     return {k: float(v) for k, v in sv.probabilities_dict().items() if v > 1e-12}
 
 
-def sample(qc: QuantumCircuit, shots: int, seed: int) -> dict[str, int]:
+LARGE_SIM_QUBITS = 24
+
+
+def _simulator_for(qc: QuantumCircuit):
+    """Statevector up to 24 qubits; beyond that stabilizer (Clifford) or matrix-product-state."""
     from qiskit_aer import AerSimulator
 
+    if qc.num_qubits <= LARGE_SIM_QUBITS:
+        return AerSimulator()
+    return AerSimulator(method="stabilizer" if is_clifford(qc) else "matrix_product_state")
+
+
+def sample(qc: QuantumCircuit, shots: int, seed: int) -> dict[str, int]:
     m = unitary_part(qc)
+    sim = _simulator_for(m)
     m.measure_all()
-    sim = AerSimulator()
     counts = sim.run(transpile(m, sim), shots=shots, seed_simulator=seed).result().get_counts()
     # measure_all may add a space-separated register if other cregs remain
     out: dict[str, int] = {}
@@ -396,6 +447,8 @@ def statistical_test(cand: QuantumCircuit, expect: dict[str, Any] | None, ref: Q
     if dist is None and support is None:
         if ref is None:
             return CheckResult(name, Status.SKIPPED, "No --expect and no --reference to compare against.")
+        if ref.num_qubits > 20:
+            return _two_sample_test(cand, ref, shots, seed, alpha, tvd_threshold, t0, name)
         dist, source = ideal_distribution(ref), "reference ideal distribution"
     n = cand.num_qubits
 
@@ -457,6 +510,37 @@ def statistical_test(cand: QuantumCircuit, expect: dict[str, Any] | None, ref: Q
         else:
             status, summary = Status.PASS, "All shots landed inside the expected support."
     res = CheckResult(name, status, summary, ev)
+    res.seconds = round(time.perf_counter() - t0, 4)
+    return res
+
+
+def _two_sample_test(cand: QuantumCircuit, ref: QuantumCircuit, shots: int, seed: int, alpha: float,
+                     tvd_threshold: float, t0: float, name: str) -> CheckResult:
+    """Large circuits: no 2^n ideal distribution, so sample both circuits and compare the samples."""
+    try:
+        ca, cb = sample(cand, shots, seed), sample(ref, shots, seed + 1)
+    except Exception as exc:
+        return CheckResult(name, Status.INCONCLUSIVE, f"Simulation failed: {exc!r}"[:300])
+    keys = sorted(set(ca) | set(cb))
+    ev: dict[str, Any] = {"shots": shots, "seed": seed, "expected_source": "reference samples (two-sample test)",
+                          "distinct_outcomes": len(keys), "observed_top": _top({k: v / shots for k, v in ca.items()}, 8),
+                          "reference_top": _top({k: v / shots for k, v in cb.items()}, 8),
+                          "simulator": _simulator_for(unitary_part(cand)).options.method}
+    if len(keys) > shots / 10:
+        res = CheckResult(name, Status.INCONCLUSIVE, f"Outcomes too spread for a sampling test ({len(keys)} distinct "
+                          f"outcomes in {shots} shots); rely on the equivalence checks.", ev)
+    else:
+        table = np.array([[ca.get(k, 0) for k in keys], [cb.get(k, 0) for k in keys]], dtype=float)
+        tvd = 0.5 * float(np.abs(table[0] - table[1]).sum()) / shots
+        chi2, p, _, _ = stats.chi2_contingency(table) if len(keys) > 1 else (0.0, 1.0, 0, None)
+        ev.update({"tvd": round(tvd, 5), "tvd_threshold": 2 * tvd_threshold, "chi2": round(float(chi2), 4),
+                   "p_value": float(f"{p:.4g}"), "alpha": alpha})
+        if tvd > 2 * tvd_threshold and p < alpha:
+            res = CheckResult(name, Status.FAIL, f"Samples differ from the reference samples: TVD={tvd:.3f}, p={p:.2g}.", ev)
+        elif p >= alpha:
+            res = CheckResult(name, Status.PASS, f"Consistent with the reference samples: TVD={tvd:.3f}, p={p:.2g}.", ev)
+        else:
+            res = CheckResult(name, Status.INCONCLUSIVE, f"Borderline: TVD={tvd:.3f}, p={p:.2g}.", ev)
     res.seconds = round(time.perf_counter() - t0, 4)
     return res
 

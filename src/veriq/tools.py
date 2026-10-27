@@ -214,7 +214,7 @@ def check_transpile(candidate: QuantumCircuit, optimization_level: int = 3,
         entry = {"status": res["status"], "method": res.get("method"), "evidence": _trim(res.get("evidence", {})),
                  "compiled_metrics": _trim(checks.circuit_metrics(tq))}
         if res["status"] == "NOT_EQUIVALENT":
-            cex = checks.find_counterexample(u, tq)
+            cex = res.get("evidence", {}).get("counterexample") or checks.find_counterexample(u, tq)
             entry["counterexample"] = cex
             if z:
                 entry["equal_on_zero_input"] = checks.zero_input_equal(u, tq)
@@ -264,10 +264,12 @@ def compare_circuits(candidate: QuantumCircuit, reference: QuantumCircuit, mode:
                     evidence=_trim(c.evidence), seconds=round(time.perf_counter() - t0, 3))
     res = checks.equivalence_status(a, b, timeout)
     st = res["status"]
-    cex = checks.find_counterexample(a, b) if st == "NOT_EQUIVALENT" else None
+    cex = (res.get("evidence", {}).get("counterexample") or checks.find_counterexample(a, b)) \
+        if st == "NOT_EQUIVALENT" else None
     summary = {"PROVEN_EQUIVALENT": "Proved equivalent (same unitary up to global phase).",
                "NOT_EQUIVALENT": "NOT equivalent.",
-               "PROBABLY_EQUIVALENT": "Probably equivalent: no difference found by simulation, but NOT proved.",
+               "PROBABLY_EQUIVALENT": "Probably equivalent: no difference found by simulation (falsification only), "
+                                      "NOT proved.",
                "UNKNOWN": "Could not decide within the limits."}[st]
     if cex:
         summary += f" Counterexample input {cex['input_state']} (overlap {cex['fidelity']:.4f})."
