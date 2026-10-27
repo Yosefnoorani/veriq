@@ -55,11 +55,26 @@ def build_parser() -> argparse.ArgumentParser:
     ci.add_argument("--github-output", help="append exit-code/ran/unexpected/skipped to this file ($GITHUB_OUTPUT)")
     ci.add_argument("--artifact-hint", help=argparse.SUPPRESS)
     ci.add_argument("--quiet", "-q", action="store_true")
+
+    m = sub.add_parser("mcp", help="run Veriq as an MCP server (stdio by default; executes circuit code in a sandbox)")
+    try:
+        from .mcp_server import build_parser as mcp_parser
+
+        mcp_parser(m)
+    except ImportError:  # the `mcp` SDK is an optional extra
+        m.set_defaults(mcp_missing=True)
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.cmd == "mcp":
+        if getattr(args, "mcp_missing", False):
+            print("veriq: error: the MCP SDK is not installed; run: pip install 'veriq[mcp]'", file=sys.stderr)
+            return 3
+        from . import mcp_server
+
+        return mcp_server.main(args=args)
     if args.cmd == "ci":
         from . import ci
 

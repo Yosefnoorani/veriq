@@ -87,6 +87,49 @@ def prove_equivalence(a: QuantumCircuit, b: QuantumCircuit, timeout: float = 30.
     return "unknown", evidence
 
 
+def equivalence_status(a: QuantumCircuit, b: QuantumCircuit, timeout: float = 30.0) -> dict[str, Any]:
+    """Honest four-way status: PROVEN_EQUIVALENT | NOT_EQUIVALENT | PROBABLY_EQUIVALENT | UNKNOWN.
+
+    PROBABLY_EQUIVALENT means only that simulations found no difference; it is never reported as a proof.
+    """
+    verdict, ev = prove_equivalence(a, b, timeout)
+    method = ev.get("method") or ev.get("engine")
+    if verdict == "equivalent":
+        return {"status": "PROVEN_EQUIVALENT", "method": method, "evidence": ev}
+    if verdict == "not_equivalent":
+        return {"status": "NOT_EQUIVALENT", "method": method, "evidence": ev}
+    if ev.get("qcec_result") == "probably_equivalent" or ev.get("probably_equivalent"):
+        return {"status": "PROBABLY_EQUIVALENT", "method": method, "evidence": ev}
+    return {"status": "UNKNOWN", "method": method, "evidence": ev}
+
+
+def zero_input_equal(a: QuantumCircuit, b: QuantumCircuit, max_qubits: int = 20) -> bool | None:
+    """Do a and b prepare the same state from |0...0> (up to global phase)? None if too large."""
+    if a.num_qubits > max_qubits:
+        return None
+    try:
+        sa = Statevector(a).data
+        if b.layout is not None:  # compiled circuit: undo the layout permutation exactly
+            if b.num_qubits > OPERATOR_FALLBACK_MAX_QUBITS + 2:
+                return None
+            sb = Operator.from_circuit(b).data[:, 0]
+        else:
+            sb = Statevector(b).data
+        return bool(abs(np.vdot(sa, sb)) ** 2 > 1 - 1e-8)
+    except Exception:
+        return None
+
+
+def is_clifford(qc: QuantumCircuit) -> bool:
+    try:
+        from qiskit.quantum_info import Clifford
+
+        Clifford(unitary_part(qc))
+        return True
+    except Exception:
+        return False
+
+
 def _top(probs: dict[str, float], k: int = 4) -> dict[str, float]:
     items = sorted(((s, p) for s, p in probs.items() if p > 1e-9), key=lambda t: -t[1])[:k]
     return {s: round(p, 6) for s, p in items}

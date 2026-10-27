@@ -219,13 +219,37 @@ artifact, and creates or updates **one** PR comment ([sample](docs/sample_pr_com
 verdict that differs from `expect`. Locally, `veriq ci` runs the same thing. Full reference: [docs/ci.md](docs/ci.md).
 This repo dogfoods it: [.veriq.yml](.veriq.yml) and [.github/workflows/](.github/workflows/).
 
+## Use from an AI assistant (MCP server)
+
+`veriq mcp` makes Veriq an [MCP](https://modelcontextprotocol.io) server, so Claude Desktop, Cursor or any MCP
+client can **verify a circuit before showing it to you**. The tools are `verify_circuit`, `check_transpile`,
+`compare_circuits`, `circuit_metrics` and `explain_verdict`. Each returns structured JSON with a verdict, a
+counterexample and fix hints. There are also resources with conventions and examples, and a `write-verified-circuit` prompt.
+
+```bash
+pip install -e '.[mcp]'
+veriq mcp                       # stdio; or: veriq mcp --http --port 8765
+```
+
+```json
+// .cursor/mcp.json  (Claude Desktop: same block in claude_desktop_config.json)
+{ "mcpServers": { "veriq": { "command": "/abs/path/.venv/bin/veriq-mcp", "args": ["--root", "/abs/path/project"] } } }
+```
+
+**The server executes the code it is given. Run it locally, for yourself.** Every call builds circuits in a
+sandboxed subprocess with timeouts, memory/CPU/file rlimits, no network (bubblewrap or a user network namespace),
+a read-only filesystem except a temp dir, and a scrubbed environment. The checks then run in a second clean
+process, so user code can't forge the verdict. `scripts/agent_loop_demo.py` shows the loop end to end with a
+simulated model (FAIL → FAIL → PASS). Full reference: [docs/mcp.md](docs/mcp.md).
+
 ## Project layout
 
 ```
 src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.py
+             mcp_server.py  tools.py  sandbox.py  _sandbox_worker.py   (MCP server)
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
-scripts/     demo.sh  simulate_action.py
+scripts/     demo.sh  simulate_action.py  agent_loop_demo.py
 action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 ```
 
