@@ -1,0 +1,358 @@
+22:25:19 ghz        n=8   bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     134MB
+22:25:19 ghz        n=8   correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     137MB
+22:25:19 qft        n=8   correct auto              -> PROVEN_EQUIVALENT    operator                          0.8s     137MB
+22:25:19 ghz        n=12  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:25:19 ghz        n=12  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     139MB
+22:25:19 qft        n=12  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     144MB
+22:25:20 ghz        n=16  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     138MB
+22:25:20 ghz        n=16  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:25:20 qft        n=16  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:25:21 ghz        n=20  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:25:21 ghz        n=20  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     139MB
+22:25:22 ghz        n=24  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     138MB
+22:25:22 ghz        n=24  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     139MB
+22:25:22 qft        n=20  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     278MB
+22:25:23 ghz        n=32  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:25:23 ghz        n=32  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     139MB
+22:25:23 ghz        n=40  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:25:23 qft        n=24  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     277MB
+22:25:24 ghz        n=40  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  1.0s     139MB
+22:25:24 ghz        n=50  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     138MB
+22:25:25 ghz        n=50  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  1.0s     139MB
+22:25:25 qft        n=32  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     292MB
+22:25:25 ghz        n=100 correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     139MB
+22:25:26 ghz        n=200 correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  1.2s     141MB
+22:25:27 qft        n=40  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     297MB
+22:25:27 ghz        n=100 bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  2.6s     140MB
+22:25:28 qft        n=8   bug     auto              -> NOT_EQUIVALENT       operator                          1.2s     146MB
+22:25:29 qft        n=50  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     308MB
+22:25:29 qft_approx n=8   correct auto              -> PROVEN_EQUIVALENT    operator                          0.8s     138MB
+22:25:30 qft_approx n=12  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:25:31 qft_approx n=16  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:25:33 qft_approx n=20  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     276MB
+22:25:34 qft_approx n=24  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     275MB
+22:25:36 qft_approx n=32  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     278MB
+22:25:37 qft_approx n=40  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     278MB
+22:25:39 qft_approx n=50  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     277MB
+22:25:40 qft_approx n=8   bug     auto              -> NOT_EQUIVALENT       operator                          1.2s     144MB
+22:25:43 ghz        n=200 bug     auto              -> NOT_EQUIVALENT       clifford-tableau                 16.1s     142MB
+22:25:45 oracle     n=8   correct auto              -> PROVEN_EQUIVALENT    operator                          1.2s     145MB
+22:25:52 qft        n=12  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                 24.6s     161MB
+22:25:58 qft_approx n=12  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                 17.5s     169MB
+22:26:01 qft        n=16  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  8.9s     299MB
+22:26:39 qft_approx n=16  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                 41.1s     436MB
+22:26:44 qft        n=20  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  43.1s     424MB
+22:27:21 qft_approx n=20  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  42.5s     475MB
+22:27:36 oracle     n=12  correct auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 111.0s     388MB
+22:27:41 qft        n=24  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  56.2s     436MB
+22:28:04 qft_approx n=24  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  42.5s     324MB
+22:28:47 qft_approx n=32  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  43.0s     342MB
+22:28:48 qft        n=32  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      67.7s     453MB
+22:28:59 oracle     n=16  correct auto              -> PROBABLY_EQUIVALENT  qcec-simulation                  83.5s     414MB
+22:29:29 qft_approx n=40  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  42.6s     310MB
+22:29:56 qft        n=40  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      68.2s     439MB
+22:30:12 qft_approx n=50  bug     auto              -> NOT_EQUIVALENT       qcec-simulation                  42.8s     348MB
+22:30:17 oracle     n=8   bug     auto              -> NOT_EQUIVALENT       operator                          5.3s     157MB
+22:30:50 oracle     n=20  correct auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 111.2s     564MB
+22:31:05 qft        n=50  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      68.2s     422MB
+22:31:05 clifford_t n=8   correct auto              -> PROVEN_EQUIVALENT    operator                          0.8s     138MB
+22:31:06 clifford_t n=12  correct auto              -> PROVEN_EQUIVALENT    qcec-alternating                  0.8s     138MB
+22:31:07 clifford_t n=16  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:31:09 clifford_t n=20  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     292MB
+22:31:10 clifford_t n=24  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     292MB
+22:31:12 clifford_t n=32  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     291MB
+22:31:14 clifford_t n=40  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     289MB
+22:31:15 clifford_t n=50  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     297MB
+22:31:16 clifford_t n=8   bug     auto              -> NOT_EQUIVALENT       operator                          1.0s     156MB
+22:31:17 clifford_t n=12  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  0.8s     138MB
+22:31:19 clifford_t n=16  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  1.6s     310MB
+22:31:22 clifford_t n=20  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.1s     300MB
+22:31:25 clifford_t n=24  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.0s     307MB
+22:31:28 clifford_t n=32  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.0s     305MB
+22:31:31 clifford_t n=40  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.1s     309MB
+22:31:34 clifford_t n=50  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.0s     315MB
+22:31:35 clifford   n=8   correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:31:36 clifford   n=12  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:31:37 clifford   n=16  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     138MB
+22:31:37 clifford   n=20  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     138MB
+22:31:38 clifford   n=24  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:31:39 clifford   n=32  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     134MB
+22:31:40 clifford   n=40  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     134MB
+22:31:41 clifford   n=50  correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     133MB
+22:31:42 clifford   n=100 correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     142MB
+22:31:43 clifford   n=200 correct auto              -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     151MB
+22:31:44 clifford   n=8   bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     134MB
+22:31:45 clifford   n=12  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  1.0s     139MB
+22:31:45 clifford   n=16  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     135MB
+22:31:46 clifford   n=20  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     135MB
+22:31:47 clifford   n=24  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  1.0s     139MB
+22:31:48 clifford   n=32  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     133MB
+22:31:49 clifford   n=40  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     136MB
+22:31:50 clifford   n=50  bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  0.8s     135MB
+22:31:51 clifford   n=100 bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  1.0s     143MB
+22:31:52 clifford   n=200 bug     auto              -> NOT_EQUIVALENT       clifford-tableau                  1.6s     153MB
+22:31:53 cuccaro    n=8   correct auto              -> PROVEN_EQUIVALENT    operator                          0.8s     135MB
+22:31:54 cuccaro    n=12  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     133MB
+22:31:55 cuccaro    n=16  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.1s     144MB
+22:31:57 cuccaro    n=20  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.9s     282MB
+22:31:59 cuccaro    n=24  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.7s     282MB
+22:32:00 cuccaro    n=32  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     282MB
+22:32:02 cuccaro    n=40  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     283MB
+22:32:04 cuccaro    n=50  correct auto              -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     284MB
+22:32:05 cuccaro    n=8   bug     auto              -> NOT_EQUIVALENT       operator                          0.8s     138MB
+22:32:06 cuccaro    n=12  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  1.0s     147MB
+22:32:08 cuccaro    n=16  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  2.1s     298MB
+22:32:08 oracle     n=12  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 111.0s     391MB
+22:32:11 cuccaro    n=20  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.5s     284MB
+22:32:15 cuccaro    n=24  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.5s     294MB
+22:32:18 cuccaro    n=32  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.3s     298MB
+22:32:21 cuccaro    n=40  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.1s     298MB
+22:32:25 cuccaro    n=50  bug     auto              -> NOT_EQUIVALENT       qcec-alternating                  3.7s     309MB
+22:32:26 blocks     n=8   correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     138MB
+22:32:27 blocks     n=12  correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     138MB
+22:32:27 blocks     n=16  correct auto              -> PROVEN_EQUIVALENT    partition+clifford-tableau+ope    0.8s     139MB
+22:32:28 blocks     n=20  correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     132MB
+22:32:29 blocks     n=24  correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     138MB
+22:32:30 blocks     n=32  correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     138MB
+22:32:31 blocks     n=40  correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     137MB
+22:32:32 blocks     n=50  correct auto              -> PROVEN_EQUIVALENT    partition+operator                0.8s     138MB
+22:32:32 blocks     n=8   bug     auto              -> NOT_EQUIVALENT       partition+operator                0.8s     138MB
+22:32:33 blocks     n=12  bug     auto              -> NOT_EQUIVALENT       partition+operator                0.8s     136MB
+22:32:34 blocks     n=16  bug     auto              -> NOT_EQUIVALENT       partition+operator                1.0s     141MB
+22:32:35 blocks     n=20  bug     auto              -> NOT_EQUIVALENT       partition+operator                1.0s     142MB
+22:32:36 blocks     n=24  bug     auto              -> NOT_EQUIVALENT       partition+operator                0.8s     134MB
+22:32:37 blocks     n=32  bug     auto              -> NOT_EQUIVALENT       partition+operator                0.8s     139MB
+22:32:38 blocks     n=40  bug     auto              -> NOT_EQUIVALENT       partition+operator                1.1s     135MB
+22:32:39 blocks     n=50  bug     auto              -> NOT_EQUIVALENT       partition+operator                1.1s     144MB
+22:32:40 ghz        n=8   correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     139MB
+22:32:41 ghz        n=12  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     132MB
+22:32:41 oracle     n=24  correct auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 111.2s     570MB
+22:32:42 ghz        n=16  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     136MB
+22:32:43 ghz        n=20  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     130MB
+22:32:44 ghz        n=24  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     136MB
+22:32:45 ghz        n=32  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     130MB
+22:32:45 ghz        n=40  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:32:46 ghz        n=50  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     138MB
+22:32:47 ghz        n=100 correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     139MB
+22:32:48 ghz        n=200 correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  1.2s     141MB
+22:32:49 ghz        n=8   bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:32:50 ghz        n=12  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:32:51 ghz        n=16  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:32:52 ghz        n=20  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:32:52 ghz        n=24  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:32:53 oracle     n=16  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      44.3s     410MB
+22:32:53 ghz        n=32  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:32:54 ghz        n=40  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  1.0s     139MB
+22:32:55 ghz        n=50  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  1.2s     139MB
+22:32:58 ghz        n=100 bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  2.9s     140MB
+22:34:47 oracle     n=32  correct auto              -> TIMEOUT              auto                            125.7s     442MB
+22:34:47 oracle     n=20  bug     auto              -> UNKNOWN              qcec-zx+alternating+simulation  114.5s     431MB
+22:34:48 clifford   n=8   bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  1.0s     139MB
+22:34:48 clifford   n=8   correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  1.0s     139MB
+22:34:49 clifford   n=12  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  0.8s     138MB
+22:34:49 clifford   n=12  correct clifford-tableau  -> PROVEN_EQUIVALENT    clifford-tableau                  0.8s     136MB
+22:35:53 clifford   n=16  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  8.8s     139MB
+22:35:55 clifford   n=20  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  2.2s     137MB
+22:35:56 clifford   n=24  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  1.4s     139MB
+22:35:56 ghz        n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.4s     143MB
+22:35:58 clifford   n=32  bug     clifford-tableau  -> NOT_EQUIVALENT       clifford-tableau                  1.2s     139MB
+22:35:58 ghz        n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.2s     142MB
+22:35:59 ghz        n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     142MB
+22:36:00 qft        n=8   correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:36:00 ghz        n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     272MB
+22:36:01 qft        n=12  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.0s     130MB
+22:36:01 qft        n=16  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     135MB
+22:36:02 ghz        n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     280MB
+22:36:03 qft        n=20  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     274MB
+22:36:04 ghz        n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     280MB
+22:36:05 qft        n=24  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.9s     285MB
+22:36:05 ghz        n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     281MB
+22:36:07 qft        n=32  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.9s     282MB
+22:36:07 ghz        n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     281MB
+22:36:08 qft        n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:36:09 qft        n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     135MB
+22:36:09 qft        n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:36:09 qft_approx n=8   correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:36:10 qft_approx n=12  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     135MB
+22:36:11 qft        n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.7s     271MB
+22:36:12 qft_approx n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:36:13 qft        n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     285MB
+22:36:13 qft_approx n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:36:14 qft_approx n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:36:15 qft        n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.8s     291MB
+22:36:15 qft_approx n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     282MB
+22:36:17 qft        n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                           2.0s     297MB
+22:36:17 qft_approx n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     282MB
+22:36:18 qft_approx n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     270MB
+22:36:19 qft        n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                           2.2s     307MB
+22:36:20 oracle     n=8   correct qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     148MB
+22:36:20 qft_approx n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.9s     275MB
+22:36:21 oracle     n=12  correct qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     153MB
+22:36:22 qft_approx n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     284MB
+22:36:22 oracle     n=16  correct qcec-zx           -> UNKNOWN              qcec-zx                           1.2s     162MB
+22:36:23 oracle     n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     136MB
+22:36:24 oracle     n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     151MB
+22:36:24 oracle     n=20  correct qcec-zx           -> UNKNOWN              qcec-zx                           2.3s     316MB
+22:36:25 oracle     n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.2s     162MB
+22:36:27 oracle     n=24  correct qcec-zx           -> UNKNOWN              qcec-zx                           2.7s     331MB
+22:36:27 oracle     n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           2.3s     317MB
+22:36:30 oracle     n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           2.6s     331MB
+22:36:41 oracle     n=32  correct qcec-zx           -> UNKNOWN              qcec-zx                          14.4s     377MB
+22:36:43 oracle     n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                          13.2s     376MB
+22:37:18 oracle     n=24  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      96.2s     540MB
+22:37:36 oracle     n=40  correct qcec-zx           -> UNKNOWN              qcec-zx                          54.4s     489MB
+22:37:39 oracle     n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                          55.8s     491MB
+22:38:44 oracle     n=50  correct qcec-zx           -> UNKNOWN              qcec-zx                          68.0s     691MB
+22:38:45 clifford_t n=8   correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.0s     157MB
+22:38:46 clifford_t n=12  correct qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     157MB
+22:38:47 clifford_t n=16  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.9s     138MB
+22:38:47 oracle     n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                          68.1s     689MB
+22:38:48 clifford_t n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:38:48 clifford_t n=20  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     285MB
+22:38:49 clifford_t n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:38:50 clifford_t n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     138MB
+22:38:50 clifford_t n=24  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     295MB
+22:38:51 clifford_t n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     291MB
+22:38:52 clifford_t n=32  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     286MB
+22:38:53 clifford_t n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     287MB
+22:38:54 clifford_t n=40  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     300MB
+22:38:54 clifford_t n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     288MB
+22:38:55 clifford_t n=50  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     304MB
+22:38:56 clifford_t n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     302MB
+22:38:56 clifford   n=8   correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.0s     144MB
+22:38:57 clifford   n=12  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:38:58 clifford_t n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     302MB
+22:38:58 clifford   n=16  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:38:59 clifford   n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     134MB
+22:39:00 clifford   n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     144MB
+22:39:00 clifford   n=20  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     282MB
+22:39:00 clifford   n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     133MB
+22:39:01 clifford   n=24  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     282MB
+22:39:02 clifford   n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     282MB
+22:39:03 clifford   n=32  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     282MB
+22:39:04 clifford   n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     282MB
+22:39:05 clifford   n=40  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     282MB
+22:39:06 clifford   n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.8s     282MB
+22:39:07 clifford   n=50  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     281MB
+22:39:07 clifford   n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     283MB
+22:39:07 cuccaro    n=8   correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     136MB
+22:39:08 cuccaro    n=12  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           0.8s     138MB
+22:39:09 clifford   n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     275MB
+22:39:09 cuccaro    n=16  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.0s     144MB
+22:39:09 oracle     n=32  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 111.2s     550MB
+22:39:10 cuccaro    n=8   bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.0s     144MB
+22:39:11 cuccaro    n=12  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     135MB
+22:39:11 cuccaro    n=20  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.8s     282MB
+22:39:11 cuccaro    n=16  bug     qcec-zx           -> UNKNOWN              qcec-zx                           0.8s     137MB
+22:39:13 cuccaro    n=24  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     283MB
+22:39:13 cuccaro    n=20  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     283MB
+22:39:14 cuccaro    n=32  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     282MB
+22:39:15 cuccaro    n=24  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     278MB
+22:39:16 cuccaro    n=40  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.6s     276MB
+22:39:16 cuccaro    n=32  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.7s     283MB
+22:39:18 cuccaro    n=50  correct qcec-zx           -> PROVEN_EQUIVALENT    qcec-zx                           1.7s     285MB
+22:39:18 cuccaro    n=40  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.6s     276MB
+22:39:18 ghz        n=8   correct qcec-alternating  -> UNKNOWN              qcec-alternating                  0.8s     138MB
+22:39:19 ghz        n=12  correct qcec-alternating  -> UNKNOWN              qcec-alternating                  0.8s     138MB
+22:39:20 cuccaro    n=50  bug     qcec-zx           -> UNKNOWN              qcec-zx                           1.8s     285MB
+22:39:20 ghz        n=16  correct qcec-alternating  -> UNKNOWN              qcec-alternating                  0.8s     133MB
+22:39:21 ghz        n=8   bug     qcec-alternating  -> UNKNOWN              qcec-alternating                  1.0s     146MB
+22:39:22 ghz        n=12  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                  1.0s     146MB
+22:39:22 ghz        n=20  correct qcec-alternating  -> UNKNOWN              qcec-alternating                  1.8s     285MB
+22:39:23 ghz        n=16  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                  1.0s     146MB
+22:39:24 ghz        n=24  correct qcec-alternating  -> UNKNOWN              qcec-alternating                  1.6s     273MB
+22:39:25 ghz        n=20  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                  1.8s     285MB
+22:39:26 ghz        n=24  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                  1.6s     270MB
+22:39:27 ghz        n=32  correct qcec-alternating  -> UNKNOWN              qcec-alternating                  3.9s     316MB
+22:39:30 ghz        n=32  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                  4.0s     317MB
+22:39:57 ghz        n=40  correct qcec-alternating  -> UNKNOWN              qcec-alternating                 29.7s     491MB
+22:39:59 ghz        n=40  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 29.1s     490MB
+22:41:00 oracle     n=40  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 110.3s     739MB
+22:41:04 ghz        n=50  correct qcec-alternating  -> UNKNOWN              qcec-alternating                 67.3s     473MB
+22:41:05 qft        n=8   correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  1.0s     139MB
+22:41:06 qft        n=12  correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  0.8s     136MB
+22:41:07 ghz        n=50  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 67.2s     474MB
+22:41:07 qft        n=16  correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  1.0s     147MB
+22:41:07 qft        n=8   bug     qcec-alternating  -> NOT_EQUIVALENT       qcec-alternating                  0.8s     136MB
+22:41:08 qft        n=12  bug     qcec-alternating  -> NOT_EQUIVALENT       qcec-alternating                  1.0s     147MB
+22:41:12 qft        n=20  correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  4.9s     547MB
+22:41:17 qft        n=16  bug     qcec-alternating  -> NOT_EQUIVALENT       qcec-alternating                  8.2s     238MB
+22:42:20 qft        n=24  correct qcec-alternating  -> UNKNOWN              qcec-alternating                 67.4s    3486MB
+22:42:24 qft        n=20  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 67.2s     459MB
+22:42:50 oracle     n=50  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 110.3s     785MB
+22:42:51 qft_approx n=8   correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  0.8s     135MB
+22:42:52 qft_approx n=12  correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  0.8s     138MB
+22:42:53 qft_approx n=16  correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  1.0s     147MB
+22:42:57 qft_approx n=20  correct qcec-alternating  -> PROVEN_EQUIVALENT    qcec-alternating                  4.9s     546MB
+22:43:28 qft        n=32  correct qcec-alternating  -> UNKNOWN              qcec-alternating                 68.5s    3902MB
+22:43:31 qft        n=24  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 67.1s     437MB
+22:44:45 qft        n=40  correct qcec-alternating  -> TIMEOUT              qcec-alternating                 76.5s    1291MB
+22:44:45 qft_approx n=24  correct qcec-alternating  -> TIMEOUT              qcec-alternating                107.2s    2848MB
+22:44:45 qft        n=32  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 73.8s     375MB
+22:50:07 qft        n=40  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 67.3s     465MB
+22:51:13 qft        n=50  bug     qcec-alternating  -> UNKNOWN              qcec-alternating                 66.5s     543MB
+Traceback (most recent call last):
+  File "/workspace/veriq/benchmark/scale/run.py", line 168, in <module>
+  File "/workspace/veriq/benchmark/scale/run.py", line 162, in main
+    break
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/workspace/veriq/benchmark/scale/run.py", line 154, in run_series
+    if prev is None:
+        ^^^^^^
+  File "/workspace/veriq/benchmark/scale/run.py", line 129, in save
+    tmp = out.with_suffix(".tmp")
+    ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 782, in replace
+    os.replace(self, target)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/veriq/benchmark/scale/results.tmp' -> '/workspace/veriq/benchmark/scale/results.json'
+23:00:52 oracle     n=8   bug     auto              -> NOT_EQUIVALENT       operator                          1.2s     147MB
+23:01:25 oracle     n=12  bug     auto              -> NOT_EQUIVALENT       exhaustive-basis                 33.8s     397MB
+23:02:02 oracle     n=16  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      36.2s     409MB
+23:02:49 oracle     n=20  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      47.3s     537MB
+23:04:17 oracle     n=24  bug     auto              -> NOT_EQUIVALENT       mps-falsify                      87.7s     555MB
+23:06:06 oracle     n=32  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 109.7s     545MB
+23:07:56 oracle     n=40  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 109.7s     741MB
+23:09:46 oracle     n=50  bug     auto              -> PROBABLY_EQUIVALENT  qcec-simulation                 109.7s     785MB
+Traceback (most recent call last):
+  File "/workspace/veriq/benchmark/scale/run.py", line 171, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/veriq/benchmark/scale/run.py", line 165, in main
+    list(ex.map(run_series, series))
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/workspace/veriq/benchmark/scale/run.py", line 157, in run_series
+    save()
+    ~~~~^^
+  File "/workspace/veriq/benchmark/scale/run.py", line 132, in save
+    tmp.replace(out)
+    ~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 782, in replace
+    os.replace(self, target)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/veriq/benchmark/scale/results.tmp' -> '/workspace/veriq/benchmark/scale/results.json'

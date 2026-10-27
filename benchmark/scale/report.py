@@ -15,11 +15,12 @@ METHODS = ["clifford-tableau", "qcec-zx", "qcec-alternating", "qcec-construction
 
 def cell(r: dict | None) -> str:
     if r is None:
-        return "–"
+        return "not run"
     t = r.get("seconds", r["wall_seconds"]) if r["status"] not in ("TIMEOUT", "ERROR") else r["wall_seconds"]
     m = r.get("method", "")
     m = m.replace("partition+", "part+").replace("qcec-", "")
-    return f"{SHORT[r['status']]} · {m} · {t:.1f}s · {r['peak_rss_mb']:.0f}MB"
+    flag = " †" if "earlier engine revision" in (r.get("note") or "") else ""
+    return f"{SHORT[r['status']]} · {m} · {t:.1f}s · {r['peak_rss_mb']:.0f}MB{flag}"
 
 
 def main() -> None:
@@ -36,14 +37,16 @@ def main() -> None:
              "`NOT` = non-equivalence decided (proof or concrete witness). "
              "`PROBABLY*` = **falsification only**: no difference found on the simulated inputs; veriq reports this "
              "as INCONCLUSIVE and never as a proof. `unknown` = method not applicable / gave up. "
-             "`timeout` = killed at the cap.", "",
+             "`timeout` = killed at the cap. `not run` = cell not reached (series stopped or session cut short). "
+             "`†` = measured with the earlier engine revision 6b1420b (oracle correct n≥12; the rerun was interrupted).", "",
              "## Auto pipeline (what `verify`/`compare` use)", ""]
     sizes = sorted({r["n"] for r in res if r["method_requested"] == "auto"})
     for variant in ("correct", "bug"):
         lines += [f"### {variant} version", "", "| family | " + " | ".join(f"n={n}" for n in sizes) + " |",
                   "|---|" + "---|" * len(sizes)]
         for f in fams:
-            lines.append(f"| {f} | " + " | ".join(cell(idx.get((f, n, variant, "auto"))) for n in sizes) + " |")
+            lines.append(f"| {f} | " + " | ".join("n/a" if n > 50 and f not in ("ghz", "clifford") else
+                                                     cell(idx.get((f, n, variant, "auto"))) for n in sizes) + " |")
         lines.append("")
     # honesty summary
     summ = defaultdict(lambda: defaultdict(int))
@@ -59,8 +62,12 @@ def main() -> None:
         for v in ("correct", "bug"):
             s = summ[(f, v)]
             lines.append(f"| {f} | {v} | {s['decided']} | {s['falsification-only']} | {s['inconclusive']} |")
+    ran = sorted({r["method_requested"] for r in res} - {"auto"})
+    missing = [m for m in METHODS if m not in ran]
     lines += ["", "## Single-method sweeps", "",
-              "Each method alone (no partitioning), same circuits. A series stops after its first timeout.", ""]
+              "Each method alone (no partitioning), same circuits. A series stops after its first timeout, so "
+              "cells after a timeout read `not run`."
+              + (f" **Not run at all (session cut short):** {', '.join(missing)}." if missing else ""), ""]
     for f in fams:
         rows = [m for m in METHODS if any(k[0] == f and k[3] == m for k in idx)]
         if not rows:
