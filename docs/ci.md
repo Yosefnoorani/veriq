@@ -100,7 +100,7 @@ On GitHub, the checkout needs `fetch-depth: 0`. Otherwise the base commit is mis
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }
-- uses: <owner>/veriq@v0
+- uses: Yosefnoorani/veriq@v0
   with:
     config: .veriq.yml        # default
     python-version: "3.12"    # default
@@ -152,7 +152,7 @@ comment body. It doesn't evaluate `if:` expressions in general, and it doesn't c
 
 ## Verified only on GitHub
 
-- That the composite action resolves `uses: ./` and `<owner>/veriq@v0`. The `v0` tag has to be created and pushed.
+- That the composite action resolves `uses: ./` and `Yosefnoorani/veriq@v0`. The `v0` tag has to be created and pushed.
 - `setup-python` and a clean `pip install` on the runner image. Locally this was tested on Python 3.13 only.
 - Artifact upload, and the sticky comment's create-then-update cycle against the real API and token permissions.
 - Fork-PR behaviour. `GITHUB_BASE_REF` diffing with `fetch-depth: 0`.

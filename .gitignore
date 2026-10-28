@@ -11,3 +11,6 @@ dist/
 *.pem
 !*.pub
 veriq-signing.key*
+
+# Private drafts (never publish)
+docs/posts/linkedin_*.md

@@ -125,7 +125,7 @@ veriq keygen -o k.key --passphrase-env PW   # encrypted PKCS8, passphrase read f
 ## GitHub Action
 
 ```yaml
-      - uses: <owner>/veriq@v0
+      - uses: Yosefnoorani/veriq@v0
         with:
           config: .veriq.yml
           certificates: "true"                          # default

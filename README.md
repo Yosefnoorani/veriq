@@ -210,7 +210,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: <owner>/veriq@v0
+      - uses: Yosefnoorani/veriq@v0
         with:
           config: .veriq.yml
           fail-on: fail       # or `inconclusive` to also fail on INCONCLUSIVE
