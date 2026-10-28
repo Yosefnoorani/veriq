@@ -207,8 +207,6 @@ def _write_repair_report(args, report) -> None:
     Path(args.repair_report).write_text(json.dumps(out, indent=1, default=str))
 
 
-if __name__ == "__main__":
-    sys.exit(main())
 
 
 def _gates(spec):
@@ -322,3 +320,7 @@ def _bench_cmd(args) -> int:
         print(f"wrote {out / 'leaderboard.md'} and {out / 'leaderboard.html'}")
         return 0
     return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

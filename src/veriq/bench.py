@@ -139,7 +139,9 @@ def _status(rep, *names) -> str | None:
 def score_submission(path: Path, task: dict, bench: Path, timeout: float = 30.0) -> tuple[dict, Any]:
     from .loader import load_circuit
     from .runner import run_checks
-    fn = task["function"] if path.suffix == ".py" and path.stem != task["id"] else None
+    fn = None
+    if path.suffix == ".py":  # per-task files may use build()/circuit or the task's own function name
+        fn = task["function"] if (path.stem != task["id"] or f"def {task['function']}(" in path.read_text()) else None
     row: dict[str, Any] = {"file": str(path)}
     try:
         qc = load_circuit(path, fn)
@@ -436,8 +438,10 @@ def leaderboard_tables(run: dict, evals: list[dict]) -> dict:
         for t in tasks:
             o = by.get((m, t), {}).get("optimized")
             cells.append(str(o["cx"]) if o else "-")
+        opt = [by.get((m, t), {}).get("optimized") for t in tasks]
+        cells.append(str(sum(o["cx"] for o in opt)) if all(opt) else "-")
         rows.append(cells)
-    T.append(("Proven-optimized CX of each submission", ["model"] + tasks, rows,
+    T.append(("Proven-optimized CX of each submission", ["model"] + tasks + ["total"], rows,
               "Cheapest compilation of that submission that the optimizer PROVED equivalent to it."))
     if evals:
         hdr = ["detector", "what it does", "recall (wrong mutants)", "false positives", "undecided"]
@@ -479,7 +483,7 @@ def render_leaderboard_md(run: dict, evals: list[dict]) -> str:
          + ", ".join(f"{k} {v}" for k, v in run["versions"].items()) + ".", ""]
     for title, hdr, rows, note in d["tables"]:
         L += [f"## {title}", "", "| " + " | ".join(hdr) + " |", "|" + "---|" * len(hdr)]
-        L += ["| " + " | ".join(r) + " |" for r in rows]
+        L += ["| " + " | ".join(c.replace("|", "\\|") for c in r) + " |" for r in rows]
         L += ["", note, ""]
     L += ["## Provenance", ""] + [f"- {x}" for x in _provenance_lines(run)] + [""]
     return "\n".join(L)
