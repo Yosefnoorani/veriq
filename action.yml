@@ -38,6 +38,17 @@ inputs:
   github-token:
     description: Token used for the PR comment.
     default: ${{ github.token }}
+  certificates:
+    description: "Write one veriq.certificate/1 JSON per entry and upload them as `<artifact-name>-certificates`."
+    default: "true"
+  signing-key:
+    description: >
+      Ed25519 private key (PKCS8 PEM text, from `veriq keygen`) used to sign the certificates.
+      Pass it from a secret, e.g. `signing-key: ${{ secrets.VERIQ_SIGNING_KEY }}`. Empty = unsigned certificates.
+    default: ""
+  signing-key-passphrase:
+    description: Passphrase of an encrypted signing key (from a secret). Empty = unencrypted key.
+    default: ""
 
 outputs:
   exit-code:
@@ -49,6 +60,9 @@ outputs:
   summary-path:
     description: Path of the Markdown summary file.
     value: ${{ steps.run.outputs.summary-path }}
+  certificate-dir:
+    description: Directory holding the certificates (empty when certificates are off).
+    value: ${{ steps.run.outputs.certificate-dir }}
 
 runs:
   using: composite
@@ -81,6 +95,9 @@ runs:
         VERIQ_BASE: ${{ inputs.base-ref }}
         VERIQ_REPORT_DIR: ${{ inputs.report-dir }}
         VERIQ_ARTIFACT: ${{ inputs.artifact-name }}
+        VERIQ_CERTS: ${{ inputs.certificates }}
+        VERIQ_SIGNING_KEY: ${{ inputs.signing-key }}
+        VERIQ_SIGNING_KEY_PASSPHRASE: ${{ inputs.signing-key-passphrase }}
       run: |
         set +e -uo pipefail   # GitHub runs bash with -e; we need the exit code
         md="$RUNNER_TEMP/veriq-summary.md"
@@ -95,6 +112,12 @@ runs:
         esac
         [ -n "$VERIQ_BASE" ] && args+=(--base "$VERIQ_BASE")
         [ -n "$VERIQ_REPORT_DIR" ] && args+=(--report-dir "$VERIQ_REPORT_DIR")
+        if [ "$VERIQ_CERTS" = "true" ]; then
+          args+=(--certificates)   # signs with $VERIQ_SIGNING_KEY when the secret is set
+        else
+          unset VERIQ_SIGNING_KEY VERIQ_SIGNING_KEY_PASSPHRASE
+        fi
+        [ -z "${VERIQ_SIGNING_KEY:-}" ] && unset VERIQ_SIGNING_KEY
         veriq "${args[@]}"
         code=$?
         # veriq ci already wrote exit-code etc.; re-assert in case it died before writing them.
@@ -107,6 +130,7 @@ runs:
         fi
         # veriq ci writes report-dir= itself; on a config error there is nothing to upload.
         grep -q '^report-dir=' "$GITHUB_OUTPUT" || echo "report-dir=$RUNNER_TEMP/veriq-no-reports" >> "$GITHUB_OUTPUT"
+        grep -q '^certificate-dir=' "$GITHUB_OUTPUT" || echo "certificate-dir=$RUNNER_TEMP/veriq-no-certificates" >> "$GITHUB_OUTPUT"
         exit 0
 
     - name: Upload HTML reports
@@ -115,6 +139,14 @@ runs:
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ steps.run.outputs.report-dir }}
+        if-no-files-found: ignore
+
+    - name: Upload certificates
+      if: always() && inputs.certificates == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}-certificates
+        path: ${{ steps.run.outputs.certificate-dir }}
         if-no-files-found: ignore
 
     - name: Sticky PR comment

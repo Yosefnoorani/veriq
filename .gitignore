@@ -6,3 +6,8 @@ __pycache__/
 build/
 dist/
 /reports/
+# signing keys: never commit private keys (public *.pub keys are fine)
+*.key
+*.pem
+!*.pub
+veriq-signing.key*
