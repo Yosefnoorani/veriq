@@ -1,0 +1,19 @@
+{
+ "schema": "veriq.backend/1",
+ "name": "ionq-style-25q (illustrative)",
+ "illustrative": true,
+ "source": "illustrative values written by veriq, not vendor data",
+ "disclaimer": "ILLUSTRATIVE ONLY: round-number values chosen to resemble the public order of magnitude of this device class; NOT vendor data, NOT a calibration snapshot. Do not use for real decisions.",
+ "description": "Trapped-ion style: all-to-all connectivity, native MS-type XX interaction (rxx), slow gates, long coherence.",
+ "num_qubits": 25,
+ "coupling": "all",
+ "gates": {
+  "rz":  {"error": 0.0,    "duration": 0.0},
+  "rx":  {"error": 0.0006, "duration": 1.35e-4},
+  "ry":  {"error": 0.0006, "duration": 1.35e-4},
+  "rxx": {"error": 0.006,  "duration": 6.0e-4}
+ },
+ "readout": {"error": 0.005, "duration": 3.0e-4},
+ "t1": 10.0,
+ "t2": 1.0
+}

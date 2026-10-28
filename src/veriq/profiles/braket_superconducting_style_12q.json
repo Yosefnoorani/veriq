@@ -1,0 +1,18 @@
+{
+ "schema": "veriq.backend/1",
+ "name": "superconducting-grid-12q (illustrative)",
+ "illustrative": true,
+ "source": "illustrative values written by veriq, not vendor data",
+ "disclaimer": "ILLUSTRATIVE ONLY: round-number values chosen to resemble the public order of magnitude of this device class; NOT vendor data, NOT a calibration snapshot. Do not use for real decisions.",
+ "description": "Braket/Rigetti-style superconducting device: 3x4 grid coupling, native cz/rx/rz, fast gates, short coherence, one bad pair and one bad readout to exercise noise-aware layout.",
+ "num_qubits": 12,
+ "coupling": {"grid": [3, 4]},
+ "gates": {
+  "rz": {"error": 0.0,   "duration": 0.0},
+  "rx": {"error": 0.002, "duration": 4.0e-8},
+  "cz": {"error": 0.02,  "duration": 2.0e-7, "overrides": {"5,6": {"error": 0.12}}}
+ },
+ "readout": {"error": [0.04, 0.04, 0.04, 0.04, 0.04, 0.2, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04], "duration": 1.5e-6},
+ "t1": 2.0e-5,
+ "t2": 1.5e-5
+}

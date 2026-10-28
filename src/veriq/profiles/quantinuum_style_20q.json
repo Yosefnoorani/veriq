@@ -1,0 +1,19 @@
+{
+ "schema": "veriq.backend/1",
+ "name": "quantinuum-style-20q (illustrative)",
+ "illustrative": true,
+ "source": "illustrative values written by veriq, not vendor data",
+ "disclaimer": "ILLUSTRATIVE ONLY: round-number values chosen to resemble the public order of magnitude of this device class; NOT vendor data, NOT a calibration snapshot. Do not use for real decisions.",
+ "description": "QCCD trapped-ion style: all-to-all connectivity (ion transport), native ZZ interaction (rzz), very low 2q error.",
+ "num_qubits": 20,
+ "coupling": "all",
+ "gates": {
+  "rz":  {"error": 0.0,     "duration": 0.0},
+  "rx":  {"error": 0.00003, "duration": 1.0e-5},
+  "ry":  {"error": 0.00003, "duration": 1.0e-5},
+  "rzz": {"error": 0.0015,  "duration": 2.0e-4}
+ },
+ "readout": {"error": 0.002, "duration": 1.5e-4},
+ "t1": 60.0,
+ "t2": 3.0
+}

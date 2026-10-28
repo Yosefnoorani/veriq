@@ -23,7 +23,8 @@ dependencies = [
 [project.optional-dependencies]
 mcp = ["mcp>=2.3,<3"]
 scale = ["matplotlib>=3.8", "psutil>=5.9"]
-dev = ["pytest>=8", "mcp>=2.3,<3", "matplotlib>=3.8", "psutil>=5.9"]
+preflight = ["qiskit-ibm-runtime==0.51.0"]
+dev = ["pytest>=8", "mcp>=2.3,<3", "matplotlib>=3.8", "psutil>=5.9", "qiskit-ibm-runtime==0.51.0"]
 
 [project.scripts]
 veriq = "veriq.cli:main"
@@ -31,6 +32,9 @@ veriq-mcp = "veriq.mcp_server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+veriq = ["profiles/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
