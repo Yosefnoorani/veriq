@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -39,6 +40,9 @@ def build_parser() -> argparse.ArgumentParser:
                    help="FAIL on UnitaryGate, initialize, StatePreparation, PermutationGate, QFTGate or other library blocks")
     c.add_argument("--repair-report", help="write a machine-readable repair report (JSON) here: counterexample, "
                                            "localized bug region, hardware violations, metric deltas, hints")
+    c.add_argument("--certificate", help="write a verification certificate (JSON) here")
+    c.add_argument("--sign-key", help="sign the certificate with this Ed25519 private key (PEM); "
+                     "default: $VERIQ_SIGNING_KEY if set, else unsigned")
     c.add_argument("--quiet", "-q", action="store_true")
 
     ci = sub.add_parser("ci", help="run every check listed in a .veriq.yml config (for CI)")
@@ -56,6 +60,10 @@ def build_parser() -> argparse.ArgumentParser:
     ci.add_argument("--markdown", help="write the Markdown summary here")
     ci.add_argument("--github-output", help="append exit-code/ran/unexpected/skipped to this file ($GITHUB_OUTPUT)")
     ci.add_argument("--artifact-hint", help=argparse.SUPPRESS)
+    ci.add_argument("--certificates", nargs="?", const="", default=None, metavar="DIR",
+                    help="write one certificate per entry (default DIR: <report-dir>/certificates); signed when "
+                         "--sign-key or $VERIQ_SIGNING_KEY is given")
+    ci.add_argument("--sign-key", help="Ed25519 private key (PEM) for the certificates")
     ci.add_argument("--quiet", "-q", action="store_true")
 
     r = sub.add_parser("repair", help="verify, then repair with a fixer until PASS/INCONCLUSIVE (bounded retries)")
@@ -89,6 +97,9 @@ def build_parser() -> argparse.ArgumentParser:
     o.add_argument("--budget", type=float, default=300.0, help="total wall-clock budget (s)")
     o.add_argument("--out", "-o", help="write the best proven circuit here as OpenQASM 2")
     o.add_argument("--json", dest="json_out", help="write the full candidate report here")
+    o.add_argument("--certificate", help="write a verification certificate (JSON) here")
+    o.add_argument("--sign-key", help="sign the certificate with this Ed25519 private key (PEM); "
+                     "default: $VERIQ_SIGNING_KEY if set, else unsigned")
     o.add_argument("--quiet", "-q", action="store_true")
 
     b = sub.add_parser("bench", help="Veriq Bench: score model outputs or a bug detector against the benchmark")
@@ -122,6 +133,30 @@ def build_parser() -> argparse.ArgumentParser:
     bl.add_argument("--corpus-eval", nargs="*", default=[], help="JSON files written by `veriq bench corpus-eval --out`")
     bl.add_argument("--out-dir", required=True)
 
+    k = sub.add_parser("keygen", help="generate an Ed25519 key pair for signing certificates")
+    k.add_argument("--out", "-o", default="veriq-signing.key", help="private key path (public key: <out>.pub)")
+    k.add_argument("--pub", help="public key path (default: private path with .pub)")
+    k.add_argument("--passphrase-env", help="encrypt the private key with the passphrase in this env variable")
+    k.add_argument("--force", action="store_true", help="overwrite existing files")
+
+    cf = sub.add_parser("certify", help="sign an existing (unsigned) certificate")
+    cf.add_argument("certificate")
+    cf.add_argument("--key", "-k", help="Ed25519 private key (PEM); default $VERIQ_SIGNING_KEY")
+    cf.add_argument("--out", "-o", help="output path (default: overwrite the input)")
+
+    ce = sub.add_parser("cert", help="work with verification certificates")
+    ces = ce.add_subparsers(dest="cert_cmd", required=True)
+    cv = ces.add_parser("verify", help="check signature, circuit hashes and semantics; optionally re-run the proof")
+    cv.add_argument("certificate")
+    cv.add_argument("--key", "-k", help="trusted Ed25519 PUBLIC key (PEM) the certificate must be signed by")
+    cv.add_argument("--circuit", action="append", default=[], metavar="FILE",
+                    help="circuit file(s) to re-hash, in certificate input order (candidate, then reference)")
+    cv.add_argument("--recheck", action="store_true", help="re-run the checks / proof and compare the verdict")
+    cv.add_argument("--allow-unsigned", action="store_true", help="do not fail on an unsigned certificate")
+    cv.add_argument("--timeout", type=float, help="proof timeout for --recheck (default: the certified one)")
+    cv.add_argument("--json", dest="json_out", help="write the verification result as JSON here")
+    cv.add_argument("--quiet", "-q", action="store_true")
+
     m = sub.add_parser("mcp", help="run Veriq as an MCP server (stdio by default; executes circuit code in a sandbox)")
     try:
         from .mcp_server import build_parser as mcp_parser
@@ -147,10 +182,15 @@ def main(argv: list[str] | None = None) -> int:
         return _optimize_cmd(args)
     if args.cmd == "bench":
         return _bench_cmd(args)
+    if args.cmd in ("keygen", "certify", "cert"):
+        return _cert_cmd(args)
     if args.cmd == "ci":
         from . import ci
 
         return ci.main(args)
+    from .certificate import utc_now
+
+    started = utc_now()
     try:
         report = run_checks(args.file, reference=args.reference, expect=args.expect, backend=args.backend,
                             shots=args.shots, seed=args.seed, timeout=args.timeout, mode=args.mode,
@@ -171,6 +211,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.repair_report:
         _write_repair_report(args, report)
+    if args.certificate:
+        rc = _emit_check_certificate(args, report, started)
+        if rc:
+            return rc
 
     if not args.quiet:
         print(f"Veriq  {report.target}" + (f"  vs  {report.reference}" if report.reference else ""))
@@ -181,7 +225,37 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  report: {args.report}" + (f"  json: {json_out}" if json_out else ""))
         if args.repair_report:
             print(f"  repair report: {args.repair_report}")
+        if args.certificate:
+            print(f"  certificate: {args.certificate}")
     return EXIT[report.verdict]
+
+
+def _emit_check_certificate(args, report, started) -> int:
+    from .certificate import CertificateError, certificate_from_report, write_certificate
+
+    opts = {"mode": args.mode, "allowed_gates": _gates(args.allowed_gates), "coupling": args.coupling,
+            "no_black_boxes": args.no_black_boxes, "backend": args.backend, "shots": args.shots,
+            "seed": args.seed, "timeout": args.timeout, "expect": _expect_obj(args.expect)}
+    try:
+        cert = certificate_from_report(report, kind="verify", candidate_path=args.file,
+                                       reference_path=args.reference, function=args.function,
+                                       reference_function=args.reference_function, options=opts, started=started)
+        write_certificate(cert, args.certificate, args.sign_key, sign_env=True)
+    except (CertificateError, OSError) as exc:
+        print(f"veriq: certificate error: {exc}", file=sys.stderr)
+        return 3
+    return 0
+
+
+def _expect_obj(expect):
+    if expect is None:
+        return None
+    from .runner import parse_expect
+
+    try:
+        return parse_expect(expect)
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _write_repair_report(args, report) -> None:
@@ -256,6 +330,9 @@ def _optimize_cmd(args) -> int:
     except (LoadError, ValueError, OSError) as exc:
         print(f"veriq: error: {exc}", file=sys.stderr)
         return 3
+    from .certificate import utc_now
+
+    started = utc_now()
     res = optimize_circuit(qc, mode=args.mode, basis_gates=_gates(args.basis), coupling=args.coupling,
                            seeds=args.seeds, timeout=args.timeout, budget=args.budget,
                            allow_permutation=args.allow_permutation)
@@ -264,6 +341,18 @@ def _optimize_cmd(args) -> int:
     if args.json_out:
         Path(args.json_out).write_text(json.dumps({k: v for k, v in res.items() if k != "best_circuit"},
                                                   indent=1, default=str))
+    if args.certificate:
+        from .certificate import CertificateError, certificate_from_optimize, write_certificate
+
+        try:
+            cert = certificate_from_optimize(
+                res, qc, path=args.file, function=args.function, started=started,
+                options={"coupling": args.coupling, "allow_permutation": args.allow_permutation,
+                         "timeout": args.timeout, "budget": args.budget, "seeds": args.seeds})
+            write_certificate(cert, args.certificate, args.sign_key, sign_env=True)
+        except (CertificateError, OSError) as exc:
+            print(f"veriq: certificate error: {exc}", file=sys.stderr)
+            return 3
     if not args.quiet:
         b = res.get("best")
         print(f"Veriq optimize  {args.file}")
@@ -274,6 +363,53 @@ def _optimize_cmd(args) -> int:
         else:
             print("  no candidate could be proven equivalent; nothing returned")
     return 0 if res.get("best") else 2
+
+
+def _cert_cmd(args) -> int:
+    import json
+
+    from . import certificate as C
+
+    try:
+        if args.cmd == "keygen":
+            pw = None
+            if args.passphrase_env:
+                pw = os.environ.get(args.passphrase_env)
+                if not pw:
+                    raise C.CertificateError(f"${args.passphrase_env} is empty or unset")
+                pw = pw.encode()
+            r = C.generate_keypair(args.out, args.pub, passphrase=pw, overwrite=args.force)
+            print(f"private key: {r['private']}  (mode 600; keep it secret, never commit it)")
+            print(f"public key:  {r['public']}  (share this; verifiers pass it to `veriq cert verify --key`)")
+            print(f"key id:      {r['key_id']}")
+            return 0
+        if args.cmd == "certify":
+            cert = C.read_certificate(args.certificate)
+            signed = C.sign_certificate(cert, C.load_private_key(args.key))
+            out = args.out or args.certificate
+            Path(out).write_text(json.dumps(signed, indent=1, default=str) + "\n")
+            print(f"signed {out} with key {signed['signature']['key_id']} "
+                  f"(verdict {signed['verdict']}, claim {signed['claim']})")
+            return 0
+        cert = C.read_certificate(args.certificate)
+        pub = C.load_public_key(args.key) if args.key else None
+        r = C.verify_certificate(cert, public_key=pub, circuits=args.circuit, recheck=args.recheck,
+                                 allow_unsigned=args.allow_unsigned, timeout=args.timeout)
+    except (C.CertificateError, OSError) as exc:
+        print(f"veriq: error: {exc}", file=sys.stderr)
+        return 3
+    if args.json_out:
+        Path(args.json_out).write_text(json.dumps(r, indent=1))
+    if not args.quiet:
+        print(f"Veriq certificate  {args.certificate}  ({cert.get('kind')}, verdict {r['verdict']}, claim {r['claim']})")
+        for x in r["results"]:
+            mark = {True: "✔", False: "✘", None: "·"}[x["ok"]]
+            print(f"  {mark} {x['check']:<22} {x['detail']}")
+        state = "VALID" if r["ok"] else "INVALID"
+        if r["ok"] and not r["trusted"]:
+            state += " (integrity only: signer not pinned with --key)" if cert.get("signature") else " (unsigned)"
+        print(f"  => {state}")
+    return 0 if r["ok"] else 1
 
 
 def _csv(x: str | None) -> list[str] | None:
