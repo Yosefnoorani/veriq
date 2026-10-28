@@ -9,3 +9,5 @@ def build(n: int = 3) -> QuantumCircuit:
         qc.cx(i, i + 1)
     qc.measure_all()
     return qc
+
+# PR smoke test: touches this file so the Veriq Action checks it.
