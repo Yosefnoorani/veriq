@@ -643,6 +643,12 @@ def _recheck(res: list, cert: dict, loaded: dict, timeout: float | None) -> None
                          coupling=a.get("coupling") if from_files else None,
                          no_black_boxes=(not a.get("black_boxes_allowed", True)) if from_files else False,
                          shots=st.get("shots", 4096), seed=st.get("seed", 7), timeout=to)
+        pfc = next((c for c in cert.get("checks", []) if c.get("name") == "Hardware preflight"), None)
+        if pfc is not None:  # CI entry with a preflight: keep its certified status (estimates are not re-run)
+            from .models import CheckResult, Status, overall_verdict
+
+            rep.checks.append(CheckResult("Hardware preflight", Status(pfc["status"]), pfc.get("summary", "")))
+            rep.verdict = overall_verdict(rep.checks)
         new = rep.verdict.value
         newproof = _proof_from_checks(rep.to_dict()["checks"])["status"]
         old = cert.get("verdict")

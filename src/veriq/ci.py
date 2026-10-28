@@ -24,6 +24,10 @@ Config format (all paths are relative to the config file's directory):
         timeout: 30
         expect: fail                     # expected verdict: pass (default) | fail | inconclusive
         watch: [examples/_grover.py]     # extra files that trigger this entry under changed-only
+        preflight: fake_torino           # hardware gate (veriq preflight); or a mapping:
+        # preflight: {backend: fake_torino, min-esp: 0.2, warn-esp: 0.5, max-cx: 60, max-duration: 2e-4,
+        #             seeds: 4, levels: [1, 3], noisy-sim: false, max-tvd: 0.3}
+        # go -> PASS, warn -> INCONCLUSIVE, no-go -> FAIL, merged into the entry's verdict
 
 Exit code: 0 every entry matched its expectation, 1 an entry FAILed unexpectedly (or an `expect: fail`
 entry did not fail), 2 an entry was INCONCLUSIVE unexpectedly and `--fail-on inconclusive`,
@@ -41,7 +45,7 @@ from pathlib import Path
 from typing import Any
 
 from .loader import LoadError
-from .models import Report, Status
+from .models import CheckResult, Report, Status, overall_verdict
 from .report import render_html, render_json
 from .runner import run_checks
 
@@ -50,7 +54,10 @@ VERDICTS = {"pass": Status.PASS, "fail": Status.FAIL, "inconclusive": Status.INC
 ENTRY_KEYS = {
     "name", "file", "function", "reference", "reference-function", "mode", "distribution",
     "allowed-gates", "coupling", "no-black-boxes", "backend", "shots", "seed", "timeout", "expect", "watch",
+    "preflight",
 }
+PREFLIGHT_KEYS = {"backend", "min-esp", "warn-esp", "max-cx", "max-duration", "warn-t2-fraction", "seeds", "levels",
+                  "noisy-sim", "max-tvd", "shots", "timeout"}
 DEFAULT_KEYS = ENTRY_KEYS - {"name", "file", "function", "reference", "reference-function", "watch"}
 TOP_KEYS = {"version", "changed-only", "report-dir", "run-all-on", "defaults", "checks"}
 ICON = {"PASS": "✅", "FAIL": "❌", "INCONCLUSIVE": "⚠️", "SKIPPED": "⏭️"}
@@ -78,9 +85,13 @@ class Entry:
     seed: int = 7
     timeout: float = 30.0
     watch: list[str] = field(default_factory=list)
+    preflight: dict[str, Any] | None = None
 
     def paths(self) -> list[str]:
         out = [self.file] + ([self.reference] if self.reference else []) + list(self.watch)
+        b = (self.preflight or {}).get("backend")
+        if isinstance(b, str) and b.endswith(".json"):
+            out.append(b)
         if isinstance(self.distribution, str) and not self.distribution.lstrip().startswith("{"):
             out.append(self.distribution)
         return [os.path.normpath(p) for p in out]
@@ -183,6 +194,7 @@ def _parse_entry(raw: Any, i: int, defaults: dict, root: Path, check_files: bool
     )
     if e.shots <= 0:
         raise ConfigError(f"{where}: 'shots' must be positive")
+    e.preflight = _parse_preflight(d.get("preflight"), where)
     if check_files:
         for key, p in (("file", e.file), ("reference", e.reference),
                        ("distribution", e.distribution if isinstance(e.distribution, str)
@@ -190,6 +202,61 @@ def _parse_entry(raw: Any, i: int, defaults: dict, root: Path, check_files: bool
             if p and not (root / p).is_file():
                 raise ConfigError(f"{where}: {key} '{p}' not found (paths are relative to {root})")
     return e
+
+
+def _parse_preflight(raw: Any, where: str) -> dict[str, Any] | None:
+    if raw is None or raw is False:
+        return None
+    if isinstance(raw, str):
+        raw = {"backend": raw}
+    if not isinstance(raw, dict):
+        raise ConfigError(f"{where}: 'preflight' must be a backend name / profile path or a mapping")
+    _check_keys(raw, PREFLIGHT_KEYS, f"{where}: preflight")
+    if not isinstance(raw.get("backend"), str) or not raw["backend"]:
+        raise ConfigError(f"{where}: preflight needs 'backend' (e.g. fake_torino or profiles/device.json)")
+    out: dict[str, Any] = {"backend": raw["backend"]}
+    for k, typ in (("min-esp", (int, float)), ("warn-esp", (int, float)), ("max-duration", (int, float)),
+                   ("warn-t2-fraction", (int, float)), ("max-tvd", (int, float)), ("timeout", (int, float)),
+                   ("max-cx", int), ("seeds", int), ("shots", int)):
+        if raw.get(k) is not None:
+            out[k] = _typed(where, f"preflight.{k}", raw[k], typ)
+    if raw.get("noisy-sim") is not None:
+        out["noisy-sim"] = bool(_typed(where, "preflight.noisy-sim", raw["noisy-sim"], bool))
+    lv = raw.get("levels")
+    if lv is not None:
+        if isinstance(lv, int) and not isinstance(lv, bool):
+            lv = [lv]
+        if not (isinstance(lv, list) and lv and all(isinstance(x, int) and 0 <= x <= 3 for x in lv)):
+            raise ConfigError(f"{where}: preflight.levels must be a list of optimisation levels 0-3")
+        out["levels"] = lv
+    return out
+
+
+def run_preflight(e: Entry, root: str, qc) -> tuple[CheckResult, dict[str, Any]]:
+    from .preflight import PreflightError, preflight, to_json
+
+    pf = e.preflight or {}
+    b = pf["backend"]
+    if b.endswith(".json"):
+        b = _abs(root, b)
+    try:
+        res = preflight(qc, b, seeds=pf.get("seeds", 4), levels=tuple(pf.get("levels", (1, 3))),
+                        min_esp=pf.get("min-esp"), warn_esp=pf.get("warn-esp"), max_cx=pf.get("max-cx"),
+                        max_duration=pf.get("max-duration"), warn_t2_fraction=pf.get("warn-t2-fraction"),
+                        noisy_sim=pf.get("noisy-sim", False), max_tvd=pf.get("max-tvd"),
+                        shots=pf.get("shots", 4000), timeout=pf.get("timeout", e.timeout), keep_circuits=False)
+    except PreflightError as exc:
+        raise ValueError(f"preflight: {exc}") from None
+    est = res.get("estimate") or {}
+    bad = [f"{c['name']}: {c['status']}" for c in res["checks"] if c["status"] not in ("PASS", "SKIPPED")]
+    summ = (f"{res['gate'].upper()} on {res['backend']['name']}: ESP {est.get('esp', 0):.3g} (estimate), "
+            f"{est.get('two_qubit_gates')} 2q gates, {est.get('duration_s', 0) * 1e6:.3g} us"
+            if est else f"{res['gate'].upper()} on {res['backend']['name']}")
+    if bad:
+        summ += "; " + "; ".join(bad)
+    st = {"PASS": Status.PASS, "FAIL": Status.FAIL}.get(res["verdict"], Status.INCONCLUSIVE)
+    j = to_json(res)
+    return CheckResult("Hardware preflight", st, summ, {"preflight": j}, res["seconds"]), j
 
 
 def parse_config(data: Any, path: str = ".veriq.yml", root: str | Path = ".", check_files: bool = True) -> Config:
@@ -294,9 +361,14 @@ class Outcome:
                 out.append("zero_init_hazard")
             if c.status == Status.FAIL:
                 cex = (c.evidence or {}).get("counterexample")
-                out.append(f"{c.name}: counterexample {cex['input_state']}" if cex else f"{c.name} failed")
+                out.append(f"{c.name}: counterexample {cex['input_state']}" if cex else
+                           (f"preflight {c.summary}" if c.name == "Hardware preflight" else f"{c.name} failed"))
+            elif c.status == Status.INCONCLUSIVE and c.name == "Hardware preflight":
+                out.append(f"preflight {c.summary}")
             elif c.status == Status.INCONCLUSIVE:
                 out.append(f"{c.name} inconclusive")
+            elif c.name == "Hardware preflight" and c.status == Status.PASS:
+                out.append(f"preflight {c.summary}")
         if not self.ok:
             out.append(f"expected {self.entry.expect.value}")
         return out
@@ -331,6 +403,17 @@ def run_entry(e: Entry, root: str) -> Outcome:
                          no_black_boxes=e.no_black_boxes)
     except (LoadError, ValueError, OSError) as exc:
         return Outcome(e, None, "ERROR", False, str(exc))
+    if e.preflight:
+        qc = (rep.circuits or {}).get("candidate")
+        if qc is None:
+            pc = CheckResult("Hardware preflight", Status.SKIPPED, "candidate did not build: no preflight")
+        else:
+            try:
+                pc, _ = run_preflight(e, root, qc)
+            except (ValueError, OSError) as exc:
+                return Outcome(e, None, "ERROR", False, str(exc))
+        rep.checks.append(pc)
+        rep.verdict = overall_verdict(rep.checks)
     rep.target = e.file + (f"::{e.function}" if e.function else "")
     rep.reference = e.reference
     return Outcome(e, rep, rep.verdict.value, rep.verdict == e.expect, started=started)
@@ -357,6 +440,15 @@ def entry_certificate(o: Outcome, root: str) -> dict:
                                    reference_path=_abs(root, e.reference), function=e.function,
                                    reference_function=e.reference_function, options=opts,
                                    started=o.started)
+    pcheck = next((c for c in (o.report.checks if o.report else []) if c.name == "Hardware preflight"), None)
+    if pcheck is not None and pcheck.evidence.get("preflight"):
+        pj = pcheck.evidence["preflight"]
+        est = pj.get("estimate") or {}
+        cert["preflight"] = {"gate": pj.get("gate"), "backend": pj.get("backend"), "chosen": pj.get("chosen"),
+                             "esp": est.get("esp"), "two_qubit_gates": est.get("two_qubit_gates"),
+                             "duration_s": est.get("duration_s"), "proof": pj.get("proof"),
+                             "thresholds": pj.get("thresholds"),
+                             "note": "ESP / duration are estimates from a calibration snapshot"}
     for rec in cert["inputs"]:  # portable paths: relative to the config root
         rel = {"candidate": e.file, "reference": e.reference}.get(rec["role"])
         if rel:
