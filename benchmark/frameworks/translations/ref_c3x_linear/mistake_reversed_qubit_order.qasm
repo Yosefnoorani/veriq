@@ -1,0 +1,37 @@
+OPENQASM 3.0;
+include "stdgates.inc";
+gate mcx _gate_q_0, _gate_q_1, _gate_q_2, _gate_q_3 {
+  h _gate_q_3;
+  p(pi/8) _gate_q_0;
+  p(pi/8) _gate_q_1;
+  p(pi/8) _gate_q_2;
+  p(pi/8) _gate_q_3;
+  cx _gate_q_0, _gate_q_1;
+  p(-pi/8) _gate_q_1;
+  cx _gate_q_0, _gate_q_1;
+  cx _gate_q_1, _gate_q_2;
+  p(-pi/8) _gate_q_2;
+  cx _gate_q_0, _gate_q_2;
+  p(pi/8) _gate_q_2;
+  cx _gate_q_1, _gate_q_2;
+  p(-pi/8) _gate_q_2;
+  cx _gate_q_0, _gate_q_2;
+  cx _gate_q_2, _gate_q_3;
+  p(-pi/8) _gate_q_3;
+  cx _gate_q_1, _gate_q_3;
+  p(pi/8) _gate_q_3;
+  cx _gate_q_2, _gate_q_3;
+  p(-pi/8) _gate_q_3;
+  cx _gate_q_0, _gate_q_3;
+  p(pi/8) _gate_q_3;
+  cx _gate_q_2, _gate_q_3;
+  p(-pi/8) _gate_q_3;
+  cx _gate_q_1, _gate_q_3;
+  p(pi/8) _gate_q_3;
+  cx _gate_q_2, _gate_q_3;
+  p(-pi/8) _gate_q_3;
+  cx _gate_q_0, _gate_q_3;
+  h _gate_q_3;
+}
+qubit[4] q;
+mcx q[3], q[2], q[1], q[0];

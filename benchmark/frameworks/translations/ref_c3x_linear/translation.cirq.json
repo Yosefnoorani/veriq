@@ -1,0 +1,645 @@
+{
+  "cirq_type": "Circuit",
+  "moments": [
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            }
+          ]
+        },
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            }
+          ]
+        },
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        },
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "HPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            }
+          ]
+        },
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_1"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 0.125
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_2"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "QasmUGate",
+            "theta": 0.0,
+            "phi": 0.0,
+            "lmda": 1.875
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "CXPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_0"
+            },
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cirq_type": "Moment",
+      "operations": [
+        {
+          "cirq_type": "GateOperation",
+          "gate": {
+            "cirq_type": "HPowGate",
+            "exponent": 1.0,
+            "global_shift": 0.0
+          },
+          "qubits": [
+            {
+              "cirq_type": "NamedQubit",
+              "name": "q_3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
