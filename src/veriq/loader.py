@@ -1,4 +1,5 @@
-"""Load a Qiskit QuantumCircuit from a .py module or an OpenQASM 2/3 file."""
+"""Load a Qiskit QuantumCircuit from a .py module (Qiskit, Cirq or pytket code), an OpenQASM 2/3 file, or a
+Cirq / TKET JSON file. Framework conversion lives in `veriq.frontends`."""
 
 from __future__ import annotations
 
@@ -28,20 +29,17 @@ class BuildError(LoadError):
         self.exc_type = exc_type
 
 
-def load_circuit(path: str | Path, function: str | None = None) -> QuantumCircuit:
-    """Load a circuit. For .py files, `function` names a builder to call (default: build/circuit)."""
-    p = Path(path)
-    if not p.exists():
-        raise LoadError(f"file not found: {p}")
-    suffix = p.suffix.lower()
-    if suffix == ".py":
-        return _load_py(p, function)
-    if suffix in (".qasm", ".qasm2", ".qasm3"):
-        return _load_qasm(p)
-    raise LoadError(f"unsupported file type '{suffix}' (expected .py or .qasm)")
+def load_circuit(path: str | Path, function: str | None = None, framework: str | None = None) -> QuantumCircuit:
+    """Load a circuit. For .py files, `function` names a builder to call (default: build/circuit).
+
+    `framework` (qiskit | qasm2 | qasm3 | cirq | tket, default auto-detect) forces the frontend; see
+    `veriq.frontends`."""
+    from .frontends import load
+
+    return load(path, function, framework)
 
 
-def _load_py(p: Path, function: str | None = None) -> QuantumCircuit:
+def _load_py(p: Path, function: str | None = None, framework: str | None = None) -> QuantumCircuit:
     """Convention: the module exposes `circuit` (a QuantumCircuit) or `build()` returning one,
     or the caller names a builder function with `function`."""
     mod_name = f"_veriq_user_{abs(hash(str(p.resolve())))}"
@@ -52,6 +50,9 @@ def _load_py(p: Path, function: str | None = None) -> QuantumCircuit:
     sys.path.insert(0, str(p.parent))
     try:
         spec.loader.exec_module(module)
+    except ModuleNotFoundError as exc:
+        hint = _extra_hint(exc.name)
+        raise BuildError(f"error while executing {p.name}: {exc!r}{hint}", type(exc).__name__) from exc
     except Exception as exc:  # user code may raise anything
         raise BuildError(f"error while executing {p.name}: {exc!r}", type(exc).__name__) from exc
     finally:
@@ -73,22 +74,34 @@ def _load_py(p: Path, function: str | None = None) -> QuantumCircuit:
     except Exception as exc:
         where = f"{function}()" if function else "build()"
         raise BuildError(f"{p.name}: {where} raised {exc!r}", type(exc).__name__) from exc
-    if not isinstance(qc, QuantumCircuit):
-        raise BuildError(f"{p.name}: expected a QuantumCircuit, got {type(qc).__name__}", "WrongReturnType")
+    from .frontends import from_object
+
+    if not isinstance(qc, QuantumCircuit) or framework is not None:
+        try:
+            qc = from_object(qc, framework, "python", p.name)
+        except LoadError:
+            raise
+        except Exception as exc:  # a converter failure on user objects is a build failure
+            raise BuildError(f"{p.name}: cannot convert the circuit: {exc!r}", type(exc).__name__) from exc
     if not qc.name or qc.name.startswith("circuit-"):
         qc.name = p.stem
     return qc
 
 
-def _load_qasm(p: Path) -> QuantumCircuit:
+def _load_qasm(p: Path, framework: str | None = None) -> QuantumCircuit:
     text = p.read_text()
     m = re.search(r"OPENQASM\s+(\d+)", text)
     version = int(m.group(1)) if m else 2
+    if framework in ("qasm2", "qasm3") and int(framework[-1]) != (3 if version >= 3 else 2):
+        raise LoadError(f"{p.name} declares OPENQASM {version}, but framework '{framework}' was requested")
     try:
         if version >= 3:
             from qiskit import qasm3
 
-            qc = qasm3.loads(text)
+            try:
+                qc = qasm3.loads(text)
+            except ImportError as exc:  # qiskit.qasm3.loads needs the optional importer package
+                raise LoadError("OpenQASM 3 import needs qiskit-qasm3-import: pip install 'veriq[qasm3]'") from exc
         else:
             from qiskit import qasm2
 
@@ -97,3 +110,9 @@ def _load_qasm(p: Path) -> QuantumCircuit:
         raise LoadError(f"cannot parse OpenQASM {version} in {p.name}: {exc}") from exc
     qc.name = p.stem
     return qc
+
+
+def _extra_hint(module: str | None) -> str:
+    root = (module or "").split(".")[0]
+    extra = {"cirq": "cirq", "cirq_core": "cirq", "pytket": "tket", "qiskit_qasm3_import": "qasm3"}.get(root)
+    return f" (install the optional extra: pip install 'veriq[{extra}]')" if extra else ""
