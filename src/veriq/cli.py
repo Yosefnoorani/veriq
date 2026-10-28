@@ -58,6 +58,37 @@ def build_parser() -> argparse.ArgumentParser:
     ci.add_argument("--artifact-hint", help=argparse.SUPPRESS)
     ci.add_argument("--quiet", "-q", action="store_true")
 
+    r = sub.add_parser("repair", help="verify, then repair with a fixer until PASS/INCONCLUSIVE (bounded retries)")
+    r.add_argument("file", help="candidate circuit (.py or .qasm)")
+    r.add_argument("--reference", "-r", required=True, help="trusted reference circuit")
+    r.add_argument("--function", "-f")
+    r.add_argument("--reference-function")
+    r.add_argument("--mode", choices=["unitary", "state"], default="unitary")
+    r.add_argument("--fixer", default="demo", help="'demo' (deterministic, offline) or 'module:function'; "
+                                                   "see docs/repair.md for plugging in an LLM")
+    r.add_argument("--max-attempts", type=int, default=5)
+    r.add_argument("--allowed-gates")
+    r.add_argument("--coupling")
+    r.add_argument("--no-black-boxes", action="store_true")
+    r.add_argument("--timeout", type=float, default=30.0)
+    r.add_argument("--out", "-o", help="write the final circuit here as OpenQASM 2 (only if it PASSes)")
+    r.add_argument("--json", dest="json_out", help="write the attempt log + last repair report here")
+    r.add_argument("--quiet", "-q", action="store_true")
+
+    o = sub.add_parser("optimize", help="find the cheapest PROVEN-equivalent compilation (CX count, then depth)")
+    o.add_argument("file", help="circuit (.py or .qasm)")
+    o.add_argument("--function", "-f")
+    o.add_argument("--mode", choices=["unitary", "state"], default="unitary",
+                   help="unitary (default): candidates must equal the circuit for every input; state: only from |0..0>")
+    o.add_argument("--basis", default="cx,rz,sx,x", help="target basis gates (comma-separated)")
+    o.add_argument("--coupling", help="optional coupling map: 'linear', 'ring' or '0-1,1-2' (default all-to-all)")
+    o.add_argument("--seeds", type=int, default=4, help="transpiler seeds per configuration")
+    o.add_argument("--timeout", type=float, default=30.0, help="proof timeout per candidate (s)")
+    o.add_argument("--budget", type=float, default=300.0, help="total wall-clock budget (s)")
+    o.add_argument("--out", "-o", help="write the best proven circuit here as OpenQASM 2")
+    o.add_argument("--json", dest="json_out", help="write the full candidate report here")
+    o.add_argument("--quiet", "-q", action="store_true")
+
     m = sub.add_parser("mcp", help="run Veriq as an MCP server (stdio by default; executes circuit code in a sandbox)")
     try:
         from .mcp_server import build_parser as mcp_parser
@@ -77,6 +108,10 @@ def main(argv: list[str] | None = None) -> int:
         from . import mcp_server
 
         return mcp_server.main(args=args)
+    if args.cmd == "repair":
+        return _repair_cmd(args)
+    if args.cmd == "optimize":
+        return _optimize_cmd(args)
     if args.cmd == "ci":
         from . import ci
 
@@ -139,3 +174,69 @@ def _write_repair_report(args, report) -> None:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def _gates(spec):
+    return [g.strip() for g in spec.split(",") if g.strip()] if spec else None
+
+
+def _repair_cmd(args) -> int:
+    import json
+
+    from .loader import load_circuit
+    from .repair import load_fixer, repair_loop
+
+    try:
+        cand = load_circuit(args.file, args.function)
+        ref = load_circuit(args.reference, args.reference_function)
+        fixer = load_fixer(args.fixer)
+    except (LoadError, ValueError, OSError, ImportError, AttributeError) as exc:
+        print(f"veriq: error: {exc}", file=sys.stderr)
+        return 3
+    src = Path(args.file).read_text()
+    res = repair_loop(cand, ref, fixer, mode=args.mode, max_attempts=args.max_attempts, source=src,
+                      allowed_gates=_gates(args.allowed_gates), coupling=args.coupling,
+                      no_black_boxes=args.no_black_boxes, timeout=args.timeout)
+    if args.out and res["verdict"] == "PASS" and res["final_qasm"]:
+        Path(args.out).write_text(res["final_qasm"])
+    if args.json_out:
+        Path(args.json_out).write_text(json.dumps({k: v for k, v in res.items() if k != "final_circuit"},
+                                                  indent=1, default=str))
+    if not args.quiet:
+        for h in res["history"]:
+            fix = f"  after: {h['fix']}" if h.get("fix") else ""
+            print(f"  attempt {h['attempt']}: {h['verdict']}{fix}")
+        print(f"  => {res['verdict']} (stop: {res['stop_reason']}, {res['attempts']} fix(es), {res['seconds']:.2f}s)")
+        if args.out and res["verdict"] == "PASS":
+            print(f"  fixed circuit: {args.out}")
+    return EXIT[Status(res["verdict"])] if res["verdict"] in ("PASS", "FAIL", "INCONCLUSIVE") else 1
+
+
+def _optimize_cmd(args) -> int:
+    import json
+
+    from .loader import load_circuit
+    from .optimize import optimize_circuit
+
+    try:
+        qc = load_circuit(args.file, args.function)
+    except (LoadError, ValueError, OSError) as exc:
+        print(f"veriq: error: {exc}", file=sys.stderr)
+        return 3
+    res = optimize_circuit(qc, mode=args.mode, basis_gates=_gates(args.basis), coupling=args.coupling,
+                           seeds=args.seeds, timeout=args.timeout, budget=args.budget)
+    if args.out and res.get("best_qasm"):
+        Path(args.out).write_text(res["best_qasm"])
+    if args.json_out:
+        Path(args.json_out).write_text(json.dumps({k: v for k, v in res.items() if k != "best_circuit"},
+                                                  indent=1, default=str))
+    if not args.quiet:
+        b = res.get("best")
+        print(f"Veriq optimize  {args.file}")
+        print(f"  source (as compiled at opt=0): cx={res['baseline']['cx']} depth={res['baseline']['depth']}")
+        print(f"  candidates: {res['counts']}")
+        if b:
+            print(f"  best PROVEN: {b['config']}  cx={b['cx']} depth={b['depth']}  ({b['method']})")
+        else:
+            print("  no candidate could be proven equivalent; nothing returned")
+    return 0 if res.get("best") else 2
