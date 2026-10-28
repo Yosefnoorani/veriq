@@ -282,6 +282,7 @@ class Outcome:
     verdict: str
     ok: bool
     error: str | None = None
+    started: str | None = None  # UTC ISO timestamp (for certificates)
 
     def notes(self) -> list[str]:
         out: list[str] = []
@@ -316,6 +317,9 @@ def _abs(root: str, p: str | None) -> str | None:
 
 
 def run_entry(e: Entry, root: str) -> Outcome:
+    from .certificate import utc_now
+
+    started = utc_now()
     dist = e.distribution
     if isinstance(dist, str) and not dist.lstrip().startswith("{"):
         dist = _abs(root, dist)
@@ -329,7 +333,39 @@ def run_entry(e: Entry, root: str) -> Outcome:
         return Outcome(e, None, "ERROR", False, str(exc))
     rep.target = e.file + (f"::{e.function}" if e.function else "")
     rep.reference = e.reference
-    return Outcome(e, rep, rep.verdict.value, rep.verdict == e.expect)
+    return Outcome(e, rep, rep.verdict.value, rep.verdict == e.expect, started=started)
+
+
+def entry_certificate(o: Outcome, root: str) -> dict:
+    """Certificate for one CI entry (paths recorded relative to the repo root, as in the config)."""
+    from .certificate import certificate_from_report
+
+    e = o.entry
+    dist = e.distribution
+    expect = dist if isinstance(dist, dict) else None
+    if isinstance(dist, str):
+        try:
+            from .runner import parse_expect
+
+            expect = parse_expect(dist if dist.lstrip().startswith("{") else _abs(root, dist))
+        except Exception:  # noqa: BLE001
+            expect = None
+    opts = {"mode": e.mode, "allowed_gates": e.allowed_gates, "coupling": e.coupling,
+            "no_black_boxes": e.no_black_boxes, "backend": e.backend, "shots": e.shots, "seed": e.seed,
+            "timeout": e.timeout, "expect": expect}
+    cert = certificate_from_report(o.report, kind="ci", candidate_path=_abs(root, e.file),
+                                   reference_path=_abs(root, e.reference), function=e.function,
+                                   reference_function=e.reference_function, options=opts,
+                                   started=o.started)
+    for rec in cert["inputs"]:  # portable paths: relative to the config root
+        rel = {"candidate": e.file, "reference": e.reference}.get(rec["role"])
+        if rel:
+            rec["path"] = rel
+    cert["ci"] = {"entry": e.name, "expect": e.expect.value, "as_expected": o.ok,
+                  **{k: os.environ[v] for k, v in (("repository", "GITHUB_REPOSITORY"), ("sha", "GITHUB_SHA"),
+                                                    ("ref", "GITHUB_REF"), ("run_id", "GITHUB_RUN_ID"),
+                                                    ("workflow", "GITHUB_WORKFLOW")) if os.environ.get(v)}}
+    return cert
 
 
 def exit_code(outcomes: list[Outcome], fail_on: str = "fail") -> int:
@@ -455,12 +491,29 @@ def main(args: Any) -> int:
     report_dir = Path(args.report_dir or Path(cfg.root) / cfg.report_dir)
     report_dir.mkdir(parents=True, exist_ok=True)
     outcomes: list[Outcome] = []
+    cert_dir = None
+    want_certs = getattr(args, "certificates", None)
+    if want_certs is None and os.environ.get("VERIQ_CERTIFICATES", "").lower() in ("1", "true", "yes"):
+        want_certs = ""
+    if want_certs is not None:
+        cert_dir = Path(want_certs) if want_certs else report_dir / "certificates"
+        cert_dir.mkdir(parents=True, exist_ok=True)
+    cert_errors = 0
     for e in run:
         o = run_entry(e, cfg.root)
         outcomes.append(o)
         if o.report:
             (report_dir / f"{_safe(e.name)}.html").write_text(render_html(o.report))
             (report_dir / f"{_safe(e.name)}.json").write_text(render_json(o.report))
+            if cert_dir is not None:
+                from .certificate import CertificateError, write_certificate
+
+                try:
+                    write_certificate(entry_certificate(o, cfg.root), cert_dir / f"{_safe(e.name)}.cert.json",
+                                      getattr(args, "sign_key", None), sign_env=True)
+                except (CertificateError, OSError) as exc:
+                    cert_errors += 1
+                    print(f"veriq ci: certificate for {e.name}: {exc}", file=sys.stderr)
         if not args.quiet:
             flag = "ok" if o.ok else f"UNEXPECTED (expected {e.expect.value})"
             print(f"  {ICON.get(o.verdict, '🛑')} {o.verdict:<12} {e.name:<24} {flag}"
@@ -468,6 +521,11 @@ def main(args: Any) -> int:
     versions = next((o.report.versions for o in outcomes if o.report), None)
     md = render_markdown(outcomes, skipped, why, fail_on, args.artifact_hint, versions)
     data = summary_json(outcomes, skipped, fail_on, why)
+    if cert_dir is not None:
+        data["certificates"] = {"dir": str(cert_dir), "errors": cert_errors,
+                                "signed": bool(getattr(args, "sign_key", None) or os.environ.get("VERIQ_SIGNING_KEY"))}
+        if cert_errors and data["exit_code"] == 0:
+            data["exit_code"] = 3
     code = data["exit_code"]
     if args.markdown:
         Path(args.markdown).write_text(md)
@@ -480,6 +538,8 @@ def main(args: Any) -> int:
             fh.write(f"unexpected={sum(1 for o in outcomes if not o.ok)}\n")
             fh.write(f"skipped={len(skipped)}\n")
             fh.write(f"report-dir={report_dir.resolve()}\n")
+            if cert_dir is not None:
+                fh.write(f"certificate-dir={cert_dir.resolve()}\n")
     if not args.quiet:
         print(f"veriq ci: {len(outcomes)} run, {len(skipped)} skipped, "
               f"{sum(1 for o in outcomes if not o.ok)} unexpected -> exit {code}")
