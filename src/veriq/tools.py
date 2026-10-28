@@ -330,3 +330,19 @@ def circuit_metrics(candidate: QuantumCircuit, compile: bool = True, seed: int =
                                **checks.circuit_metrics(tq)}
     out["is_clifford"] = checks.is_clifford(candidate)
     return out
+
+
+def optimize_circuit(candidate: QuantumCircuit, mode: str = "unitary", basis_gates: list[str] | None = None,
+                     coupling: str | list | None = None, seeds: int = 3, timeout: float = 20.0,
+                     budget: float = 60.0, allow_permutation: bool = False) -> dict[str, Any]:
+    """Cheapest PROVEN-equivalent compilation (see veriq.optimize)."""
+    from .optimize import optimize_circuit as _optimize
+
+    r = _optimize(candidate, mode=mode, basis_gates=basis_gates, coupling=coupling, seeds=seeds,
+                  timeout=timeout, budget=budget, allow_permutation=allow_permutation)
+    r.pop("best_circuit", None)
+    b = r.get("best")
+    r["summary"] = (f"best PROVEN candidate: {b['cx']} two-qubit gates, depth {b['depth']} "
+                    f"(source compiled at opt=0: {r['baseline']['cx']}); proof: {b['method']}" if b else
+                    "no candidate could be proven equivalent; nothing is returned")
+    return _trim(r)

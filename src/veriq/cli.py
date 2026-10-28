@@ -82,6 +82,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="unitary (default): candidates must equal the circuit for every input; state: only from |0..0>")
     o.add_argument("--basis", default="cx,rz,sx,x", help="target basis gates (comma-separated)")
     o.add_argument("--coupling", help="optional coupling map: 'linear', 'ring' or '0-1,1-2' (default all-to-all)")
+    o.add_argument("--allow-permutation", action="store_true",
+                   help="accept candidates equal only up to a recorded output qubit permutation")
     o.add_argument("--seeds", type=int, default=4, help="transpiler seeds per configuration")
     o.add_argument("--timeout", type=float, default=30.0, help="proof timeout per candidate (s)")
     o.add_argument("--budget", type=float, default=300.0, help="total wall-clock budget (s)")
@@ -224,7 +226,8 @@ def _optimize_cmd(args) -> int:
         print(f"veriq: error: {exc}", file=sys.stderr)
         return 3
     res = optimize_circuit(qc, mode=args.mode, basis_gates=_gates(args.basis), coupling=args.coupling,
-                           seeds=args.seeds, timeout=args.timeout, budget=args.budget)
+                           seeds=args.seeds, timeout=args.timeout, budget=args.budget,
+                           allow_permutation=args.allow_permutation)
     if args.out and res.get("best_qasm"):
         Path(args.out).write_text(res["best_qasm"])
     if args.json_out:

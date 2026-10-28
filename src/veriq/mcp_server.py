@@ -44,6 +44,8 @@ INSTRUCTIONS = """Veriq proves quantum circuits correct. Use it BEFORE you prese
 - repair_hints: on a FAIL, a machine-readable repair report: counterexample (expected vs actual output),
   the localized gate region where the bug is, exact single-gate fixes when one exists, hardware
   violations, metric deltas. verify_circuit also embeds a compact `repair_report` when it does not PASS.
+- optimize_circuit: cheapest compilation (two-qubit gate count, then depth) that is PROVEN equivalent to
+  the input; unproven candidates are never returned.
 Statuses are honest: PROVEN_EQUIVALENT is a formal proof; PROBABLY_EQUIVALENT means only that simulations
 found no difference (NOT a proof); NOT_EQUIVALENT comes with a counterexample input when one is found.
 Read veriq://conventions for Qiskit's little-endian bit order. Python sources must define `build()`
@@ -291,6 +293,18 @@ class Counterexample(_Out):
     reference_output_top: dict[str, float] = {}
 
 
+class OptimizeResult(_Out):
+    summary: str | None = None
+    mode: str | None = None
+    best: dict[str, Any] | None = Field(None, description="cheapest PROVEN candidate (cx, depth, config, "
+                                        "proof method); null when nothing could be proven")
+    best_qasm: str | None = None
+    baseline: dict[str, Any] | None = None
+    qiskit_level3: dict[str, Any] | None = None
+    tried: list[dict[str, Any]] = []
+    proof_scope: str | None = None
+
+
 class RepairReport(_Out):
     verdict: str | None = None
     mode: str | None = None
@@ -478,6 +492,28 @@ and `hints`. Apply a fix, then call verify_circuit again: a fix is only accepted
                 "timeout": timeout}
         return RepairReport.model_validate(
             await runner.run("repair_hints", {"candidate": cand, "reference": ref}, opts))
+
+    @mcp.tool(annotations=READ_ONLY, description="""Find the cheapest PROVEN-equivalent compilation of a circuit.
+
+Compiles the circuit many ways (Qiskit optimization levels 0-3, several seeds, approximation off,
+qubits_initially_zero=False, plus an extra resynthesis round), ranks candidates by two-qubit gate count and
+then depth, and proves them cheapest-first. Returns `best` (+ `best_qasm`) = the first candidate with a
+formal PROVEN_EQUIVALENT proof; a candidate that is only PROBABLY_EQUIVALENT is never returned. `tried`
+lists every proof attempt. mode="state" only requires the same state from |0..0>.""")
+    async def optimize_circuit(
+        code: Code = None, path: PathArg = None, function: Func = None,
+        mode: Mode = "unitary",
+        basis_gates: Annotated[list[Annotated[str, Field(pattern=GATE)]] | None, Field(max_length=16)] = None,
+        coupling: Annotated[str | None, Field(pattern=COUPLING, max_length=20000)] = None,
+        seeds: Annotated[int, Field(ge=1, le=8)] = 3,
+        allow_permutation: bool = False,
+        timeout: Annotated[float, Field(ge=1, le=60)] = 20.0,
+        budget: Annotated[float, Field(ge=5, le=90, description="total seconds for the whole search")] = 60.0,
+    ) -> OptimizeResult:
+        cand = runner.source(code, path, function, "candidate")
+        opts = {"mode": mode, "basis_gates": basis_gates, "coupling": coupling, "seeds": seeds,
+                "allow_permutation": allow_permutation, "timeout": timeout, "budget": budget}
+        return OptimizeResult.model_validate(await runner.run("optimize_circuit", {"candidate": cand}, opts))
 
     @mcp.tool(annotations=READ_ONLY, description="""Explain a Veriq result in plain language with concrete next steps.
 

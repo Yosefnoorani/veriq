@@ -21,7 +21,7 @@ from veriq.sandbox import MAX_SOURCE_BYTES, Limits  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 EX = ROOT / "examples"
 TOOLS = {"verify_circuit", "check_transpile", "compare_circuits", "circuit_metrics", "explain_verdict",
-         "repair_hints"}
+         "repair_hints", "optimize_circuit"}
 
 
 def session(fn, server=None):
@@ -267,3 +267,10 @@ def test_agent_loop_demo_converges():
     assert r.returncode == 0, r.stderr[-2000:]
     assert "verified after 3 turn(s)" in r.stdout
     assert r.stdout.count("verify_circuit -> FAIL") == 2
+
+
+def test_optimize_circuit_tool_returns_only_proven():
+    r = ok(call("optimize_circuit", {"code": EXAMPLES["qft3_reference"]["code"], "budget": 30}))
+    assert r["best"]["status"] == "PROVEN_EQUIVALENT" and r["best_qasm"].startswith("OPENQASM 2.0")
+    assert r["best"]["cx"] <= r["baseline"]["cx"]
+    assert all(t["status"] != "PROVEN_EQUIVALENT" for t in r["tried"][:-1])
