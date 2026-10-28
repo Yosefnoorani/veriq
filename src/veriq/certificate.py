@@ -282,6 +282,53 @@ def certificate_from_optimize(res: dict[str, Any], source_qc, *, path: str | Non
                  res.get("seconds"))
 
 
+def certificate_from_preflight(res: dict[str, Any], source_qc, *, path: str | None = None,
+                               function: str | None = None, reference_qc=None, reference_path: str | None = None,
+                               reference_function: str | None = None, started: str | None = None) -> dict[str, Any]:
+    """Certificate for `veriq preflight`: compiled-for-backend circuit proven equivalent to the input, plus the
+    hardware gate (native gates/coupling, ESP estimate, 2q count, duration, optional noisy TVD)."""
+    inputs = [circuit_record("input", source_qc, path, function)]
+    comp = res.get("compact")
+    if comp is not None:
+        inputs.append(circuit_record("compiled", comp["circuit"]))
+    if reference_qc is not None or reference_path is not None:
+        inputs.append(circuit_record("reference", reference_qc, reference_path, reference_function))
+    pr = res.get("proof") or {}
+    proof = {"status": pr.get("status", "none") if pr else "none", "check": "compiled vs input (layout-aware)",
+             "method": pr.get("method"), "engine": "veriq.scale",
+             "engine_details": {k: pr[k] for k in ("result", "seconds", "note") if k in pr},
+             "summary": f"compiled circuit ({res.get('chosen')}) vs input: {pr.get('result')}" if pr else
+             "nothing compiled"}
+    if proof["status"] == "none" and not pr:
+        proof["reason"] = "the circuit was not compiled"
+    lay = res.get("layout") or {}
+    assumptions = {
+        "equivalence": "compiled circuit equals the input on every input state, up to global phase, after undoing "
+                       "the initial layout and the routing permutation (ancillas included)",
+        "mode": "unitary", "initial_state": "any", "qubits_initially_zero": False,
+        "layout": {k: lay.get(k) for k in ("physical_qubits", "initial", "final", "perm", "initial_physical",
+                                           "final_physical")} if lay else None,
+        "backend": res.get("backend"), "thresholds": res.get("thresholds"),
+        "estimates": "ESP / duration / TVD are model ESTIMATES from a calibration snapshot, not hardware measurements",
+        "measurements": "final measurements ignored for the proof; mid-circuit measurement/reset -> undecided",
+    }
+    checks = [{"name": c["name"], "status": c["status"], "summary": c["summary"]} for c in res.get("checks", [])]
+    cex = None
+    if res.get("verdict") == "FAIL":
+        cex = {"failing_checks": [{"name": c["name"], "summary": c["summary"], "evidence": _small(c.get("evidence"))}
+                                  for c in res.get("checks", []) if c["status"] == "FAIL"]}
+        if pr.get("counterexample"):
+            cex["counterexample"] = _small(pr["counterexample"])
+    est = res.get("estimate") or {}
+    metrics = _small({"estimate": est, "layout_selection": res.get("layout_selection"),
+                      "noisy_simulation": res.get("noisy_simulation")})
+    extra = {"preflight": {"gate": res.get("gate"), "backend": (res.get("backend") or {}).get("name"),
+                           "chosen": res.get("chosen"), "esp": est.get("esp"),
+                           "two_qubit_gates": est.get("two_qubit_gates"), "duration_s": est.get("duration_s")}}
+    return _base("preflight", res["verdict"], inputs, assumptions, proof, metrics, checks, cex, started,
+                 res.get("seconds"), extra)
+
+
 def _small(x: Any, limit: int = 4000) -> Any:
     """Keep certificates compact: drop big blobs (counts, distributions) from evidence/metrics."""
     s = json.dumps(x, default=str)
@@ -544,6 +591,26 @@ def _recheck(res: list, cert: dict, loaded: dict, timeout: float | None) -> None
     mode = a.get("mode", "unitary")
     to = timeout or a.get("timeout_s") or 30.0
     try:
+        if cert.get("kind") == "preflight":
+            from .checks import unitary_part
+            from .preflight import expected_circuit, _strip_clbits
+
+            src = loaded.get("input") or _from_record(byrole.get("input"))
+            out = _from_record(byrole.get("compiled"))
+            lay = a.get("layout") or {}
+            if src is None or out is None or not lay:
+                _check(res, "recheck", None if (cert.get("proof") or {}).get("status") != "proven" else False,
+                       "nothing to recheck (no compiled circuit / layout)")
+                return
+            cu = _strip_clbits(unitary_part(out))
+            exp = expected_circuit(_strip_clbits(unitary_part(src)), cu.num_qubits, lay["initial"], lay["perm"])
+            r = scale.decide_equivalence(cu, exp, mode="unitary", timeout=to)
+            newp = {scale.PROVEN: "proven", scale.NOT_EQ: "refuted"}.get(r["status"], "undecided")
+            oldp = (cert.get("proof") or {}).get("status")
+            _check(res, "recheck", newp == oldp,
+                   f"re-proved compiled vs input with the certified layout: {newp} (certified {oldp}); "
+                   "hardware estimates are not recomputed")
+            return
         if cert.get("kind") == "optimize":
             if a.get("layout_dependent"):
                 _check(res, "recheck", None, "skipped: the proof is up to a layout the QASM does not carry")

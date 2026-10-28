@@ -12,7 +12,11 @@ from .models import Status
 from .report import render_html, render_json
 from .runner import run_checks
 
+from .preflight import DEFAULTS as _PF_DEFAULTS
+
 EXIT = {Status.PASS: 0, Status.FAIL: 1, Status.INCONCLUSIVE: 2}
+
+DEFAULT_MIN_ESP, DEFAULT_WARN_ESP = _PF_DEFAULTS["min_esp"], _PF_DEFAULTS["warn_esp"]
 SYMBOL = {"PASS": "\u2714", "FAIL": "\u2718", "INCONCLUSIVE": "?", "SKIPPED": "-"}
 
 
@@ -102,6 +106,34 @@ def build_parser() -> argparse.ArgumentParser:
                      "default: $VERIQ_SIGNING_KEY if set, else unsigned")
     o.add_argument("--quiet", "-q", action="store_true")
 
+    pf = sub.add_parser("preflight", help="pre-submission hardware gate: compile for a backend, PROVE the compiled "
+                        "circuit equivalent, estimate ESP/duration/2q count -> go / warn / no-go")
+    pf.add_argument("file", help="circuit (.py or .qasm)")
+    pf.add_argument("--function", "-f")
+    pf.add_argument("--backend", "-b", required=True,
+                    help="fake IBM backend (fake_torino, FakeBrisbane, ...), a built-in profile "
+                         "(ionq_style_25q, quantinuum_style_20q, braket_superconducting_style_12q) or profile.json")
+    pf.add_argument("--reference", "-r", help="also prove the input equivalent to this reference")
+    pf.add_argument("--reference-function")
+    pf.add_argument("--mode", choices=["unitary", "state"], default="unitary", help="mode for --reference")
+    pf.add_argument("--seeds", type=int, default=4, help="transpiler seeds per optimisation level (default 4)")
+    pf.add_argument("--levels", default="1,3", help="optimisation levels to try (default 1,3)")
+    pf.add_argument("--min-esp", type=float, help=f"no-go below this ESP (default {DEFAULT_MIN_ESP})")
+    pf.add_argument("--warn-esp", type=float, help=f"warn below this ESP (default {DEFAULT_WARN_ESP})")
+    pf.add_argument("--max-cx", type=int, help="no-go above this many two-qubit gates")
+    pf.add_argument("--max-duration", type=float, help="no-go above this estimated duration (seconds)")
+    pf.add_argument("--warn-t2-fraction", type=float, help="warn when duration > this x min T2 (default 0.5)")
+    pf.add_argument("--noisy-sim", action="store_true", help="also run a noisy Aer simulation (<= 12 active qubits)")
+    pf.add_argument("--max-tvd", type=float, help="no-go when the noisy TVD exceeds this (needs --noisy-sim)")
+    pf.add_argument("--shots", type=int, default=4000)
+    pf.add_argument("--timeout", type=float, default=60.0, help="proof timeout (s)")
+    pf.add_argument("--out", "-o", help="write the chosen compiled circuit (physical qubits) as OpenQASM 2")
+    pf.add_argument("--json", dest="json_out", help="write the full preflight result here")
+    pf.add_argument("--certificate", help="write a verification certificate (JSON) here")
+    pf.add_argument("--sign-key", help="sign the certificate with this Ed25519 private key (PEM); "
+                    "default: $VERIQ_SIGNING_KEY if set, else unsigned")
+    pf.add_argument("--quiet", "-q", action="store_true")
+
     b = sub.add_parser("bench", help="Veriq Bench: score model outputs or a bug detector against the benchmark")
     bs = b.add_subparsers(dest="bench_cmd", required=True)
     br = bs.add_parser("run", help="score a directory of model outputs (proof, constraints, CX cost, optimized-CX gap)")
@@ -180,6 +212,8 @@ def main(argv: list[str] | None = None) -> int:
         return _repair_cmd(args)
     if args.cmd == "optimize":
         return _optimize_cmd(args)
+    if args.cmd == "preflight":
+        return _preflight_cmd(args)
     if args.cmd == "bench":
         return _bench_cmd(args)
     if args.cmd in ("keygen", "certify", "cert"):
@@ -363,6 +397,50 @@ def _optimize_cmd(args) -> int:
         else:
             print("  no candidate could be proven equivalent; nothing returned")
     return 0 if res.get("best") else 2
+
+
+def _preflight_cmd(args) -> int:
+    import json
+
+    from .certificate import utc_now
+    from .loader import load_circuit
+    from .preflight import PreflightError, preflight, render_text, to_json
+
+    started = utc_now()
+    try:
+        qc = load_circuit(args.file, args.function)
+        ref = load_circuit(args.reference, args.reference_function) if args.reference else None
+        levels = tuple(int(x) for x in args.levels.split(",") if x.strip())
+        res = preflight(qc, args.backend, reference=ref, mode=args.mode, seeds=args.seeds, levels=levels,
+                        min_esp=args.min_esp, warn_esp=args.warn_esp, max_cx=args.max_cx,
+                        max_duration=args.max_duration, warn_t2_fraction=args.warn_t2_fraction,
+                        noisy_sim=args.noisy_sim, max_tvd=args.max_tvd, shots=args.shots, timeout=args.timeout)
+    except (LoadError, PreflightError, ValueError, OSError) as exc:
+        print(f"veriq: error: {exc}", file=sys.stderr)
+        return 3
+    if args.out and res.get("compiled_circuit") is not None:
+        from qiskit import qasm2
+
+        Path(args.out).write_text(qasm2.dumps(res["compiled_circuit"]))
+    if args.json_out:
+        Path(args.json_out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.json_out).write_text(json.dumps(to_json(res), indent=1, default=str))
+    if args.certificate:
+        from .certificate import CertificateError, certificate_from_preflight, write_certificate
+
+        try:
+            cert = certificate_from_preflight(res, qc, path=args.file, function=args.function, reference_qc=ref,
+                                              reference_path=args.reference,
+                                              reference_function=args.reference_function, started=started)
+            write_certificate(cert, args.certificate, args.sign_key, sign_env=True)
+        except (CertificateError, OSError) as exc:
+            print(f"veriq: certificate error: {exc}", file=sys.stderr)
+            return 3
+    if not args.quiet:
+        print(render_text(res))
+        if args.certificate:
+            print(f"  certificate: {args.certificate}")
+    return {"PASS": 0, "FAIL": 1, "INCONCLUSIVE": 2}[res["verdict"]]
 
 
 def _cert_cmd(args) -> int:
