@@ -109,6 +109,10 @@ def _load_qasm(p: Path, framework: str | None = None) -> QuantumCircuit:
     except Exception as exc:
         raise LoadError(f"cannot parse OpenQASM {version} in {p.name}: {exc}") from exc
     qc.name = p.stem
+    from .frontends import frontend_info
+
+    # Record the source format so it survives the QPY round trip out of the sandbox (for certificates).
+    qc.metadata = {**(qc.metadata or {}), "veriq_frontend": frontend_info(qc, str(p))}
     return qc
 
 

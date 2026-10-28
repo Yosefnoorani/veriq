@@ -122,7 +122,8 @@ def frontend_info(qc, path: str | None = None) -> dict:
 
     meta = (getattr(qc, "metadata", None) or {}).get("veriq_frontend") if qc is not None else None
     if meta:
-        keep = ("framework", "framework_version", "source_format", "qubit_order", "opaque_ops")
+        keep = ("framework", "framework_version", "source_format", "qubit_order", "opaque_ops",
+                "qasm3_importer_version")
         return {k: meta[k] for k in keep if k in meta}
     suffix = Path(path).suffix.lower() if path else ""
     fw = "qiskit"

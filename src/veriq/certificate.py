@@ -107,6 +107,9 @@ def circuit_record(role: str, qc, path: str | None = None, function: str | None 
     if qc is None:
         rec.update(canonical=None, canonical_sha256=None, qpy_sha256=None, num_qubits=None)
         return rec
+    from .frontends import frontend_info
+
+    rec["frontend"] = frontend_info(qc, path)
     fmt, text = canonical_qasm(qc)
     rec.update(num_qubits=qc.num_qubits, canonical_format=fmt, canonical_sha256=sha256_bytes(text.encode()),
                qpy_sha256=qpy_sha256(qc), canonical=text if len(text.encode()) <= MAX_EMBED_QASM else None)

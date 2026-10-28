@@ -31,7 +31,7 @@ from .sandbox import MAX_SOURCE_BYTES, Limits, run_worker
 IDENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,63}$")
 GATE = r"^[a-z][a-z0-9_]{0,31}$"
 COUPLING = r"^(linear|ring|all|[0-9]{1,3}-[0-9]{1,3}([,;] *[0-9]{1,3}-[0-9]{1,3})*)$"
-SUFFIXES = {".py", ".qasm", ".qasm2", ".qasm3"}
+SUFFIXES = {".py", ".qasm", ".qasm2", ".qasm3", ".json"}
 READ_ONLY = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False)
 
 INSTRUCTIONS = """Veriq proves quantum circuits correct. Use it BEFORE you present a quantum circuit as correct.
@@ -79,7 +79,8 @@ Tool verdicts: PASS / FAIL / INCONCLUSIVE (+ ERROR when the sandbox stopped the 
 - Python: define `build()` returning a `QuantumCircuit` (or a module-level `circuit`). Several builders in
   one module: pass `function`. Only qiskit / numpy / the standard library are available. No network,
   no files outside the sandbox temp dir.
-- OpenQASM 2 or 3 source is accepted too (starts with `OPENQASM`).
+- OpenQASM 2 or 3 source is accepted too (starts with `OPENQASM`), and so are Python building a cirq.Circuit or
+  pytket Circuit and Cirq/TKET JSON (`framework` arg; converted exactly to Qiskit inside the sandbox).
 - Final measurements are ignored for equivalence; mid-circuit measurement/reset make it INCONCLUSIVE.
 - `allowed_gates` / `coupling` / `no_black_boxes` constrain the circuit AS WRITTEN (before transpilation).
 """
@@ -160,7 +161,17 @@ class Runner:
 
     # ---- input validation
     def source(self, code: str | None, path: str | None, function: str | None, label: str,
-               required: bool = True, prefix: str = "") -> dict[str, Any] | None:
+               required: bool = True, prefix: str = "", framework: str | None = None) -> dict[str, Any] | None:
+        src = self._source(code, path, function, label, required, prefix)
+        if src is not None and framework not in (None, "auto"):
+            src["framework"] = framework
+            if "code" in src:
+                src["language"] = ("qasm" if framework in ("qasm2", "qasm3") else
+                                   "json" if src["code"].lstrip().startswith("{") else "python")
+        return src
+
+    def _source(self, code: str | None, path: str | None, function: str | None, label: str,
+                required: bool = True, prefix: str = "") -> dict[str, Any] | None:
         if code is not None and path is not None:
             raise ToolError(f"{label}: give either `{prefix}code` or `{prefix}path`, not both")
         if code is None and path is None:
@@ -407,15 +418,21 @@ class Explanation(_Out):
 
 # --------------------------------------------------------------------------- server factory
 
-Code = Annotated[str | None, Field(description="Circuit source: Python that builds a qiskit.QuantumCircuit "
-                                               "(define build() or `circuit`), or OpenQASM 2/3 text.",
+Code = Annotated[str | None, Field(description="Circuit source: Python that builds a qiskit.QuantumCircuit, "
+                                               "cirq.Circuit or pytket Circuit (define build() or `circuit`), "
+                                               "OpenQASM 2/3 text, or Cirq/TKET JSON.",
                                    max_length=MAX_SOURCE_BYTES)]
-PathArg = Annotated[str | None, Field(description="Path to a .py or .qasm file on the server machine (inside "
+PathArg = Annotated[str | None, Field(description="Path to a .py, .qasm or Cirq/TKET .json file on the server machine (inside "
                                                   "the allowed root). Use instead of code.", max_length=4096)]
 Func = Annotated[str | None, Field(description="Builder function to call in a multi-function Python module.",
                                    max_length=64)]
 Mode = Annotated[Literal["unitary", "state"], Field(description="unitary: same unitary for every input (blocks, "
                                                     "oracles, QFT); state: same state prepared from |0...0>.")]
+Framework = Annotated[Literal["auto", "qiskit", "qasm2", "qasm3", "cirq", "tket"] | None,
+                      Field(description="Frontend of this circuit (default auto-detect: OpenQASM header, JSON "
+                                        "type, or the type of the object the Python code builds). Cirq/TKET "
+                                        "circuits are converted exactly; qubit i = i-th qubit in the framework's "
+                                        "default order (Cirq: sorted(all_qubits()), TKET: circ.qubits).")]
 ProofTimeout = Annotated[float, Field(ge=1, le=300, description="Seconds per formal proof attempt.")]
 
 
@@ -426,8 +443,8 @@ def create_server(limits: Limits | None = None, roots: list[str] | None = None) 
 
     @mcp.tool(annotations=READ_ONLY, description="""Verify a quantum circuit you wrote, before presenting it.
 
-Give the circuit as `code` (Python building a qiskit QuantumCircuit via build()/`circuit`, or OpenQASM) or a
-file `path`. Strongly recommended: a trusted reference (`reference_code`/`reference_path`), e.g. built from
+Give the circuit as `code` (Python building a Qiskit, Cirq or pytket circuit via build()/`circuit`, OpenQASM 2/3,
+or Cirq/TKET JSON) or a file `path`; `framework`/`reference_framework` override auto-detection. Strongly recommended: a trusted reference (`reference_code`/`reference_path`), e.g. built from
 qiskit.circuit.library, so Veriq can PROVE equivalence. Runs: compile-integrity proof, reference equivalence
 (mode=unitary or state), optional gate-set / coupling / no-black-box constraints, an Aer sampling test, metrics.
 Returns verdict PASS | FAIL | INCONCLUSIVE | ERROR, per-check results, a counterexample input when not
@@ -449,12 +466,14 @@ equivalent, metrics and `hints` on how to fix it. If FAIL: fix the circuit and c
                           Field(max_length=4096, description="Expected measurement distribution "
                                 "{bitstring: probability} (little-endian), used when there is no reference.")] = None,
         timeout: ProofTimeout = 30.0,
+        framework: Framework = None, reference_framework: Framework = None,
         certificate: Annotated[bool, Field(description="Also return an UNSIGNED veriq.certificate/1 (input "
                                            "hashes, verdict, proof method, assumptions, versions). Save it as "
                                            "JSON and sign with `veriq certify`.")] = False,
     ) -> VerifyResult:
-        cand = runner.source(code, path, function, "candidate")
-        ref = runner.source(reference_code, reference_path, reference_function, "reference", required=False, prefix="reference_")
+        cand = runner.source(code, path, function, "candidate", framework=framework)
+        ref = runner.source(reference_code, reference_path, reference_function, "reference", required=False,
+                            prefix="reference_", framework=reference_framework)
         if expect is not None and not expect:
             raise ToolError("expect: empty distribution")
         opts = {"mode": mode, "allowed_gates": allowed_gates, "coupling": coupling, "no_black_boxes": no_black_boxes,
@@ -489,7 +508,8 @@ correct on |0...0> input, so `transpile(block)` must not be reused as a gate/sub
 
     @mcp.tool(annotations=READ_ONLY, description="""Decide whether two circuits are equivalent.
 
-Circuit A is `code`/`path`, circuit B is `other_code`/`other_path`. mode=unitary compares the full unitaries
+Circuit A is `code`/`path`, circuit B is `other_code`/`other_path`; they may come from different frameworks
+(Qiskit, OpenQASM 2/3, Cirq, TKET; `framework`/`other_framework`, default auto). mode=unitary compares the full unitaries
 (up to global phase); mode=state compares the states prepared from |0...0>. Returns `equivalent`
 (true/false/null), `status` PROVEN_EQUIVALENT | NOT_EQUIVALENT | PROBABLY_EQUIVALENT (simulation only, not a
 proof) | UNKNOWN, the `method` used, and a `counterexample` input state when not equivalent.""")
@@ -497,9 +517,11 @@ proof) | UNKNOWN, the `method` used, and a `counterexample` input state when not
         code: Code = None, path: PathArg = None, function: Func = None,
         other_code: Code = None, other_path: PathArg = None, other_function: Func = None,
         mode: Mode = "unitary", timeout: ProofTimeout = 30.0,
+        framework: Framework = None, other_framework: Framework = None,
     ) -> CompareResult:
-        a = runner.source(code, path, function, "candidate")
-        b = runner.source(other_code, other_path, other_function, "reference", prefix="other_")
+        a = runner.source(code, path, function, "candidate", framework=framework)
+        b = runner.source(other_code, other_path, other_function, "reference", prefix="other_",
+                          framework=other_framework)
         return CompareResult.model_validate(
             await runner.run("compare_circuits", {"candidate": a, "reference": b}, {"mode": mode, "timeout": timeout}))
 

@@ -54,11 +54,12 @@ VERDICTS = {"pass": Status.PASS, "fail": Status.FAIL, "inconclusive": Status.INC
 ENTRY_KEYS = {
     "name", "file", "function", "reference", "reference-function", "mode", "distribution",
     "allowed-gates", "coupling", "no-black-boxes", "backend", "shots", "seed", "timeout", "expect", "watch",
-    "preflight",
+    "preflight", "framework", "reference-framework",
 }
 PREFLIGHT_KEYS = {"backend", "min-esp", "warn-esp", "max-cx", "max-duration", "warn-t2-fraction", "seeds", "levels",
                   "noisy-sim", "max-tvd", "shots", "timeout"}
-DEFAULT_KEYS = ENTRY_KEYS - {"name", "file", "function", "reference", "reference-function", "watch"}
+DEFAULT_KEYS = ENTRY_KEYS - {"name", "file", "function", "reference", "reference-function", "reference-framework",
+                             "watch"}
 TOP_KEYS = {"version", "changed-only", "report-dir", "run-all-on", "defaults", "checks"}
 ICON = {"PASS": "✅", "FAIL": "❌", "INCONCLUSIVE": "⚠️", "SKIPPED": "⏭️"}
 
@@ -86,6 +87,8 @@ class Entry:
     timeout: float = 30.0
     watch: list[str] = field(default_factory=list)
     preflight: dict[str, Any] | None = None
+    framework: str | None = None
+    reference_framework: str | None = None
 
     def paths(self) -> list[str]:
         out = [self.file] + ([self.reference] if self.reference else []) + list(self.watch)
@@ -195,6 +198,18 @@ def _parse_entry(raw: Any, i: int, defaults: dict, root: Path, check_files: bool
     if e.shots <= 0:
         raise ConfigError(f"{where}: 'shots' must be positive")
     e.preflight = _parse_preflight(d.get("preflight"), where)
+    from .frontends import FRAMEWORKS, normalize_framework
+
+    for key in ("framework", "reference-framework"):
+        v = d.get(key)
+        if v is None:
+            continue
+        _typed(where, key, v, str)
+        try:
+            v = normalize_framework(v)
+        except LoadError:
+            raise ConfigError(f"{where}: '{key}' must be one of auto, {', '.join(FRAMEWORKS)}; got {d[key]!r}") from None
+        setattr(e, key.replace("-", "_"), v)
     if check_files:
         for key, p in (("file", e.file), ("reference", e.reference),
                        ("distribution", e.distribution if isinstance(e.distribution, str)
@@ -400,7 +415,8 @@ def run_entry(e: Entry, root: str) -> Outcome:
                          shots=e.shots, seed=e.seed, timeout=e.timeout, mode=e.mode,
                          allowed_gates=e.allowed_gates, function=e.function,
                          reference_function=e.reference_function, coupling=e.coupling,
-                         no_black_boxes=e.no_black_boxes)
+                         no_black_boxes=e.no_black_boxes, framework=e.framework,
+                         reference_framework=e.reference_framework)
     except (LoadError, ValueError, OSError) as exc:
         return Outcome(e, None, "ERROR", False, str(exc))
     if e.preflight:

@@ -137,6 +137,8 @@ def cirq_to_qiskit(circuit, source_format: str = "python"):
             return
         if gate is not None and isinstance(gate, cirq.IdentityGate):
             return
+        if cirq.is_parameterized(op):
+            raise LoadError(f"symbolic Cirq parameters in {op!r} are not supported; resolve them first")
         if not cirq.has_unitary(op):
             raise LoadError(f"Cirq operation {op!r} is not unitary (noise channels and other non-unitary "
                             f"operations other than measurement/reset are not supported)")

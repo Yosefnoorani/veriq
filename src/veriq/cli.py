@@ -24,8 +24,13 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="veriq", description="Veriq: verify AI-written quantum circuits.")
     sub = p.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check", aliases=["verify"], help="run all checks on a circuit (.py or .qasm); alias: verify")
-    c.add_argument("file", help="candidate circuit: .py exposing `circuit`/`build()`, or OpenQASM 2/3")
+    c.add_argument("file", help="candidate circuit: .py exposing `circuit`/`build()` (Qiskit, Cirq or pytket), "
+                                "OpenQASM 2/3, or Cirq/TKET .json")
+    c.add_argument("reference_pos", nargs="?", metavar="reference",
+                   help="optional trusted reference (same as --reference), any supported framework")
     c.add_argument("--reference", "-r", help="trusted reference circuit to prove equivalence against")
+    c.add_argument("--framework", help="candidate frontend: auto (default), qiskit, qasm2, qasm3, cirq, tket")
+    c.add_argument("--reference-framework", help="reference frontend (default auto)")
     c.add_argument("--expect", "-e", help="expected distribution/property: inline JSON or path to .json")
     c.add_argument("--report", help="write a self-contained HTML report here")
     c.add_argument("--json", dest="json_out", help="write the JSON report here (default: next to --report)")
@@ -74,6 +79,8 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("file", help="candidate circuit (.py or .qasm)")
     r.add_argument("--reference", "-r", required=True, help="trusted reference circuit")
     r.add_argument("--function", "-f")
+    r.add_argument("--framework", help="candidate frontend (default auto)")
+    r.add_argument("--reference-framework", help="reference frontend (default auto)")
     r.add_argument("--reference-function")
     r.add_argument("--mode", choices=["unitary", "state"], default="unitary")
     r.add_argument("--fixer", default="demo", help="'demo' (deterministic, offline) or 'module:function'; "
@@ -90,6 +97,7 @@ def build_parser() -> argparse.ArgumentParser:
     o = sub.add_parser("optimize", help="find the cheapest PROVEN-equivalent compilation (CX count, then depth)")
     o.add_argument("file", help="circuit (.py or .qasm)")
     o.add_argument("--function", "-f")
+    o.add_argument("--framework", help="frontend: auto (default), qiskit, qasm2, qasm3, cirq, tket")
     o.add_argument("--mode", choices=["unitary", "state"], default="unitary",
                    help="unitary (default): candidates must equal the circuit for every input; state: only from |0..0>")
     o.add_argument("--basis", default="cx,rz,sx,x", help="target basis gates (comma-separated)")
@@ -110,6 +118,8 @@ def build_parser() -> argparse.ArgumentParser:
                         "circuit equivalent, estimate ESP/duration/2q count -> go / warn / no-go")
     pf.add_argument("file", help="circuit (.py or .qasm)")
     pf.add_argument("--function", "-f")
+    pf.add_argument("--framework", help="frontend: auto (default), qiskit, qasm2, qasm3, cirq, tket")
+    pf.add_argument("--reference-framework", help="reference frontend (default auto)")
     pf.add_argument("--backend", "-b", required=True,
                     help="fake IBM backend (fake_torino, FakeBrisbane, ...), a built-in profile "
                          "(ionq_style_25q, quantinuum_style_20q, braket_superconducting_style_12q) or profile.json")
@@ -225,13 +235,20 @@ def main(argv: list[str] | None = None) -> int:
     from .certificate import utc_now
 
     started = utc_now()
+    if getattr(args, "reference_pos", None):
+        if args.reference and args.reference != args.reference_pos:
+            print("veriq: error: give the reference either positionally or with --reference, not both",
+                  file=sys.stderr)
+            return 3
+        args.reference = args.reference_pos
     try:
         report = run_checks(args.file, reference=args.reference, expect=args.expect, backend=args.backend,
                             shots=args.shots, seed=args.seed, timeout=args.timeout, mode=args.mode,
                             allowed_gates=[g.strip() for g in args.allowed_gates.split(",") if g.strip()]
                             if args.allowed_gates else None,
                             function=args.function, reference_function=args.reference_function,
-                            coupling=args.coupling, no_black_boxes=args.no_black_boxes)
+                            coupling=args.coupling, no_black_boxes=args.no_black_boxes,
+                            framework=args.framework, reference_framework=args.reference_framework)
     except (LoadError, ValueError, OSError) as exc:
         print(f"veriq: error: {exc}", file=sys.stderr)
         return 3
@@ -300,8 +317,8 @@ def _write_repair_report(args, report) -> None:
 
     rd = report.to_dict()
     try:
-        cand = load_circuit(args.file, args.function)
-        ref = load_circuit(args.reference, args.reference_function) if args.reference else None
+        cand = load_circuit(args.file, args.function, getattr(args, 'framework', None))
+        ref = load_circuit(args.reference, args.reference_function, getattr(args, 'reference_framework', None)) if args.reference else None
     except Exception as exc:  # the candidate does not build: the failing Build check is the whole story
         out = {"schema": SCHEMA, "verdict": rd["verdict"], "mode": args.mode,
                "failing_checks": [{"name": c["name"], "summary": c["summary"]} for c in rd["checks"]
@@ -328,8 +345,8 @@ def _repair_cmd(args) -> int:
     from .repair import load_fixer, repair_loop
 
     try:
-        cand = load_circuit(args.file, args.function)
-        ref = load_circuit(args.reference, args.reference_function)
+        cand = load_circuit(args.file, args.function, getattr(args, 'framework', None))
+        ref = load_circuit(args.reference, args.reference_function, getattr(args, 'reference_framework', None))
         fixer = load_fixer(args.fixer)
     except (LoadError, ValueError, OSError, ImportError, AttributeError) as exc:
         print(f"veriq: error: {exc}", file=sys.stderr)
@@ -360,7 +377,7 @@ def _optimize_cmd(args) -> int:
     from .optimize import optimize_circuit
 
     try:
-        qc = load_circuit(args.file, args.function)
+        qc = load_circuit(args.file, args.function, getattr(args, 'framework', None))
     except (LoadError, ValueError, OSError) as exc:
         print(f"veriq: error: {exc}", file=sys.stderr)
         return 3
@@ -408,8 +425,8 @@ def _preflight_cmd(args) -> int:
 
     started = utc_now()
     try:
-        qc = load_circuit(args.file, args.function)
-        ref = load_circuit(args.reference, args.reference_function) if args.reference else None
+        qc = load_circuit(args.file, args.function, getattr(args, 'framework', None))
+        ref = load_circuit(args.reference, args.reference_function, getattr(args, 'reference_framework', None)) if args.reference else None
         levels = tuple(int(x) for x in args.levels.split(",") if x.strip())
         res = preflight(qc, args.backend, reference=ref, mode=args.mode, seeds=args.seeds, levels=levels,
                         min_esp=args.min_esp, warn_esp=args.warn_esp, max_cx=args.max_cx,

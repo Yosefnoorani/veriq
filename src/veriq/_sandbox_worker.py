@@ -1,7 +1,7 @@
 """Sandbox worker: `python -I -m veriq._sandbox_worker` reads one JSON job on stdin, prints one JSON line.
 
 Jobs:
-  {"op": "build", "source": {"code"|"path", "function", "language"}, "workdir": ...}
+  {"op": "build", "source": {"code"|"path", "function", "language", "framework"}, "workdir": ...}
       Runs UNTRUSTED code; returns the circuit as base64 QPY (or a build/load error).
   {"op": "analyze", "tool": "...", "circuits": {"candidate": qpy, "reference": qpy?}, "options": {...}}
       Runs only Veriq code on deserialized circuits.
@@ -55,8 +55,10 @@ def _build(job: dict) -> dict:
         lang = src.get("language") or "auto"
         code = src["code"]
         if lang == "auto":
-            lang = "qasm" if code.lstrip().upper().startswith("OPENQASM") else "python"
-        fname = {"python": "candidate.py", "qasm": "candidate.qasm"}[lang]
+            head = code.lstrip()
+            lang = ("qasm" if head.upper().startswith("OPENQASM") else "json" if head.startswith("{")
+                    else "python")
+        fname = {"python": "candidate.py", "qasm": "candidate.qasm", "json": "candidate.json"}[lang]
         path = os.path.join(workdir, src.get("filename") or fname)
         with open(path, "w") as fh:
             fh.write(code)
@@ -66,7 +68,7 @@ def _build(job: dict) -> dict:
     real_stdout = sys.stdout
     sys.stdout = captured  # user prints must not corrupt the protocol line
     try:
-        qc = load_circuit(path, src.get("function"))
+        qc = load_circuit(path, src.get("function"), src.get("framework"))
     except BuildError as exc:
         return {"status": "build_error", "error_type": exc.error_type, "exception": exc.exc_type,
                 "message": str(exc)[:2000], "stdout": captured.getvalue()[-2000:]}
@@ -80,6 +82,7 @@ def _build(job: dict) -> dict:
         return {"status": "build_error", "error_type": "not serializable", "exception": type(exc).__name__,
                 "message": f"circuit cannot be serialized to QPY: {exc!r}"[:2000]}
     return {"status": "ok", "qpy": blob, "name": qc.name, "num_qubits": qc.num_qubits,
+            "frontend": (qc.metadata or {}).get("veriq_frontend", {}).get("framework", "qiskit"),
             "stdout": captured.getvalue()[-2000:]}
 
 

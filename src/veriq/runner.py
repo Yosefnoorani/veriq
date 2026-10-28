@@ -62,13 +62,16 @@ def run_checks(target: str | QuantumCircuit, reference: str | QuantumCircuit | N
                seed: int = 7, timeout: float = 30.0, mode: str = "unitary",
                allowed_gates: list[str] | None = None, function: str | None = None,
                reference_function: str | None = None, coupling: str | list | None = None,
-               no_black_boxes: bool = False) -> Report:
+               no_black_boxes: bool = False, framework: str | None = None,
+               reference_framework: str | None = None) -> Report:
     """Run all checks.
 
     mode="unitary": the candidate must equal the reference as a unitary (up to global phase).
     mode="state":   the candidate must prepare the same state from |0...0> (up to global phase).
     allowed_gates:  optional gate-set constraint; any other instruction is a FAIL.
     function / reference_function: builder names inside multi-function .py modules.
+    framework / reference_framework: frontend (qiskit | qasm2 | qasm3 | cirq | tket; default auto-detect),
+                    so candidate and reference may come from different frameworks.
     coupling:       optional coupling map ('linear', 'ring', '0-1,1-2' or edge list), checked on the
                     circuit AS WRITTEN: any 2-qubit gate off an edge, or any 3+-qubit gate, is a FAIL.
     no_black_boxes: FAIL on UnitaryGate / Initialize / StatePreparation / PermutationGate / library blocks.
@@ -82,11 +85,11 @@ def run_checks(target: str | QuantumCircuit, reference: str | QuantumCircuit | N
         name = f"{name}::{function}"
     ref = None
     if reference is not None:
-        ref = (load_circuit(reference, reference_function) if not isinstance(reference, QuantumCircuit)
+        ref = (load_circuit(reference, reference_function, reference_framework) if not isinstance(reference, QuantumCircuit)
                else reference)
     ref_name = None if reference is None else str(reference if not isinstance(reference, QuantumCircuit) else reference.name)
     try:
-        cand = load_circuit(target, function) if not isinstance(target, QuantumCircuit) else target
+        cand = load_circuit(target, function, framework) if not isinstance(target, QuantumCircuit) else target
     except BuildError as exc:
         return build_failure_report(name, exc, ref_name, time.perf_counter() - t0)
     exp = parse_expect(expect)
