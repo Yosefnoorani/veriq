@@ -301,6 +301,35 @@ python benchmark/scale/report.py       # -> benchmark/scale/results.md, time_vs_
 
 Results: [benchmark/scale/results.md](benchmark/scale/results.md) and [the chart](benchmark/scale/time_vs_qubits.png).
 
+## Veriq Bench v0.1 (public benchmark)
+
+`benchmark/veriqbench/` packages the 7 hard tasks as a versioned, reproducible benchmark. Each task has a spec (prompt,
+reference and constraints). The bug corpus is stored as data: 1036 single-gate mutants plus 28 originals, one JSON file
+each, with fields for the task, the source assistant, the mutation class, the location, whether the mutant is
+equivalent, and which detectors catch it. Field definitions are in
+[SCHEMA.md](benchmark/veriqbench/SCHEMA.md), and the integrity hashes are in `MANIFEST.json`.
+
+```bash
+veriq bench run --model-outputs DIR            # score new model outputs: proof, CX/depth, constraints, optimized-CX gap
+veriq bench corpus-eval --detector histogram   # score a detection method (built-in or file.py:fn) against the corpus
+veriq bench leaderboard                        # -> benchmark/veriqbench/leaderboard/{leaderboard.md,leaderboard.html}
+```
+
+Results recomputed on the 966 wrong mutants (0/98 false positives for every detector):
+
+| Detector | Recall |
+|---|---|
+| histogram | 33.9% |
+| zero-state | 34.3% |
+| all-basis | 96.0% |
+| proof | 100% |
+
+In the hard round all 28 submissions passed. Their CX cost, however, ranges from 1.5× to 2.1× the best proven circuit
+(geomean). Details are in the [leaderboard](benchmark/veriqbench/leaderboard/leaderboard.md) and the paper draft
+[docs/paper/veriq_bench.md](docs/paper/veriq_bench.md).
+
+**Warning:** submissions run in-process without a sandbox, so only run code you trust.
+
 ## Project layout
 
 ```
@@ -309,6 +338,7 @@ src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.p
              scale.py   (large-circuit engine)
              repair_report.py  repair.py   (repair report, localization, repair loop)
              optimize.py   (verified CX optimizer)
+             bench.py   (Veriq Bench runner, corpus-eval, leaderboard)
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
 scripts/     demo.sh  simulate_action.py  agent_loop_demo.py
@@ -333,6 +363,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - **MCP server:** ✅ `veriq mcp` (verify / check_transpile / compare / metrics / repair_hints / optimize / explain; sandboxed).
 - **Repair + verified optimization:** ✅ repair reports with exact localization, `veriq repair` loop with pluggable fixers, `veriq optimize` (cheapest proven compilation).
 - **Large circuits:** ✅ Clifford tableau, QCEC strategies with hard timeouts, MPS falsification, partitioning, and a scaling benchmark up to 50 qubits (200 for Clifford). Next: decision-diagram (DD) simulation of counterexamples, and noise-aware statistics.
+- **Veriq Bench v0.1:** ✅ tasks, mutant corpus, `veriq bench run|corpus-eval|leaderboard`, leaderboard, paper draft. Next: a sandboxed runner, pinned model versions per submission, more tasks and rounds, and real-world (non-synthetic) bugs.
 - **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
 
 ## License
