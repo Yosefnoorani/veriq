@@ -1,0 +1,63 @@
+{
+ "version": "0.1",
+ "source": "benchmark/optimize/results.json (generated 2026-10-28T16:53:55+02:00)",
+ "definition": "lowest CX (then depth) of a circuit PROVEN equivalent to a verified-correct submission, found by `veriq optimize` (linear coupling for c3x_linear and reverse6_nn); an upper bound on the optimum, not the optimum",
+ "tasks": {
+  "maj5": {
+   "cx": 239,
+   "depth": 512,
+   "from": "hard-round-2026-10-27/chatgpt",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null
+  },
+  "cmul7": {
+   "cx": 60,
+   "depth": 137,
+   "from": "hard-round-2026-10-27/gemini",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null
+  },
+  "qpe_t": {
+   "cx": 9,
+   "depth": 50,
+   "from": "hard-round-2026-10-27/claude",
+   "method": "mps-exact-overlap",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null
+  },
+  "c3x_linear": {
+   "cx": 24,
+   "depth": 25,
+   "from": "hard-round-2026-10-27/claude",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": "linear"
+  },
+  "reverse6_nn": {
+   "cx": 45,
+   "depth": 18,
+   "from": "hard-round-2026-10-27/claude",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": "linear"
+  },
+  "bv22": {
+   "cx": 3,
+   "depth": 9,
+   "from": "hard-round-2026-10-27/chatgpt",
+   "method": "partition+clifford-tableau",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null
+  },
+  "add3": {
+   "cx": 25,
+   "depth": 48,
+   "from": "hard-round-2026-10-27/chatgpt",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null
+  }
+ }
+}

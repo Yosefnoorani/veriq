@@ -1,0 +1,43 @@
+{
+ "id": "bv22",
+ "version": "0.1",
+ "order": 6,
+ "title": "Bernstein-Vazirani, s = 22",
+ "function": "build_bv22",
+ "qubits": 6,
+ "mode": "state",
+ "prompt": {
+  "shared_preamble": "Write a single Python file using Qiskit 2.x (qiskit only) that defines exactly these 7 functions. Each returns a qiskit.QuantumCircuit with NO measurements and NO classical bits. Use Qiskit's little-endian convention (qubit 0 is the least significant bit). Do NOT use library algorithm circuits (no QFT/QFTGate, PhaseEstimation, GroverOperator, arithmetic library circuits, UnitaryGate, Isometry, StatePreparation, initialize, or Permutation gates) \u2014 build from standard gates. Correctness is checked exactly (up to global phase), so be precise.",
+  "task": "6. build_bv22(): 6 qubits. Bernstein\u2013Vazirani for the secret s = 22 on a 5-qubit input register q0..q4 (q0 = LSB of s), oracle f(x) = s\u00b7x mod 2 written into ancilla q5. Start from |000000>; the ancilla must end back in |0>. The final state must be exactly |q5=0>|q4..q0 = 22>.",
+  "shared_suffix": "Return only one code block with the full file.",
+  "full_prompt_file": "prompt.md"
+ },
+ "reference": {
+  "file": "references.py",
+  "function": "build_bv22",
+  "verified_against": "statevector == |22> (basis index 22, up to global phase)",
+  "qasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[6];\nx q[1];\nx q[2];\nx q[4];",
+  "note": "references may use library gates (they are trusted, not graded)"
+ },
+ "constraints": {
+  "no_black_boxes": true,
+  "allowed_gates": null,
+  "coupling": null,
+  "no_measurements": true,
+  "no_extra_qubits": true
+ },
+ "correctness": "prepared state from |0...0> equal up to global phase (exact statevector)",
+ "cost_model": {
+  "basis_gates": [
+   "cx",
+   "rz",
+   "sx",
+   "x"
+  ],
+  "optimization_level": 1,
+  "seed_transpiler": 2026,
+  "qubits_initially_zero": true,
+  "coupling_map": null,
+  "metric": "cx count, then depth"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "round": "hard-round-2026-10-27",
+ "prompt_file": "../../prompt.md",
+ "prompt_date": "2026-10-27",
+ "how": "same prompt pasted once into a new chat of each web assistant; first answer kept verbatim; no retries, no edits",
+ "models": {
+  "chatgpt": {
+   "label": "ChatGPT (free, Think)",
+   "interface": "public web chat",
+   "model_version": "unknown (not shown/recorded by the web UI at the time)",
+   "date": "2026-10-27",
+   "attempts": 1,
+   "source_sha256": "49d7b2ae7c33e339b6e6b7c9bed1ab764750f8f507681f541ac0e8e79ff5bb04"
+  },
+  "claude": {
+   "label": "Claude (free, default model)",
+   "interface": "public web chat",
+   "model_version": "unknown (not shown/recorded by the web UI at the time)",
+   "date": "2026-10-27",
+   "attempts": 1,
+   "source_sha256": "2904dc41771ec0256c13da8df31a94adb68324e1684a01bba8f09a490cc4f5ac"
+  },
+  "gemini": {
+   "label": "Gemini (Pro)",
+   "interface": "public web chat",
+   "model_version": "unknown (not shown/recorded by the web UI at the time)",
+   "date": "2026-10-27",
+   "attempts": 1,
+   "source_sha256": "b52c5a75e1548496b3c278ef4ca76049899914ab0ea396d42b8b5ae77aefab89"
+  },
+  "perplexity": {
+   "label": "Perplexity (free, default)",
+   "interface": "public web chat",
+   "model_version": "unknown (not shown/recorded by the web UI at the time)",
+   "date": "2026-10-27",
+   "attempts": 1,
+   "source_sha256": "de1b633969a0ac9ea6b12852ce2c67618a78f2ec83576c6f58be1aca2e46bce3"
+  }
+ }
+}

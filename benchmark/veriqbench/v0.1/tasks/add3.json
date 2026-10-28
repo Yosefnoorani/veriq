@@ -1,0 +1,48 @@
+{
+ "id": "add3",
+ "version": "0.1",
+ "order": 7,
+ "title": "3-bit in-place adder mod 8",
+ "function": "build_add3",
+ "qubits": 6,
+ "mode": "unitary",
+ "prompt": {
+  "shared_preamble": "Write a single Python file using Qiskit 2.x (qiskit only) that defines exactly these 7 functions. Each returns a qiskit.QuantumCircuit with NO measurements and NO classical bits. Use Qiskit's little-endian convention (qubit 0 is the least significant bit). Do NOT use library algorithm circuits (no QFT/QFTGate, PhaseEstimation, GroverOperator, arithmetic library circuits, UnitaryGate, Isometry, StatePreparation, initialize, or Permutation gates) \u2014 build from standard gates. Correctness is checked exactly (up to global phase), so be precise.",
+  "task": "7. build_add3(): 6 qubits. a = q0..q2 (q0 = LSB), b = q3..q5 (q3 = LSB). |a>|b> -> |a>|(a+b) mod 8>, a unchanged, no extra qubits. Gates x, cx, ccx, mcx allowed.",
+  "shared_suffix": "Return only one code block with the full file.",
+  "full_prompt_file": "prompt.md"
+ },
+ "reference": {
+  "file": "references.py",
+  "function": "build_add3",
+  "verified_against": "unitary == 64x64 permutation from the exhaustive truth table (exact, incl. phase)",
+  "qasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\ngate mcx q0,q1,q2,q3 { h q3; p(pi/8) q0; p(pi/8) q1; p(pi/8) q2; p(pi/8) q3; cx q0,q1; p(-pi/8) q1; cx q0,q1; cx q1,q2; p(-pi/8) q2; cx q0,q2; p(pi/8) q2; cx q1,q2; p(-pi/8) q2; cx q0,q2; cx q2,q3; p(-pi/8) q3; cx q1,q3; p(pi/8) q3; cx q2,q3; p(-pi/8) q3; cx q0,q3; p(pi/8) q3; cx q2,q3; p(-pi/8) q3; cx q1,q3; p(pi/8) q3; cx q2,q3; p(-pi/8) q3; cx q0,q3; h q3; }\nqreg q[6];\nmcx q[0],q[3],q[4],q[5];\nccx q[0],q[3],q[4];\ncx q[0],q[3];\nccx q[1],q[4],q[5];\ncx q[1],q[4];\ncx q[2],q[5];",
+  "note": "references may use library gates (they are trusted, not graded)"
+ },
+ "constraints": {
+  "no_black_boxes": true,
+  "allowed_gates": [
+   "x",
+   "cx",
+   "ccx",
+   "mcx"
+  ],
+  "coupling": null,
+  "no_measurements": true,
+  "no_extra_qubits": true
+ },
+ "correctness": "unitary equality up to global phase, every input (formal proof)",
+ "cost_model": {
+  "basis_gates": [
+   "cx",
+   "rz",
+   "sx",
+   "x"
+  ],
+  "optimization_level": 1,
+  "seed_transpiler": 2026,
+  "qubits_initially_zero": false,
+  "coupling_map": null,
+  "metric": "cx count, then depth"
+ }
+}

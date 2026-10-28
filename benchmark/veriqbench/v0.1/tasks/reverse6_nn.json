@@ -1,0 +1,45 @@
+{
+ "id": "reverse6_nn",
+ "version": "0.1",
+ "order": 5,
+ "title": "6-qubit reversal with nearest-neighbour CX",
+ "function": "build_reverse6_nn",
+ "qubits": 6,
+ "mode": "unitary",
+ "prompt": {
+  "shared_preamble": "Write a single Python file using Qiskit 2.x (qiskit only) that defines exactly these 7 functions. Each returns a qiskit.QuantumCircuit with NO measurements and NO classical bits. Use Qiskit's little-endian convention (qubit 0 is the least significant bit). Do NOT use library algorithm circuits (no QFT/QFTGate, PhaseEstimation, GroverOperator, arithmetic library circuits, UnitaryGate, Isometry, StatePreparation, initialize, or Permutation gates) \u2014 build from standard gates. Correctness is checked exactly (up to global phase), so be precise.",
+  "task": "5. build_reverse6_nn(): 6 qubits. Reverse qubit order (qubit i <-> qubit 5-i, i.e. the permutation that maps |b5 b4 b3 b2 b1 b0> to |b0 b1 b2 b3 b4 b5>). Allowed gates ONLY: cx, and every cx must act on adjacent qubits only (qi, q(i+1)).",
+  "shared_suffix": "Return only one code block with the full file.",
+  "full_prompt_file": "prompt.md"
+ },
+ "reference": {
+  "file": "references.py",
+  "function": "build_reverse6_nn",
+  "verified_against": "unitary == 64x64 permutation from the exhaustive truth table (exact, incl. phase)",
+  "qasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[6];\nswap q[0],q[5];\nswap q[1],q[4];\nswap q[2],q[3];",
+  "note": "references may use library gates (they are trusted, not graded)"
+ },
+ "constraints": {
+  "no_black_boxes": true,
+  "allowed_gates": [
+   "cx"
+  ],
+  "coupling": "linear",
+  "no_measurements": true,
+  "no_extra_qubits": true
+ },
+ "correctness": "unitary equality up to global phase, every input (formal proof)",
+ "cost_model": {
+  "basis_gates": [
+   "cx",
+   "rz",
+   "sx",
+   "x"
+  ],
+  "optimization_level": 1,
+  "seed_transpiler": 2026,
+  "qubits_initially_zero": false,
+  "coupling_map": "linear",
+  "metric": "cx count, then depth"
+ }
+}

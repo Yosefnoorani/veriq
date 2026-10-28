@@ -1,0 +1,43 @@
+{
+ "id": "qpe_t",
+ "version": "0.1",
+ "order": 3,
+ "title": "QPE of the T gate",
+ "function": "build_qpe_t",
+ "qubits": 4,
+ "mode": "state",
+ "prompt": {
+  "shared_preamble": "Write a single Python file using Qiskit 2.x (qiskit only) that defines exactly these 7 functions. Each returns a qiskit.QuantumCircuit with NO measurements and NO classical bits. Use Qiskit's little-endian convention (qubit 0 is the least significant bit). Do NOT use library algorithm circuits (no QFT/QFTGate, PhaseEstimation, GroverOperator, arithmetic library circuits, UnitaryGate, Isometry, StatePreparation, initialize, or Permutation gates) \u2014 build from standard gates. Correctness is checked exactly (up to global phase), so be precise.",
+  "task": "3. build_qpe_t(): 4 qubits. Quantum phase estimation of the T gate (eigenphase 1/8 on |1>) with a 3-qubit counting register q0..q2 (q0 = LSB) and the eigenstate qubit q3. Start from |0000>, prepare q3 in |1>, run QPE (including your own inverse QFT) so that the final state is exactly |q3=1>|counting = 1> (i.e. the counting register holds the integer 1 = 8 * 1/8).",
+  "shared_suffix": "Return only one code block with the full file.",
+  "full_prompt_file": "prompt.md"
+ },
+ "reference": {
+  "file": "references.py",
+  "function": "build_qpe_t",
+  "verified_against": "statevector == |9> (basis index 9, up to global phase)",
+  "qasm": null,
+  "note": "references may use library gates (they are trusted, not graded)"
+ },
+ "constraints": {
+  "no_black_boxes": true,
+  "allowed_gates": null,
+  "coupling": null,
+  "no_measurements": true,
+  "no_extra_qubits": true
+ },
+ "correctness": "prepared state from |0...0> equal up to global phase (exact statevector)",
+ "cost_model": {
+  "basis_gates": [
+   "cx",
+   "rz",
+   "sx",
+   "x"
+  ],
+  "optimization_level": 1,
+  "seed_transpiler": 2026,
+  "qubits_initially_zero": true,
+  "coupling_map": null,
+  "metric": "cx count, then depth"
+ }
+}

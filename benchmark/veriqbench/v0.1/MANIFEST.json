@@ -1,0 +1,23 @@
+{
+ "version": "0.1",
+ "files": {
+  "best_known.json": "763389d93e4cbd38d377e88d47c9bb733f79d1eff1e021ca8a74fe5668bfdb54",
+  "corpus/README.md": "9b0429ea9f3f63b3ac7c52a2aed7579179ccf983e85df0eb5aec72adc0105f76",
+  "corpus/correct.jsonl": "2b618e1872d4927966018192737c78dd016198cdc44e13082bf26da88763a475",
+  "corpus/mutants.jsonl": "6cc0c2b90e5a0eb7dddf381fbf9260b7932820d83c75d7a66cad2f0fa24b32db",
+  "prompt.md": "8b2257c4dd3d73773371fe92528cf0c74b49cb7444f068fa176c3e6ebf3fab5a",
+  "references.py": "1caccfe98ab896db8fb049534ad6aebbbf9e255d53682139cda70b74424819a2",
+  "submissions/hard-round-2026-10-27/chatgpt.py": "49d7b2ae7c33e339b6e6b7c9bed1ab764750f8f507681f541ac0e8e79ff5bb04",
+  "submissions/hard-round-2026-10-27/claude.py": "2904dc41771ec0256c13da8df31a94adb68324e1684a01bba8f09a490cc4f5ac",
+  "submissions/hard-round-2026-10-27/gemini.py": "b52c5a75e1548496b3c278ef4ca76049899914ab0ea396d42b8b5ae77aefab89",
+  "submissions/hard-round-2026-10-27/perplexity.py": "de1b633969a0ac9ea6b12852ce2c67618a78f2ec83576c6f58be1aca2e46bce3",
+  "submissions/hard-round-2026-10-27/provenance.json": "a65fc3a8fc182b2dc9fddd5ec8d8bf87079ffa7a71b4823e3219d430e7f04645",
+  "tasks/add3.json": "c2ac42c220f68ec99bf23ca69af84520a3f06a16830a83db7ecffc874d72760e",
+  "tasks/bv22.json": "ca5f0845eb8a2d6db5a02065aba0fbe4899168ae330e7c7fba0a087b0547fdf0",
+  "tasks/c3x_linear.json": "ef6e1bbe2fc9edcbee95fff8d08e556d619a19f2abbb18aa0ae23f66c0a712e7",
+  "tasks/cmul7.json": "fe7fab8a4992489c2988127442a5d3bcb2f6a32678c4ba3506806a5b22206345",
+  "tasks/maj5.json": "14965fc19015a79515a55b2944bd12eac3cdbc043fc444d73f7224ef0180b10a",
+  "tasks/qpe_t.json": "b5e5ea4b31f7316aa36b5c7f959cdf005a15ed99a95b6bc4c5419f9e23768767",
+  "tasks/reverse6_nn.json": "8bce92127dd2119184d1699594fcf584a5cf102f9e433cb02dbf9e6f0f065b48"
+ }
+}
