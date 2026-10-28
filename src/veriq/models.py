@@ -39,6 +39,8 @@ class Report:
     reference_text: str = ""
     seconds: float = 0.0
     versions: dict[str, str] = field(default_factory=dict)
+    # in-memory only (not serialized): the circuits that were checked, for certificates
+    circuits: dict[str, Any] = field(default_factory=dict, repr=False, compare=False)
 
     def to_dict(self) -> dict[str, Any]:
         return {

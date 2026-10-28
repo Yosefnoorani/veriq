@@ -115,4 +115,5 @@ def run_checks(target: str | QuantumCircuit, reference: str | QuantumCircuit | N
         reference_text=_draw(ref) if ref is not None else "",
         seconds=time.perf_counter() - t0,
         versions=_versions(),
+        circuits={"candidate": cand, "reference": ref},
     )
