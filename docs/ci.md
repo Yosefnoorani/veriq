@@ -99,6 +99,9 @@ On GitHub, the checkout needs `fetch-depth: 0`. Otherwise the base commit is mis
     report-dir: ""            # default: the config's report-dir
     artifact-name: veriq-reports
     github-token: ${{ github.token }}
+    certificates: "true"      # write + upload <artifact-name>-certificates (see certificates.md)
+    signing-key: ""           # e.g. ${{ secrets.VERIQ_SIGNING_KEY }}; empty = unsigned certificates
+    signing-key-passphrase: ""
 ```
 
 Steps:

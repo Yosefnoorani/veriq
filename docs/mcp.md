@@ -76,7 +76,7 @@ optional `function` (default: `build()`, else `make_circuit()`/`circuit()`, else
 
 | tool | what it answers | key outputs |
 |---|---|---|
-| `verify_circuit` | "Is this circuit correct?" Runs Veriq's full check suite: transpile integrity, equivalence to a trusted reference (`mode`: `unitary` or `state` = same state from \|0…0⟩), gate-set (`allowed_gates`), `coupling` (`linear`/`ring`/`all`/`0-1,1-2`), `no_black_boxes`, statistical test (`shots`, `expect`) | `verdict` PASS/FAIL/INCONCLUSIVE/ERROR, `checks[]`, `counterexample`, `metrics`, `hints[]` |
+| `verify_circuit` | "Is this circuit correct?" Runs Veriq's full check suite: transpile integrity, equivalence to a trusted reference (`mode`: `unitary` or `state` = same state from \|0…0⟩), gate-set (`allowed_gates`), `coupling` (`linear`/`ring`/`all`/`0-1,1-2`), `no_black_boxes`, statistical test (`shots`, `expect`); `certificate=true` adds an unsigned [certificate](certificates.md) | `verdict` PASS/FAIL/INCONCLUSIVE/ERROR, `checks[]`, `counterexample`, `metrics`, `hints[]`, `certificate` |
 | `check_transpile` | "Did compilation change what my circuit does?" Compiles at `optimization_level` for `basis_gates`/`coupling`, and by default **both** with and without `qubits_initially_zero` | `equivalent`, `status`, `zero_init_hazard`, per-run `method`/`counterexample`/`equal_on_zero_input` |
 | `compare_circuits` | "Are A and B the same?" (`mode` unitary or state) | `status` PROVEN_EQUIVALENT / NOT_EQUIVALENT / PROBABLY_EQUIVALENT / UNKNOWN, `method`, `counterexample` |
 | `circuit_metrics` | Size/depth/2-qubit counts, before and after a standard compile | `source`, `compiled`, `is_clifford` |
