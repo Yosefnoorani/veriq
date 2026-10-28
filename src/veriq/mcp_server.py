@@ -235,6 +235,17 @@ class Runner:
         return await anyio.to_thread.run_sync(partial(self.execute, tool, sources, options), limiter=self.limiter)
 
 
+def _source_meta(src: dict[str, Any]) -> dict[str, Any]:
+    """Path/function and sha256 of the source as given (code text or file bytes) for certificates."""
+    import hashlib
+
+    if "code" in src:
+        return {"path": None, "function": src.get("function"),
+                "source_sha256": hashlib.sha256(src["code"].encode()).hexdigest()}
+    return {"path": src["path"], "function": src.get("function"),
+            "source_sha256": hashlib.sha256(Path(src["path"]).read_bytes()).hexdigest()}
+
+
 def _error(kind: str, detail: str, stderr_tail: str = "") -> dict[str, Any]:
     hints = {
         "timeout": "The job hit the sandbox time limit. Simplify the circuit, avoid loops that never end, or "
@@ -328,6 +339,8 @@ class VerifyResult(_Out):
     hints: list[str] = Field(default=[], description="Concrete suggestions for fixing the circuit")
     repair_report: dict[str, Any] | None = Field(None, description="Compact repair report when not PASS "
                                                  "(counterexample, localized region, exact fixes)")
+    certificate: dict[str, Any] | None = Field(None, description="Unsigned veriq.certificate/1 when "
+                                               "certificate=true (sign with `veriq certify`)")
     error: ErrorInfo | None = None
     seconds: float | None = None
 
@@ -413,6 +426,9 @@ equivalent, metrics and `hints` on how to fix it. If FAIL: fix the circuit and c
                           Field(max_length=4096, description="Expected measurement distribution "
                                 "{bitstring: probability} (little-endian), used when there is no reference.")] = None,
         timeout: ProofTimeout = 30.0,
+        certificate: Annotated[bool, Field(description="Also return an UNSIGNED veriq.certificate/1 (input "
+                                           "hashes, verdict, proof method, assumptions, versions). Save it as "
+                                           "JSON and sign with `veriq certify`.")] = False,
     ) -> VerifyResult:
         cand = runner.source(code, path, function, "candidate")
         ref = runner.source(reference_code, reference_path, reference_function, "reference", required=False, prefix="reference_")
@@ -420,6 +436,9 @@ equivalent, metrics and `hints` on how to fix it. If FAIL: fix the circuit and c
             raise ToolError("expect: empty distribution")
         opts = {"mode": mode, "allowed_gates": allowed_gates, "coupling": coupling, "no_black_boxes": no_black_boxes,
                 "shots": shots, "expect": expect, "timeout": timeout}
+        if certificate:
+            opts["certificate"] = True
+            opts["sources"] = {k: _source_meta(v) for k, v in (("candidate", cand), ("reference", ref)) if v}
         return VerifyResult.model_validate(
             await runner.run("verify_circuit", {"candidate": cand, "reference": ref}, opts))
 

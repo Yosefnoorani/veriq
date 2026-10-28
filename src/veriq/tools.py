@@ -170,14 +170,39 @@ def _one_line(rep: dict[str, Any]) -> str:
 def verify_circuit(candidate: QuantumCircuit, reference: QuantumCircuit | None = None, mode: str = "unitary",
                    allowed_gates: list[str] | None = None, coupling: str | list | None = None,
                    no_black_boxes: bool = False, shots: int = 4096, expect: dict | None = None,
-                   seed: int = 7, timeout: float = 30.0) -> dict[str, Any]:
-    rep = run_checks(candidate, reference=reference, expect=expect, shots=shots, seed=seed, timeout=timeout,
-                     mode=mode, allowed_gates=allowed_gates, coupling=coupling,
-                     no_black_boxes=no_black_boxes).to_dict()
+                   seed: int = 7, timeout: float = 30.0, certificate: bool = False,
+                   sources: dict[str, dict] | None = None) -> dict[str, Any]:
+    """`certificate=True` adds an UNSIGNED veriq.certificate/1 (sign it later with `veriq certify`).
+    `sources` = {role: {path, function, source_sha256}} recorded in the certificate's inputs."""
+    from .certificate import utc_now
+
+    started = utc_now()
+    report = run_checks(candidate, reference=reference, expect=expect, shots=shots, seed=seed, timeout=timeout,
+                        mode=mode, allowed_gates=allowed_gates, coupling=coupling, no_black_boxes=no_black_boxes)
+    rep = report.to_dict()
     out = report_to_tool_result(rep)
     if out["verdict"] != "PASS":
         out["repair_report"] = _compact_repair(_repair(candidate, reference, mode, rep))
+    if certificate:
+        out["certificate"] = _certificate(report, started, sources or {}, dict(
+            mode=mode, allowed_gates=allowed_gates, coupling=coupling, no_black_boxes=no_black_boxes,
+            shots=shots, expect=expect, seed=seed, timeout=timeout))
     return out
+
+
+def _certificate(report, started: str, sources: dict[str, dict], options: dict[str, Any]) -> dict[str, Any]:
+    from .certificate import certificate_from_report
+
+    try:
+        cert = certificate_from_report(report, kind="verify", options=options, started=started)
+    except Exception as exc:  # a certificate problem must never break the verdict
+        return {"error": f"certificate not produced: {exc!r}"[:300]}
+    for rec in cert.get("inputs", []):
+        src = sources.get(rec["role"]) or {}
+        for k in ("path", "function", "source_sha256"):
+            if src.get(k) is not None:
+                rec[k] = src[k]
+    return cert
 
 
 def _repair(candidate: QuantumCircuit, reference: QuantumCircuit | None, mode: str,
