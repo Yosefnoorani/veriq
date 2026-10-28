@@ -304,6 +304,32 @@ On the 28 hard-round circuits, the result was proven for 28/28. Against Qiskit l
 from 5480 to 3124 in total (ChatGPT −60%, Perplexity −58%, Claude −24%, Gemini −14%). See
 [benchmark/optimize/results.md](benchmark/optimize/results.md) and [docs/optimize.md](docs/optimize.md).
 
+## Hardware preflight: go / warn / no-go before you submit
+
+`veriq preflight` compiles a circuit for a target device, **proves** the compiled circuit equals the input
+(layout and routing permutation made explicit, `qubits_initially_zero=False`), checks native gates and coupling,
+and estimates quality: ESP (product of gate and readout fidelities), duration vs T1/T2, two-qubit count. It picks
+the best of several layouts/seeds (noise-aware), and optionally runs a noisy Aer simulation (TVD vs ideal, ≤ 12
+qubits). Fully offline: IBM devices come from the frozen calibration snapshots in `qiskit-ibm-runtime`
+(`fake_torino`, `fake_brisbane`, …; `pip install veriq[preflight]`), other devices from a small JSON profile
+(native gates, coupling or all-to-all, per-gate errors, T1/T2, readout, durations).
+
+```bash
+veriq preflight my_circuit.py --backend fake_torino --reference ref.py --min-esp 0.2 --max-cx 200
+veriq preflight my_circuit.py --backend my_device.json --noisy-sim --certificate pf.json
+```
+
+Exit 0 = go, 2 = warn, 1 = no-go, 3 = input error. It is also a `preflight:` key in `.veriq.yml`, an MCP tool
+(`preflight_circuit`), and a certificate block. The three bundled profiles (`ionq_style_25q`,
+`quantinuum_style_20q`, `braket_superconducting_style_12q`) are **illustrative, not vendor data**.
+
+On the 28 hard-round circuits, every compiled circuit was proven equal to its input (112/112 across written and
+optimized versions on both backends). On fake_torino the optimized versions cut two-qubit gates 8949 → 4900; for
+the ChatGPT/Perplexity 7-bit multiplier that moves the gate from no-go (ESP 0.001) to warn (0.234). Optimization
+does not always help: ESP got worse on 5/28 (torino) and 10/28 (brisbane), because fewer gates on an all-to-all
+basis can route worse. **ESP is an estimate from months-old snapshots, not a hardware measurement.** See
+[benchmark/preflight/results.md](benchmark/preflight/results.md) and [docs/preflight.md](docs/preflight.md).
+
 ## Large circuits (20–50+ qubits)
 
 Above 12 qubits a brute-force truth table is impossible, so `veriq.scale.decide_equivalence` runs a tiered
@@ -363,6 +389,7 @@ src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.p
              scale.py   (large-circuit engine)
              repair_report.py  repair.py   (repair report, localization, repair loop)
              optimize.py   (verified CX optimizer)
+             preflight.py  profiles/*.json   (hardware preflight, illustrative device profiles)
              bench.py   (Veriq Bench runner, corpus-eval, leaderboard)
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
@@ -377,7 +404,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - MPS falsification is exact for low-entanglement circuits but slows down sharply as entanglement grows. Highly entangling 40-50 qubit circuits may hit the time cap.
 - For more than 20 qubits the statistical test is a two-sample chi² on sampled outcomes. When the outputs are spread out (distinct outcomes > shots/10) it returns INCONCLUSIVE.
 - The statistical test uses a noiseless simulator; noise-aware thresholds come later.
-- Fake-backend support is `GenericBackendV2` only (no vendor calibration snapshots yet).
+- Hardware preflight uses frozen IBM calibration snapshots (from `qiskit-ibm-runtime`) and illustrative JSON profiles; its ESP / duration / TVD numbers are estimates under a simple noise model (no crosstalk, leakage or drift), not hardware measurements. No live device or cloud account is used.
 - Qiskit is the only front-end today (OpenQASM 2/3 as interchange).
 - Certificates: the canonical circuit hash depends on Qiskit's QASM exporter version (the source-file hash is the stable anchor); a signature checked only against the embedded key proves integrity, not identity; there is no sigstore or transparency log yet.
 
@@ -391,6 +418,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - **Large circuits:** ✅ Clifford tableau, QCEC strategies with hard timeouts, MPS falsification, partitioning, and a scaling benchmark up to 50 qubits (200 for Clifford). Next: decision-diagram (DD) simulation of counterexamples, and noise-aware statistics.
 - **Veriq Bench v0.1:** ✅ tasks, mutant corpus, `veriq bench run|corpus-eval|leaderboard`, leaderboard, paper draft. Next: a sandboxed runner, pinned model versions per submission, more tasks and rounds, and real-world (non-synthetic) bugs.
 - **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
+- **Hardware preflight:** ✅ `veriq preflight` (proven compile, native/coupling checks, ESP/duration/TVD estimates, noise-aware layout, go/warn/no-go; CI key, MCP tool, certificate). Next: live calibration fetch (opt-in), backend-aware optimization, idle-error-aware layout.
 - **Signed certificates:** ✅ `veriq.certificate/1`, Ed25519 `keygen`/`certify`/`cert verify --recheck`, CI artifacts, MCP. Next: sigstore keyless signing + transparency log, in-toto/SLSA attestation format.
 
 ## License
