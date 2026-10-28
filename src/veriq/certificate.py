@@ -317,8 +317,10 @@ def semantic_problems(cert: dict[str, Any]) -> list[str]:
     expected = _claim(v, ps) if v in ("PASS", "FAIL", "INCONCLUSIVE") else None
     if claim != expected:
         p.append(f"claim {claim!r} does not follow from verdict {v!r} and proof status {ps!r} (expected {expected!r})")
-    if ps == "proven" and v != "PASS":
-        p.append("proof status 'proven' on a non-PASS certificate")
+    # A proven proof with a non-PASS verdict is legitimate (e.g. a constraint FAILed or the sampling test was
+    # borderline); its claim is then CHECK_FAILED / NONE, never PROVEN_EQUIVALENT (enforced via `claim`).
+    if ps not in ("proven", "refuted", "undecided", "none"):
+        p.append(f"invalid proof status {ps!r}")
     if ps == "proven" and "PROBABLY" in json.dumps(proof).upper():
         p.append("a PROBABLY_EQUIVALENT (simulation-only) result is not a proof")
     if v == "FAIL" and cert.get("counterexample") is None:
