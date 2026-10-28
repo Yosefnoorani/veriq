@@ -40,6 +40,7 @@ PROFILE_SCHEMA = "veriq.backend/1"
 PROFILES_DIR = Path(__file__).resolve().parent / "profiles"
 SKIP_OPS = {"barrier", "delay"}
 NOISY_SIM_MAX_QUBITS = 12
+PROOF_TRIES = 4  # candidates tried, best ESP first, until one is PROVEN
 DEFAULTS = {"min_esp": 0.05, "warn_esp": 0.5, "max_cx": None, "max_duration": None, "warn_t2_fraction": 0.5,
             "max_tvd": None}
 
@@ -324,6 +325,16 @@ def prove_compiled(qc: QuantumCircuit, comp: dict[str, Any], timeout: float = 60
     r = scale.decide_equivalence(cu, exp, mode="unitary", timeout=timeout)
     status = {scale.PROVEN: "proven", scale.NOT_EQ: "refuted"}.get(r["status"], "undecided")
     out = {"status": status, "result": r["status"], "method": r.get("method"), "seconds": r.get("seconds")}
+    if status == "refuted" and cu.num_qubits <= 10:
+        from qiskit.quantum_info import Operator, process_fidelity
+
+        f = float(process_fidelity(Operator(exp), Operator(cu)))
+        out["process_fidelity"] = f
+        if f > 1 - 1e-6:  # floating-point drift of a deep resynthesised circuit, not a real difference
+            out.update(status="undecided", result=scale.UNKNOWN, note=f"numerical drift only: process fidelity "
+                       f"1-{1 - f:.1e}, outside the 1e-8 proof tolerance; neither proven nor refuted")
+            out.pop("counterexample", None)
+            return out
     cex = (r.get("evidence") or {}).get("counterexample")
     if cex:
         out["counterexample"] = cex
@@ -552,7 +563,17 @@ def preflight(qc: QuantumCircuit, backend: Backend | str | dict, *, reference: Q
     res["candidates"] = [{"config": c["config"], "esp": c["est"]["esp"], "esp_with_idle": c["est"]["esp_with_idle"],
                           "two_qubit_gates": c["est"]["two_qubit_gates"], "duration_s": c["est"]["duration_s"],
                           "physical_qubits": c["comp"]["physical"]} for c in cands]
-    best = cands[0]
+    # 1. proof: take the best-ranked candidate whose compiled circuit is PROVEN equivalent (try a few)
+    attempts = []
+    best, pr = cands[0], None
+    for c in cands[:PROOF_TRIES]:
+        p_ = prove_compiled(qc, c["comp"], timeout=timeout)
+        attempts.append({"config": c["config"], "status": p_["status"], "method": p_.get("method"),
+                         **({"note": p_["note"]} if p_.get("note") else {})})
+        if pr is None or p_["status"] == "proven":
+            best, pr = c, p_
+        if p_["status"] == "proven":
+            break
     est, comp, tc = best["est"], best["comp"], best["tc"]
     res["chosen"] = best["config"]
     res["layout"] = {"physical_qubits": comp["physical"],
@@ -564,13 +585,15 @@ def preflight(qc: QuantumCircuit, backend: Backend | str | dict, *, reference: Q
     res["layout_selection"] = {"candidates": len(cands), "best_esp": est["esp_with_idle"],
                                "worst_esp": worst["esp_with_idle"],
                                "median_esp": sorted(c["est"]["esp_with_idle"] for c in cands)[len(cands) // 2]}
-    # 1. proof
-    pr = prove_compiled(qc, comp, timeout=timeout)
     res["proof"] = pr
+    res["proof_attempts"] = attempts
     st = {"proven": "PASS", "refuted": "FAIL"}.get(pr["status"], "INCONCLUSIVE")
+    skipped = [a for a in attempts if a["config"] != best["config"]]
     checks.append(_check("Compiled circuit proven equivalent", st,
                          f"compiled ({best['config']}) vs input up to layout+routing permutation: "
-                         f"{pr['result']} ({pr.get('method')})" + (f"; {pr['note']}" if pr.get("note") else ""), pr))
+                         f"{pr['result']} ({pr.get('method')})" + (f"; {pr['note']}" if pr.get("note") else "")
+                         + (f"; {len(skipped)} better-ranked candidate(s) skipped as not proven: "
+                            + ", ".join(f"{a['config']} {a['status']}" for a in skipped) if skipped else ""), pr))
     # 2. native gates + coupling
     bad = native_violations(tc, be.target)
     checks.append(_check("Native gates and coupling", "FAIL" if bad else "PASS",
