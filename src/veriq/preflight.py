@@ -526,15 +526,28 @@ def preflight(qc: QuantumCircuit, backend: Backend | str | dict, *, reference: Q
             ev["counterexample"] = r["evidence"]["counterexample"]
         checks.append(_check("Input vs reference", st, f"{r['status']} ({r.get('method')}, mode={mode})", ev))
     cands = []
+    # Qiskit's VF2 layout scoring only sees the errors of operations in the circuit, so a circuit without
+    # measurements would ignore readout error: also compile a copy with measure_all (readout-aware layout)
+    # and drop those final measurements again afterwards.
+    variants = [(qc, "")]
+    if not any(ins.operation.name == "measure" for ins in qc.data):
+        qm = qc.copy()
+        qm.measure_all()
+        variants.append((qm, " readout-aware"))
     for lvl in levels:
         for i in range(max(1, seeds)):
             s = seed + i
-            tc = transpile(qc, target=be.target, optimization_level=lvl, seed_transpiler=s,
-                           qubits_initially_zero=False)
-            comp = compact(tc, qc.num_qubits)
-            est = estimate(tc, be, qc.num_qubits, [comp["physical"][j] for j in comp["final"]])
-            cands.append({"config": f"opt{lvl} seed {s}", "level": lvl, "seed": s, "tc": tc, "comp": comp,
-                          "est": est})
+            for src, tag in variants:
+                tc = transpile(src, target=be.target, optimization_level=lvl, seed_transpiler=s,
+                               qubits_initially_zero=False)
+                if tag:
+                    lay = tc.layout
+                    tc = tc.remove_final_measurements(inplace=False)
+                    tc._layout = lay
+                comp = compact(tc, qc.num_qubits)
+                est = estimate(tc, be, qc.num_qubits, [comp["physical"][j] for j in comp["final"]])
+                cands.append({"config": f"opt{lvl} seed {s}{tag}", "level": lvl, "seed": s, "tc": tc,
+                              "comp": comp, "est": est})
     cands.sort(key=lambda c: (-c["est"]["esp_with_idle"], c["est"]["two_qubit_gates"], c["est"]["duration_s"]))
     res["candidates"] = [{"config": c["config"], "esp": c["est"]["esp"], "esp_with_idle": c["est"]["esp_with_idle"],
                           "two_qubit_gates": c["est"]["two_qubit_gates"], "duration_s": c["est"]["duration_s"],
