@@ -1,0 +1,1323 @@
+{
+ "schema": "veriq.bench_run/1",
+ "bench_version": "0.1",
+ "bench": "/workspace/veriq/benchmark/veriqbench/v0.1",
+ "model_outputs": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27",
+ "generated": "2026-10-28T17:28:53+02:00",
+ "versions": {
+  "veriq": "0.1.0",
+  "python": "3.13.5",
+  "qiskit": "2.6.1",
+  "mqt.qcec": "3.11.0",
+  "qiskit_aer": "0.18.2"
+ },
+ "settings": {
+  "optimize": true,
+  "budget_s": 60.0,
+  "seeds": 4,
+  "timeout_s": 30.0
+ },
+ "provenance": {
+  "round": "hard-round-2026-10-27",
+  "prompt_file": "../../prompt.md",
+  "prompt_date": "2026-10-27",
+  "how": "same prompt pasted once into a new chat of each web assistant; first answer kept verbatim; no retries, no edits",
+  "models": {
+   "chatgpt": {
+    "label": "ChatGPT (free, Think)",
+    "interface": "public web chat",
+    "model_version": "unknown (not shown/recorded by the web UI at the time)",
+    "date": "2026-10-27",
+    "attempts": 1,
+    "source_sha256": "49d7b2ae7c33e339b6e6b7c9bed1ab764750f8f507681f541ac0e8e79ff5bb04"
+   },
+   "claude": {
+    "label": "Claude (free, default model)",
+    "interface": "public web chat",
+    "model_version": "unknown (not shown/recorded by the web UI at the time)",
+    "date": "2026-10-27",
+    "attempts": 1,
+    "source_sha256": "2904dc41771ec0256c13da8df31a94adb68324e1684a01bba8f09a490cc4f5ac"
+   },
+   "gemini": {
+    "label": "Gemini (Pro)",
+    "interface": "public web chat",
+    "model_version": "unknown (not shown/recorded by the web UI at the time)",
+    "date": "2026-10-27",
+    "attempts": 1,
+    "source_sha256": "b52c5a75e1548496b3c278ef4ca76049899914ab0ea396d42b8b5ae77aefab89"
+   },
+   "perplexity": {
+    "label": "Perplexity (free, default)",
+    "interface": "public web chat",
+    "model_version": "unknown (not shown/recorded by the web UI at the time)",
+    "date": "2026-10-27",
+    "attempts": 1,
+    "source_sha256": "de1b633969a0ac9ea6b12852ce2c67618a78f2ec83576c6f58be1aca2e46bce3"
+   }
+  }
+ },
+ "tasks": [
+  "maj5",
+  "cmul7",
+  "qpe_t",
+  "c3x_linear",
+  "reverse6_nn",
+  "bv22",
+  "add3"
+ ],
+ "best_known": {
+  "maj5": {
+   "cx": 239,
+   "depth": 512,
+   "from": "hard-round-2026-10-27/chatgpt",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null,
+   "source": "best_known.json"
+  },
+  "cmul7": {
+   "cx": 60,
+   "depth": 137,
+   "from": "hard-round-2026-10-27/gemini",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null,
+   "source": "best_known.json"
+  },
+  "qpe_t": {
+   "cx": 9,
+   "depth": 50,
+   "from": "hard-round-2026-10-27/claude",
+   "method": "mps-exact-overlap",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null,
+   "source": "best_known.json"
+  },
+  "c3x_linear": {
+   "cx": 24,
+   "depth": 25,
+   "from": "hard-round-2026-10-27/claude",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": "linear",
+   "source": "best_known.json"
+  },
+  "reverse6_nn": {
+   "cx": 45,
+   "depth": 18,
+   "from": "hard-round-2026-10-27/claude",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": "linear",
+   "source": "best_known.json"
+  },
+  "bv22": {
+   "cx": 3,
+   "depth": 9,
+   "from": "hard-round-2026-10-27/chatgpt",
+   "method": "partition+clifford-tableau",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null,
+   "source": "best_known.json"
+  },
+  "add3": {
+   "cx": 25,
+   "depth": 48,
+   "from": "hard-round-2026-10-27/chatgpt",
+   "method": "operator",
+   "status": "PROVEN_EQUIVALENT",
+   "coupling": null,
+   "source": "best_known.json"
+  }
+ },
+ "summary": {
+  "chatgpt": {
+   "tasks": 7,
+   "pass": 7,
+   "correct": 7,
+   "compliant": 7,
+   "cx_total_pass": 1594,
+   "best_cx_total_pass": 405,
+   "cx_ratio_geomean": 2.123
+  },
+  "claude": {
+   "tasks": 7,
+   "pass": 7,
+   "correct": 7,
+   "compliant": 7,
+   "cx_total_pass": 1784,
+   "best_cx_total_pass": 405,
+   "cx_ratio_geomean": 1.89
+  },
+  "gemini": {
+   "tasks": 7,
+   "pass": 7,
+   "correct": 7,
+   "compliant": 7,
+   "cx_total_pass": 564,
+   "best_cx_total_pass": 405,
+   "cx_ratio_geomean": 1.534
+  },
+  "perplexity": {
+   "tasks": 7,
+   "pass": 7,
+   "correct": 7,
+   "compliant": 7,
+   "cx_total_pass": 1538,
+   "best_cx_total_pass": 405,
+   "cx_ratio_geomean": 1.986
+  }
+ },
+ "results": [
+  {
+   "model": "chatgpt",
+   "task": "maj5",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 0,
+    "depth_as_written": 15,
+    "size_as_written": 15
+   },
+   "cost": {
+    "cx": 240,
+    "depth": 515,
+    "size": 572
+   },
+   "optimized": {
+    "cx": 239,
+    "depth": 512,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.31,
+   "gap": {
+    "best_cx": 239,
+    "cx_gap": 1,
+    "cx_ratio": 1.004,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "chatgpt",
+   "task": "cmul7",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 5,
+    "cx_as_written": 0,
+    "depth_as_written": 93,
+    "size_as_written": 167
+   },
+   "cost": {
+    "cx": 1116,
+    "depth": 2352,
+    "size": 2925
+   },
+   "optimized": {
+    "cx": 236,
+    "depth": 723,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 2.53,
+   "gap": {
+    "best_cx": 60,
+    "cx_gap": 1056,
+    "cx_ratio": 18.6,
+    "optimized_cx_gap": 176
+   }
+  },
+  {
+   "model": "chatgpt",
+   "task": "qpe_t",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 3,
+    "depth_as_written": 12,
+    "size_as_written": 16
+   },
+   "cost": {
+    "cx": 15,
+    "depth": 34,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 11,
+    "depth": 57,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "mps-exact-overlap"
+   },
+   "seconds": 2.34,
+   "gap": {
+    "best_cx": 9,
+    "cx_gap": 6,
+    "cx_ratio": 1.667,
+    "optimized_cx_gap": 2
+   }
+  },
+  {
+   "model": "chatgpt",
+   "task": "c3x_linear",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 202,
+    "depth_as_written": 204,
+    "size_as_written": 219
+   },
+   "cost": {
+    "cx": 150,
+    "depth": 162,
+    "size": 170
+   },
+   "optimized": {
+    "cx": 85,
+    "depth": 233,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.34,
+   "gap": {
+    "best_cx": 24,
+    "cx_gap": 126,
+    "cx_ratio": 6.25,
+    "optimized_cx_gap": 61
+   }
+  },
+  {
+   "model": "chatgpt",
+   "task": "reverse6_nn",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 45,
+    "depth_as_written": 27,
+    "size_as_written": 45
+   },
+   "cost": {
+    "cx": 45,
+    "depth": 27,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 45,
+    "depth": 27,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.37,
+   "gap": {
+    "best_cx": 45,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "chatgpt",
+   "task": "bv22",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 7,
+    "size_as_written": 17
+   },
+   "cost": {
+    "cx": 3,
+    "depth": 9,
+    "size": 27
+   },
+   "optimized": {
+    "cx": 3,
+    "depth": 9,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "partition+clifford-tableau"
+   },
+   "seconds": 1.18,
+   "gap": {
+    "best_cx": 3,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "chatgpt",
+   "task": "add3",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/chatgpt.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 4,
+    "size_as_written": 6
+   },
+   "cost": {
+    "cx": 25,
+    "depth": 48,
+    "size": 63
+   },
+   "optimized": {
+    "cx": 25,
+    "depth": 48,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.8,
+   "gap": {
+    "best_cx": 25,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "claude",
+   "task": "maj5",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 0,
+    "depth_as_written": 42,
+    "size_as_written": 66
+   },
+   "cost": {
+    "cx": 1312,
+    "depth": 1747,
+    "size": 3395
+   },
+   "optimized": {
+    "cx": 996,
+    "depth": 2996,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 4.13,
+   "gap": {
+    "best_cx": 239,
+    "cx_gap": 1073,
+    "cx_ratio": 5.49,
+    "optimized_cx_gap": 757
+   }
+  },
+  {
+   "model": "claude",
+   "task": "cmul7",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 5,
+    "cx_as_written": 22,
+    "depth_as_written": 39,
+    "size_as_written": 61
+   },
+   "cost": {
+    "cx": 344,
+    "depth": 744,
+    "size": 900
+   },
+   "optimized": {
+    "cx": 236,
+    "depth": 723,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.91,
+   "gap": {
+    "best_cx": 60,
+    "cx_gap": 284,
+    "cx_ratio": 5.733,
+    "optimized_cx_gap": 176
+   }
+  },
+  {
+   "model": "claude",
+   "task": "qpe_t",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 0,
+    "depth_as_written": 10,
+    "size_as_written": 14
+   },
+   "cost": {
+    "cx": 15,
+    "depth": 34,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 9,
+    "depth": 50,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "mps-exact-overlap"
+   },
+   "seconds": 2.11,
+   "gap": {
+    "best_cx": 9,
+    "cx_gap": 6,
+    "cx_ratio": 1.667,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "claude",
+   "task": "c3x_linear",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 24,
+    "depth_as_written": 25,
+    "size_as_written": 41
+   },
+   "cost": {
+    "cx": 24,
+    "depth": 25,
+    "size": 44
+   },
+   "optimized": {
+    "cx": 24,
+    "depth": 25,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.25,
+   "gap": {
+    "best_cx": 24,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "claude",
+   "task": "reverse6_nn",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 45,
+    "depth_as_written": 18,
+    "size_as_written": 45
+   },
+   "cost": {
+    "cx": 45,
+    "depth": 18,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 45,
+    "depth": 18,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.44,
+   "gap": {
+    "best_cx": 45,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "claude",
+   "task": "bv22",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 7,
+    "size_as_written": 17
+   },
+   "cost": {
+    "cx": 3,
+    "depth": 9,
+    "size": 27
+   },
+   "optimized": {
+    "cx": 3,
+    "depth": 9,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "partition+clifford-tableau"
+   },
+   "seconds": 1.29,
+   "gap": {
+    "best_cx": 3,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "claude",
+   "task": "add3",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/claude.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 7,
+    "size_as_written": 7
+   },
+   "cost": {
+    "cx": 41,
+    "depth": 75,
+    "size": 95
+   },
+   "optimized": {
+    "cx": 41,
+    "depth": 73,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 7.29,
+   "gap": {
+    "best_cx": 25,
+    "cx_gap": 16,
+    "cx_ratio": 1.64,
+    "optimized_cx_gap": 16
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "maj5",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 0,
+    "depth_as_written": 15,
+    "size_as_written": 15
+   },
+   "cost": {
+    "cx": 240,
+    "depth": 508,
+    "size": 575
+   },
+   "optimized": {
+    "cx": 240,
+    "depth": 501,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.23,
+   "gap": {
+    "best_cx": 239,
+    "cx_gap": 1,
+    "cx_ratio": 1.004,
+    "optimized_cx_gap": 1
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "cmul7",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 5,
+    "cx_as_written": 10,
+    "depth_as_written": 14,
+    "size_as_written": 20
+   },
+   "cost": {
+    "cx": 70,
+    "depth": 133,
+    "size": 172
+   },
+   "optimized": {
+    "cx": 60,
+    "depth": 137,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.49,
+   "gap": {
+    "best_cx": 60,
+    "cx_gap": 10,
+    "cx_ratio": 1.167,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "qpe_t",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 0,
+    "depth_as_written": 10,
+    "size_as_written": 14
+   },
+   "cost": {
+    "cx": 15,
+    "depth": 34,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 9,
+    "depth": 50,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "mps-exact-overlap"
+   },
+   "seconds": 2.34,
+   "gap": {
+    "best_cx": 9,
+    "cx_gap": 6,
+    "cx_ratio": 1.667,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "c3x_linear",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 202,
+    "depth_as_written": 204,
+    "size_as_written": 219
+   },
+   "cost": {
+    "cx": 150,
+    "depth": 162,
+    "size": 170
+   },
+   "optimized": {
+    "cx": 85,
+    "depth": 233,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.34,
+   "gap": {
+    "best_cx": 24,
+    "cx_gap": 126,
+    "cx_ratio": 6.25,
+    "optimized_cx_gap": 61
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "reverse6_nn",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 45,
+    "depth_as_written": 27,
+    "size_as_written": 45
+   },
+   "cost": {
+    "cx": 45,
+    "depth": 27,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 45,
+    "depth": 27,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.52,
+   "gap": {
+    "best_cx": 45,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "bv22",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 7,
+    "size_as_written": 17
+   },
+   "cost": {
+    "cx": 3,
+    "depth": 9,
+    "size": 27
+   },
+   "optimized": {
+    "cx": 3,
+    "depth": 9,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "partition+clifford-tableau"
+   },
+   "seconds": 1.39,
+   "gap": {
+    "best_cx": 3,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "gemini",
+   "task": "add3",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/gemini.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 7,
+    "size_as_written": 7
+   },
+   "cost": {
+    "cx": 41,
+    "depth": 76,
+    "size": 95
+   },
+   "optimized": {
+    "cx": 41,
+    "depth": 75,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.89,
+   "gap": {
+    "best_cx": 25,
+    "cx_gap": 16,
+    "cx_ratio": 1.64,
+    "optimized_cx_gap": 16
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "maj5",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 0,
+    "depth_as_written": 15,
+    "size_as_written": 15
+   },
+   "cost": {
+    "cx": 240,
+    "depth": 508,
+    "size": 575
+   },
+   "optimized": {
+    "cx": 240,
+    "depth": 501,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.2,
+   "gap": {
+    "best_cx": 239,
+    "cx_gap": 1,
+    "cx_ratio": 1.004,
+    "optimized_cx_gap": 1
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "cmul7",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 5,
+    "cx_as_written": 0,
+    "depth_as_written": 93,
+    "size_as_written": 167
+   },
+   "cost": {
+    "cx": 1116,
+    "depth": 2352,
+    "size": 2925
+   },
+   "optimized": {
+    "cx": 236,
+    "depth": 723,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 2.39,
+   "gap": {
+    "best_cx": 60,
+    "cx_gap": 1056,
+    "cx_ratio": 18.6,
+    "optimized_cx_gap": 176
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "qpe_t",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 3,
+    "depth_as_written": 12,
+    "size_as_written": 16
+   },
+   "cost": {
+    "cx": 15,
+    "depth": 34,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 9,
+    "depth": 50,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "mps-exact-overlap"
+   },
+   "seconds": 2.3,
+   "gap": {
+    "best_cx": 9,
+    "cx_gap": 6,
+    "cx_ratio": 1.667,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "c3x_linear",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 4,
+    "cx_as_written": 126,
+    "depth_as_written": 129,
+    "size_as_written": 143
+   },
+   "cost": {
+    "cx": 94,
+    "depth": 92,
+    "size": 114
+   },
+   "optimized": {
+    "cx": 85,
+    "depth": 233,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.38,
+   "gap": {
+    "best_cx": 24,
+    "cx_gap": 70,
+    "cx_ratio": 3.917,
+    "optimized_cx_gap": 61
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "reverse6_nn",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": "PASS",
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 45,
+    "depth_as_written": 27,
+    "size_as_written": 45
+   },
+   "cost": {
+    "cx": 45,
+    "depth": 27,
+    "size": 45
+   },
+   "optimized": {
+    "cx": 45,
+    "depth": 27,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 1.5,
+   "gap": {
+    "best_cx": 45,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "bv22",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": null,
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 7,
+    "size_as_written": 17
+   },
+   "cost": {
+    "cx": 3,
+    "depth": 9,
+    "size": 27
+   },
+   "optimized": {
+    "cx": 3,
+    "depth": 9,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "partition+clifford-tableau"
+   },
+   "seconds": 1.29,
+   "gap": {
+    "best_cx": 3,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  },
+  {
+   "model": "perplexity",
+   "task": "add3",
+   "file": "benchmark/veriqbench/v0.1/submissions/hard-round-2026-10-27/perplexity.py",
+   "status": "PASS",
+   "correct": true,
+   "proof": "PASS",
+   "constraints": {
+    "gate_set": "PASS",
+    "coupling": null,
+    "no_black_boxes": "PASS",
+    "qubits": "PASS",
+    "no_measurements": "PASS"
+   },
+   "compliant": true,
+   "failing_checks": {},
+   "metrics": {
+    "qubits": 6,
+    "cx_as_written": 3,
+    "depth_as_written": 4,
+    "size_as_written": 6
+   },
+   "cost": {
+    "cx": 25,
+    "depth": 48,
+    "size": 63
+   },
+   "optimized": {
+    "cx": 25,
+    "depth": 48,
+    "status": "PROVEN_EQUIVALENT",
+    "method": "operator"
+   },
+   "seconds": 0.89,
+   "gap": {
+    "best_cx": 25,
+    "cx_gap": 0,
+    "cx_ratio": 1.0,
+    "optimized_cx_gap": 0
+   }
+  }
+ ],
+ "seconds": 45.4
+}
