@@ -80,6 +80,8 @@ optional `function` (default: `build()`, else `make_circuit()`/`circuit()`, else
 | `check_transpile` | "Did compilation change what my circuit does?" Compiles at `optimization_level` for `basis_gates`/`coupling`, and by default **both** with and without `qubits_initially_zero` | `equivalent`, `status`, `zero_init_hazard`, per-run `method`/`counterexample`/`equal_on_zero_input` |
 | `compare_circuits` | "Are A and B the same?" (`mode` unitary or state) | `status` PROVEN_EQUIVALENT / NOT_EQUIVALENT / PROBABLY_EQUIVALENT / UNKNOWN, `method`, `counterexample` |
 | `circuit_metrics` | Size/depth/2-qubit counts, before and after a standard compile | `source`, `compiled`, `is_clifford` |
+| `repair_hints` | "What is wrong and where?" Same inputs as `verify_circuit`; full repair report (see [repair.md](repair.md)) | `counterexample` (expected vs actual), `localization.regions` / `fixes` (exact single-gate fixes, ≤ 10 qubits), `hardware_violations`, `metric_deltas`, `hints` |
+| `optimize_circuit` | "Cheapest compilation that is *proven* equal?" (`mode`, `basis_gates`, `coupling`, `seeds`, `allow_permutation`, `budget`; see [optimize.md](optimize.md)) | `best` (cx, depth, config, proof method) + `best_qasm`, or `best: null` when nothing could be proven; `tried[]` |
 | `explain_verdict` | Plain-language reading of any result above, and whether it is safe to present as verified | `explanation`, `next_steps[]`, `safe_to_present_as_verified` |
 
 `PROBABLY_EQUIVALENT` means *no difference found by simulation*. It is **not** a proof: `verify_circuit` maps it to
@@ -93,9 +95,14 @@ Invalid *arguments* are MCP tool errors (`isError: true`).
 `veriq://examples` and `veriq://examples/{name}` (buggy and correct circuits to try);
 `veriq://limits` (this server's sandbox limits and isolation method).
 
-**Prompt**: `write-verified-circuit(task, reference_hint?, mode?)` tells the model to write the circuit, call
+**Prompts**: `write-verified-circuit(task, reference_hint?, mode?)` tells the model to write the circuit, call
 `verify_circuit` (with a trusted reference where possible), fix the circuit until PASS, and only then answer, citing
-the checks.
+the checks. `verify-and-repair(task, reference_hint?, mode?, max_attempts?)` is the bounded repair loop: on FAIL
+read `repair_report` (or call `repair_hints`), apply the localized fix, re-verify, at most `max_attempts` times;
+stop at PASS, or at INCONCLUSIVE and say the circuit is unverified.
+
+When `verify_circuit` does not PASS, its result also carries a compact `repair_report` (regions, up to 4 exact fixes,
+counterexample, violations, metric deltas).
 
 ### Sample call
 

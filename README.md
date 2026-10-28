@@ -223,8 +223,9 @@ This repo dogfoods it: [.veriq.yml](.veriq.yml) and [.github/workflows/](.github
 
 `veriq mcp` makes Veriq an [MCP](https://modelcontextprotocol.io) server, so Claude Desktop, Cursor or any MCP
 client can **verify a circuit before showing it to you**. The tools are `verify_circuit`, `check_transpile`,
-`compare_circuits`, `circuit_metrics` and `explain_verdict`. Each returns structured JSON with a verdict, a
-counterexample and fix hints. There are also resources with conventions and examples, and a `write-verified-circuit` prompt.
+`compare_circuits`, `circuit_metrics`, `repair_hints`, `optimize_circuit` and `explain_verdict`. Each returns
+structured JSON with a verdict, a counterexample and fix hints. There are also resources with conventions and
+examples, and two prompts: `write-verified-circuit` and `verify-and-repair` (a bounded repair loop).
 
 ```bash
 pip install -e '.[mcp]'
@@ -241,6 +242,42 @@ sandboxed subprocess with timeouts, memory/CPU/file rlimits, no network (bubblew
 a read-only filesystem except a temp dir, and a scrubbed environment. The checks then run in a second clean
 process, so user code can't forge the verdict. `scripts/agent_loop_demo.py` shows the loop end to end with a
 simulated model (FAIL → FAIL → PASS). Full reference: [docs/mcp.md](docs/mcp.md).
+
+## Repair: what is wrong, where, and the fix
+
+On a FAIL, `--repair-report` writes a machine-readable report: a counterexample (expected vs actual), the
+**localized gate region** of the bug, exact single-gate fixes when one exists, hardware violations and metric
+deltas. `veriq repair` runs a bounded verify → fix → re-verify loop with a pluggable fixer: the offline `demo`
+fixer, or your own `module:function`, e.g. an LLM call. Veriq itself calls no external API.
+
+```bash
+veriq verify examples/ghz_buggy.py -r examples/ghz_correct.py --mode state --repair-report report.json
+veriq repair examples/ghz_buggy.py -r examples/ghz_correct.py --mode state --out fixed.qasm
+#   attempt 0: FAIL
+#   attempt 1: PASS  after: flip gate #2 cx(2, 1) -> cx(1, 2)
+python benchmark/repair/run_repair.py    # localization accuracy on the hard-round mutants
+```
+
+On the 958 single-gate mutants of the hard round, the flagged region contains the injected bug **88.4%** of the
+time, and is a proven valid fix location (exact single-gate fix inside it) **98.5%** of the time. Details and
+limitations: [docs/repair.md](docs/repair.md).
+
+## Verified optimization: fewer CX, proven equal
+
+`veriq optimize` compiles a circuit many ways (Qiskit levels 0-3, several seeds, an extra resynthesis round,
+exact resynthesis for ≤ 6 qubits; approximation off, `qubits_initially_zero=False`). It proves the candidates
+cheapest-first and returns the cheapest one with a formal **PROVEN_EQUIVALENT** proof. It never returns an
+unproven candidate. It also rejects compilations that silently permute the output qubits, unless you pass
+`--allow-permutation`.
+
+```bash
+veriq optimize my_circuit.py -o best.qasm
+python benchmark/optimize/run_optimize.py   # the 28 hard-round circuits
+```
+
+On the 28 hard-round circuits, the result was proven for 28/28. Against Qiskit level 1, CX dropped
+from 5480 to 3124 in total (ChatGPT −60%, Perplexity −58%, Claude −24%, Gemini −14%). See
+[benchmark/optimize/results.md](benchmark/optimize/results.md) and [docs/optimize.md](docs/optimize.md).
 
 ## Large circuits (20–50+ qubits)
 
@@ -270,6 +307,8 @@ Results: [benchmark/scale/results.md](benchmark/scale/results.md) and [the chart
 src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.py
              mcp_server.py  tools.py  sandbox.py  _sandbox_worker.py   (MCP server)
              scale.py   (large-circuit engine)
+             repair_report.py  repair.py   (repair report, localization, repair loop)
+             optimize.py   (verified CX optimizer)
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
 scripts/     demo.sh  simulate_action.py  agent_loop_demo.py
@@ -291,7 +330,8 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - **Week 1 (this release):** CLI, four checks, HTML/JSON report, examples, tests.
 - **Week 2 — benchmark:** collect ~20 circuits written by different LLMs (ChatGPT, Claude, Gemini, …) for standard tasks, run Veriq on all of them, and publish the bug-catch rate — the first evidence that the tool is needed.
 - **Week 3 — QML claim audit:** check "quantum advantage" claims of quantum-ML notebooks against strong classical baselines on the same data, with fair hyper-parameter budgets and statistical significance.
-- **MCP server:** ✅ `veriq mcp` (verify / check_transpile / compare / metrics / explain; sandboxed).
+- **MCP server:** ✅ `veriq mcp` (verify / check_transpile / compare / metrics / repair_hints / optimize / explain; sandboxed).
+- **Repair + verified optimization:** ✅ repair reports with exact localization, `veriq repair` loop with pluggable fixers, `veriq optimize` (cheapest proven compilation).
 - **Large circuits:** ✅ Clifford tableau, QCEC strategies with hard timeouts, MPS falsification, partitioning, and a scaling benchmark up to 50 qubits (200 for Clifford). Next: decision-diagram (DD) simulation of counterexamples, and noise-aware statistics.
 - **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
 
