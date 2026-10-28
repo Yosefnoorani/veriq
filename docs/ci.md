@@ -19,10 +19,12 @@ defaults:                     # applied to every check (any check key except nam
   seed: 7
 checks:
   - name: qft                 # default: the file's stem; must be unique
-    file: circuits/qft.py     # .py (build()/circuit/qc), .qasm or .qasm3; required
+    file: circuits/qft.py     # .py (Qiskit/Cirq/pytket build()/circuit/qc), .qasm/.qasm3, Cirq/TKET .json; required
     function: build_qft       # optional builder function in `file`
     reference: circuits/qft_reference.py
     reference-function: build # optional builder in `reference`
+    framework: cirq           # optional: auto (default) | qiskit | qasm2 | qasm3 | cirq | tket (docs/frameworks.md)
+    reference-framework: qasm3  # optional, same values, for `reference`
     mode: unitary             # unitary (default) | state (state preparation: compare from |0…0>)
     distribution: expect/qft.json   # optional: path, inline JSON string, or a YAML mapping
     allowed-gates: [h, cx, rz]      # or "h,cx,rz"

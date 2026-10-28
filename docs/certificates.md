@@ -67,7 +67,7 @@ when the proof depends on a layout (a coupling map or an allowed permutation).
 | `schema`, `kind` | `veriq.certificate/1`; `verify`, `ci`, `optimize` or `preflight` |
 | `verdict` | `PASS`, `FAIL` or `INCONCLUSIVE` |
 | `claim` | what the certificate asserts (table below) |
-| `inputs[]` | per circuit: `role` (candidate/reference, or input/output), `path`, `function`, `source_sha256` (file or code bytes), `canonical_format`, `canonical_sha256`, `canonical` (normalized OpenQASM, embedded up to 512 KB), `qpy_sha256` (informational; QPY bytes vary between versions), `num_qubits` |
+| `inputs[]` | per circuit: `role` (candidate/reference, or input/output), `path`, `function`, `source_sha256` (file or code bytes), `canonical_format`, `canonical_sha256`, `canonical` (normalized OpenQASM, embedded up to 512 KB), `qpy_sha256` (informational; QPY bytes vary between versions), `num_qubits`, `frontend` (`framework` qiskit/cirq/tket, `framework_version`, `source_format` python/json/qasm2/qasm3, plus `qasm3_importer_version`, `qubit_order`, `opaque_ops` where relevant; see [frameworks.md](frameworks.md)) |
 | `assumptions` | `equivalence`, `mode`, `initial_state`, `qubits_initially_zero`, `allowed_gates`, `coupling` (+ scope), `permutation_allowed`, `black_boxes_allowed`, `expect`, statistical shots and seed, `timeout_s`, `backend` (optimize also has `proof_scope` and `layout_dependent`) |
 | `proof` | `status` (`proven`, `refuted`, `undecided` or `none`), the deciding `check`, `method`, `engine`, `engine_details` (QCEC result and time, strategy, fallback...) |
 | `checks[]` | name, status and summary of every check |

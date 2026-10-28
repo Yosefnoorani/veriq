@@ -381,6 +381,22 @@ In the hard round all 28 submissions passed. Their CX cost, however, ranges from
 
 **Warning:** submissions run in-process without a sandbox, so only run code you trust.
 
+## Multi-framework: OpenQASM 3, Cirq, TKET
+
+`pip install 'veriq[qasm3,cirq,tket]'`, then verify across frameworks; the converted circuits are exact
+(global phase included), qubit order is documented, and a missing extra gives a clear install hint:
+
+```bash
+veriq verify kernel.qasm kernel_cirq.py              # OpenQASM 3 candidate vs a Cirq reference
+veriq verify ansatz_tket.json --reference ansatz.py   # TKET JSON vs Qiskit
+```
+
+Also in `.veriq.yml` (`framework:`, `reference-framework:`), the MCP tools (`framework` arguments; Cirq/TKET
+code runs in the same sandbox) and certificates (each input records its `frontend` and framework version).
+Evidence: 21 hard-round circuits translated with each framework's own converter, 63/63 proven equivalent,
+87/87 deliberate mis-translations (reversed qubit order, dropped controlled phase, wrong angle units) caught;
+see [docs/frameworks.md](docs/frameworks.md) and [benchmark/frameworks/results.md](benchmark/frameworks/results.md).
+
 ## Project layout
 
 ```
@@ -391,6 +407,7 @@ src/veriq/   loader.py  checks.py  runner.py  report.py  cli.py  models.py  ci.p
              optimize.py   (verified CX optimizer)
              preflight.py  profiles/*.json   (hardware preflight, illustrative device profiles)
              bench.py   (Veriq Bench runner, corpus-eval, leaderboard)
+             frontends/   (OpenQASM 2/3, Cirq, TKET -> Qiskit, exact)
 examples/    correct and buggy circuits + expect/*.json
 tests/       pytest suite (unit + end-to-end through the CLI)
 scripts/     demo.sh  simulate_action.py  agent_loop_demo.py
@@ -405,7 +422,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - For more than 20 qubits the statistical test is a two-sample chi² on sampled outcomes. When the outputs are spread out (distinct outcomes > shots/10) it returns INCONCLUSIVE.
 - The statistical test uses a noiseless simulator; noise-aware thresholds come later.
 - Hardware preflight uses frozen IBM calibration snapshots (from `qiskit-ibm-runtime`) and illustrative JSON profiles; its ESP / duration / TVD numbers are estimates under a simple noise model (no crosstalk, leakage or drift), not hardware measurements. No live device or cloud account is used.
-- Qiskit is the only front-end today (OpenQASM 2/3 as interchange).
+- Front-ends: Qiskit, OpenQASM 2/3, Cirq and TKET (exact conversion to Qiskit). No classical control or symbolic parameters in Cirq/TKET input; Cirq circuits drop untouched qubits unless `cirq.I` keeps them. Other frameworks (PennyLane, Braket, Quil) are not supported yet.
 - Certificates: the canonical circuit hash depends on Qiskit's QASM exporter version (the source-file hash is the stable anchor); a signature checked only against the embedded key proves integrity, not identity; there is no sigstore or transparency log yet.
 
 ## Roadmap
@@ -419,6 +436,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - **Veriq Bench v0.1:** ✅ tasks, mutant corpus, `veriq bench run|corpus-eval|leaderboard`, leaderboard, paper draft. Next: a sandboxed runner, pinned model versions per submission, more tasks and rounds, and real-world (non-synthetic) bugs.
 - **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
 - **Hardware preflight:** ✅ `veriq preflight` (proven compile, native/coupling checks, ESP/duration/TVD estimates, noise-aware layout, go/warn/no-go; CI key, MCP tool, certificate). Next: live calibration fetch (opt-in), backend-aware optimization, idle-error-aware layout.
+- **Multi-framework frontends:** ✅ OpenQASM 3, Cirq, TKET (CLI, CI, MCP, sandbox, certificates). Next: PennyLane, Braket, Quil.
 - **Signed certificates:** ✅ `veriq.certificate/1`, Ed25519 `keygen`/`certify`/`cert verify --recheck`, CI artifacts, MCP. Next: sigstore keyless signing + transparency log, in-toto/SLSA attestation format.
 
 ## License

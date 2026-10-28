@@ -71,8 +71,12 @@ All tools are read-only (`readOnlyHint`), take **strictly validated** input (unk
 names that are not identifiers, malformed coupling strings, and oversize code all produce an error *before*
 anything runs), and return **structured JSON** with an output schema.
 
-A circuit is given as `code` (Python or OpenQASM 2/3 text) **or** `path` (a `.py`/`.qasm` file under a root), plus an
-optional `function` (default: `build()`, else `make_circuit()`/`circuit()`, else a module-level `circuit`/`qc`).
+A circuit is given as `code` (Python, OpenQASM 2/3, or Cirq/TKET JSON text) **or** `path` (a `.py`/`.qasm`/`.json`
+file under a root), plus an optional `function` (default: `build()`, else `make_circuit()`/`circuit()`, else a
+module-level `circuit`/`qc`). The Python may build a Qiskit, Cirq or pytket circuit; it runs in the same sandbox and
+is converted exactly to Qiskit there. `verify_circuit` takes `framework`/`reference_framework` and
+`compare_circuits` takes `framework`/`other_framework` (`auto` | `qiskit` | `qasm2` | `qasm3` | `cirq` | `tket`,
+default auto-detect), so A and B may come from different frameworks (see [frameworks.md](frameworks.md)).
 
 | tool | what it answers | key outputs |
 |---|---|---|
