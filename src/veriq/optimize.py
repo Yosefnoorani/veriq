@@ -2,7 +2,8 @@
 
 `optimize_circuit` builds candidates from Qiskit's transpiler (optimization levels 0-3, several seeds,
 approximation OFF, `qubits_initially_zero=False` so no pass may assume |0> inputs, plus an extra
-resynthesis/cancellation round on top of level 3), ranks them by two-qubit-gate count and then depth, and
+resynthesis/cancellation round on top of level 3, and for <= 6 qubits a rebuild from the exact matrix by
+quantum Shannon decomposition, or from the exact output state in state mode), ranks them by two-qubit-gate count and then depth, and
 proves them cheapest-first with `scale.decide_equivalence`. The first candidate whose status is
 PROVEN_EQUIVALENT is returned. A candidate that is only PROBABLY_EQUIVALENT (falsification), UNKNOWN or
 NOT_EQUIVALENT is never returned; if nothing is proven, `best` is None.
@@ -82,9 +83,47 @@ def _no_elide(level: int, basis: list[str], seed: int, zero: bool):
     return pm
 
 
+RESYNTH_MAX_QUBITS = 6
+
+
+def _resynthesized(qc: QuantumCircuit, mode: str) -> QuantumCircuit | None:
+    """Rebuild a small circuit from its exact matrix (unitary mode: quantum Shannon decomposition) or its
+    exact output state (state mode: StatePreparation). Numerically exact, still proven like any candidate."""
+    from qiskit.quantum_info import Operator, Statevector
+
+    n = qc.num_qubits
+    if n > RESYNTH_MAX_QUBITS or n < 2:
+        return None
+    if mode == "state":
+        from qiskit.circuit.library import StatePreparation
+
+        out = QuantumCircuit(n)
+        out.append(StatePreparation(Statevector(qc).data), range(n))
+        return out
+    from qiskit.synthesis import qs_decomposition
+
+    return qs_decomposition(Operator(qc).data)
+
+
 def candidates(qc: QuantumCircuit, basis: list[str], coupling: list | None, seeds: int, mode: str,
                budget: float, t0: float):
     seed_list = [2026 + 17 * k for k in range(max(1, seeds))]
+    try:
+        rs = _resynthesized(qc, mode)
+    except Exception as exc:  # noqa: BLE001
+        rs, err = None, f"{type(exc).__name__}: {exc}"[:200]
+        yield {"optimization_level": 3, "seed": seed_list[0], "qubits_initially_zero": False,
+               "variant": "resynthesis"}, None, err
+    if rs is not None:
+        for level in (1, 3):
+            cfg = {"optimization_level": level, "seed": seed_list[0], "qubits_initially_zero": False,
+                   "variant": "state-resynthesis" if mode == "state" else "unitary-resynthesis (QSD)"}
+            try:
+                yield cfg, transpile(rs, basis_gates=basis, coupling_map=coupling, optimization_level=level,
+                                     seed_transpiler=seed_list[0], approximation_degree=1.0,
+                                     qubits_initially_zero=False), None
+            except Exception as exc:  # noqa: BLE001
+                yield cfg, None, f"{type(exc).__name__}: {exc}"[:200]
     zero_flags = [False, True] if mode == "state" else [False]
     for zero in zero_flags:
         for level in (0, 1, 2, 3):
