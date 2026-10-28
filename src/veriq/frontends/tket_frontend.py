@@ -46,8 +46,12 @@ def _num(p) -> float:
                         f"(circ.symbol_substitution)") from exc
 
 
-def _candidates(name: str, params: list[float]):
+def _candidates(name: str, params: list[float], n: int = 0):
     from qiskit.circuit import library as L
+
+    if name in ("CnX", "CnZ", "CnY") and n >= 2:
+        base = {"CnX": L.XGate, "CnZ": L.ZGate, "CnY": L.YGate}[name]()
+        return [L.MCXGate(n - 1)] if name == "CnX" else [base.control(n - 1)]
 
     a = [math.pi * p for p in params]
     simple = {"H": L.HGate, "X": L.XGate, "Y": L.YGate, "Z": L.ZGate, "S": L.SGate, "Sdg": L.SdgGate,
@@ -155,7 +159,7 @@ def tket_to_qiskit(circ, source_format: str = "python"):
             target = op.get_unitary()
         except Exception as exc:  # noqa: BLE001
             raise LoadError(f"TKET operation {name} has no unitary and is not supported: {exc}") from exc
-        if any(append_exact(qc, g, qs, target, cache) for g in _candidates(name, params)):
+        if any(append_exact(qc, g, qs, target, cache) for g in _candidates(name, params, len(qs))):
             stats["ops"] += 1
             continue
         if _append_rebased(qc, op, qs, target, cache):
