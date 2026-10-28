@@ -1,0 +1,3680 @@
+{
+ "generated": "2026-10-28T18:16:48+02:00",
+ "backends": [
+  {
+   "name": "fake_torino",
+   "num_qubits": 133,
+   "kind": "ibm-fake-backend",
+   "illustrative": false,
+   "source": "qiskit-ibm-runtime 0.51.0 fake_provider snapshot (props_torino.json)",
+   "calibration_date": "2025-02-26T15:26:08-05:00",
+   "backend_version": "1.0.54",
+   "data_sha256": "116c5692ad5669219571ce4c13132fdd68394aa543537b5ccf14a6bd2df10b11",
+   "note": "a frozen snapshot of past IBM calibration data, not today's device"
+  },
+  {
+   "name": "fake_brisbane",
+   "num_qubits": 127,
+   "kind": "ibm-fake-backend",
+   "illustrative": false,
+   "source": "qiskit-ibm-runtime 0.51.0 fake_provider snapshot (props_brisbane.json)",
+   "calibration_date": "2025-02-26T14:33:06-05:00",
+   "backend_version": "1.1.79",
+   "data_sha256": "bc8b29433a8e1935a8f5537cafccc63194dc5ed5137edba684ff3fb77b269d1d",
+   "note": "a frozen snapshot of past IBM calibration data, not today's device"
+  }
+ ],
+ "seeds": 4,
+ "levels": [
+  1,
+  3
+ ],
+ "disclaimer": "ESP / duration / TVD are estimates from frozen calibration snapshots (qiskit-ibm-runtime fake backends) with a depolarizing + readout noise model; NOT hardware measurements.",
+ "seconds": 168.6,
+ "rows": [
+  {
+   "assistant": "chatgpt",
+   "task": "maj5",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 240,
+    "cx_after": 239
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.13655927441623725,
+      "esp_with_idle": 0.053508275036175584,
+      "two_qubit_gates": 450,
+      "depth": 1246,
+      "duration_us": 49.57600000000026,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.826499999999984,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.005199711053455063,
+       0.053508275036175584
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.142
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.13652085816331,
+      "esp_with_idle": 0.053502218346383544,
+      "two_qubit_gates": 450,
+      "depth": 1247,
+      "duration_us": 49.57600000000026,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.826499999999997,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.005245404307311656,
+       0.053502218346383544
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.289
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.034523625097120446,
+      "esp_with_idle": 9.807079186996554e-06,
+      "two_qubit_gates": 450,
+      "depth": 1593,
+      "duration_us": 270.8200000000006,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9359999999999841,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.0736259540161488e-06,
+       9.807079186996554e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.633
+     },
+     "optimized": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.034457710082735474,
+      "esp_with_idle": 9.733827778601227e-06,
+      "two_qubit_gates": 450,
+      "depth": 1600,
+      "duration_us": 271.0000000000006,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9359999999999968,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.080927491542406e-06,
+       9.733827778601227e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.663
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "maj5",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 1312,
+    "cx_after": 996
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.00018523955435688084,
+      "esp_with_idle": 2.08457852766344e-06,
+      "two_qubit_gates": 2266,
+      "depth": 5827,
+      "duration_us": 233.77199999998055,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9849999999999948,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       8.63452536859755e-11,
+       2.08457852766344e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 4.989
+     },
+     "optimized": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.002984539933546834,
+      "esp_with_idle": 6.518073784109953e-05,
+      "two_qubit_gates": 1520,
+      "depth": 5901,
+      "duration_us": 177.5239999999921,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9702500000000003,
+      "physical_qubits": [
+       75,
+       87,
+       88,
+       89,
+       90,
+       94
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.510605290141914e-20,
+       6.518073784109953e-05
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 5.847
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 5.245742850840848e-06,
+      "esp_with_idle": 8.179774070310031e-21,
+      "two_qubit_gates": 2272,
+      "depth": 9256,
+      "duration_us": 1397.2600000000234,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.986499999999995,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       3.7989935391064945e-30,
+       8.179774070310031e-21
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 8.295
+     },
+     "optimized": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 2.845651822367243e-07,
+      "esp_with_idle": 3.4869547595610156e-21,
+      "two_qubit_gates": 2118,
+      "depth": 8153,
+      "duration_us": 1484.5000000000261,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9764999999999998,
+      "physical_qubits": [
+       111,
+       122,
+       123,
+       124,
+       125,
+       126
+      ],
+      "chosen": "opt1 seed 2027",
+      "layout_esp_range": [
+       1.5202677400970302e-30,
+       3.4869547595610156e-21
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 7.124
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "maj5",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 240,
+    "cx_after": 240
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.13493545405875235,
+      "esp_with_idle": 0.04456033211416725,
+      "two_qubit_gates": 451,
+      "depth": 1398,
+      "duration_us": 55.34400000000039,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.829999999999986,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.007295114534878362,
+       0.04456033211416725
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.32
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.13493545405875235,
+      "esp_with_idle": 0.04456033211416725,
+      "two_qubit_gates": 451,
+      "depth": 1402,
+      "duration_us": 55.34400000000039,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.829999999999998,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.007295114534878362,
+       0.04456033211416725
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.311
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.03523330546043196,
+      "esp_with_idle": 1.5079696278050193e-06,
+      "two_qubit_gates": 453,
+      "depth": 1880,
+      "duration_us": 306.2800000000013,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.936749999999986,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.130926529708745e-08,
+       1.5079696278050193e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.769
+     },
+     "optimized": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.03523330546043196,
+      "esp_with_idle": 1.5079696278050193e-06,
+      "two_qubit_gates": 453,
+      "depth": 1880,
+      "duration_us": 306.2800000000013,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9367499999999978,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.1342497284495505e-08,
+       1.5079696278050193e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.846
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "maj5",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 240,
+    "cx_after": 240
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.13493545405875235,
+      "esp_with_idle": 0.04456033211416725,
+      "two_qubit_gates": 451,
+      "depth": 1398,
+      "duration_us": 55.34400000000039,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.829999999999986,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.007295114534878362,
+       0.04456033211416725
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.272
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.13493545405875235,
+      "esp_with_idle": 0.04456033211416725,
+      "two_qubit_gates": 451,
+      "depth": 1402,
+      "duration_us": 55.34400000000039,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.829999999999998,
+      "physical_qubits": [
+       23,
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.007295114534878362,
+       0.04456033211416725
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.328
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.03523330546043196,
+      "esp_with_idle": 1.5079696278050193e-06,
+      "two_qubit_gates": 453,
+      "depth": 1880,
+      "duration_us": 306.2800000000013,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.936749999999986,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.130926529708745e-08,
+       1.5079696278050193e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.699
+     },
+     "optimized": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.03523330546043196,
+      "esp_with_idle": 1.5079696278050193e-06,
+      "two_qubit_gates": 453,
+      "depth": 1880,
+      "duration_us": 306.2800000000013,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9367499999999978,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       1.1342497284495505e-08,
+       1.5079696278050193e-06
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.775
+     }
+    }
+   }
+  },
+  {
+   "assistant": "chatgpt",
+   "task": "cmul7",
+   "mode": "unitary",
+   "qubits": 5,
+   "optimize": {
+    "proven": true,
+    "cx_before": 1116,
+    "cx_after": 236
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.0009181916639367402,
+      "esp_with_idle": 4.5594629707804303e-05,
+      "two_qubit_gates": 1865,
+      "depth": 5232,
+      "duration_us": 221.827999999986,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9634999999999058,
+      "physical_qubits": [
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       4.531120018886901e-08,
+       4.5594629707804303e-05
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 3.8
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.23427600728056874,
+      "esp_with_idle": 0.07577432447434829,
+      "two_qubit_gates": 384,
+      "depth": 1394,
+      "duration_us": 44.416000000000274,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.7820000000000001,
+      "physical_qubits": [
+       18,
+       30,
+       31,
+       32,
+       33
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       0.012399406521783028,
+       0.07577432447434829
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 4.255
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 2.6696804323199817e-06,
+      "esp_with_idle": 1.714502986926082e-22,
+      "two_qubit_gates": 2595,
+      "depth": 7715,
+      "duration_us": 1518.460000000021,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9722499999999058,
+      "physical_qubits": [
+       11,
+       12,
+       17,
+       30,
+       31
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       1.543444506034617e-24,
+       1.714502986926082e-22
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 6.192
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.0889135030455097,
+      "esp_with_idle": 0.002381406719697741,
+      "two_qubit_gates": 374,
+      "depth": 1851,
+      "duration_us": 277.06000000000057,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.8937499999999997,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       3.1121811724288236e-07,
+       0.002381406719697741
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.808
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "cmul7",
+   "mode": "unitary",
+   "qubits": 5,
+   "optimize": {
+    "proven": true,
+    "cx_before": 346,
+    "cx_after": 236
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.10547718216929614,
+      "esp_with_idle": 0.04207527849328345,
+      "two_qubit_gates": 556,
+      "depth": 1594,
+      "duration_us": 68.28400000000086,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.8599999999999747,
+      "physical_qubits": [
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.0047085310895234435,
+       0.04207527849328345
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.593
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.2276690717097164,
+      "esp_with_idle": 0.1071488319351933,
+      "two_qubit_gates": 384,
+      "depth": 1428,
+      "duration_us": 44.43600000000026,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.7864999999999996,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66,
+       67
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.012427081068131805,
+       0.1071488319351933
+      ],
+      "failing_checks": [
+       "Estimated success probability"
+      ],
+      "seconds": 1.539
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.02261068845187968,
+      "esp_with_idle": 1.8079428839588153e-07,
+      "two_qubit_gates": 556,
+      "depth": 2479,
+      "duration_us": 376.00000000000335,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9454999999999746,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       3.072523661564254e-08,
+       1.8079428839588153e-07
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 2.023
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.08893716830132097,
+      "esp_with_idle": 0.0023806582352960113,
+      "two_qubit_gates": 374,
+      "depth": 1855,
+      "duration_us": 277.06000000000057,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.8949999999999997,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       3.1353963714776733e-07,
+       0.0023806582352960113
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.687
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "cmul7",
+   "mode": "unitary",
+   "qubits": 5,
+   "optimize": {
+    "proven": true,
+    "cx_before": 70,
+    "cx_after": 60
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.5120537500516754,
+      "esp_with_idle": 0.4234981386167327,
+      "two_qubit_gates": 122,
+      "depth": 329,
+      "duration_us": 15.59200000000002,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4832499999999972,
+      "physical_qubits": [
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.32934907530042884,
+       0.4234981386167327
+      ],
+      "failing_checks": [],
+      "seconds": 0.46
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.5245763193721907,
+      "esp_with_idle": 0.4558770092523404,
+      "two_qubit_gates": 102,
+      "depth": 293,
+      "duration_us": 11.796000000000017,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4747499999999999,
+      "physical_qubits": [
+       87,
+       88,
+       89,
+       90,
+       94
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.32767160041019144,
+       0.4558770092523404
+      ],
+      "failing_checks": [],
+      "seconds": 0.462
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.4108936996183392,
+      "esp_with_idle": 0.14603631294588607,
+      "two_qubit_gates": 122,
+      "depth": 474,
+      "duration_us": 80.25999999999983,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.5852499999999974,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17
+      ],
+      "chosen": "opt3 seed 2027",
+      "layout_esp_range": [
+       0.008736800659091545,
+       0.14603631294588607
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 0.576
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.4620605108833988,
+      "esp_with_idle": 0.058842716524552474,
+      "two_qubit_gates": 102,
+      "depth": 427,
+      "duration_us": 69.51999999999998,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.5267499999999999,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.02043553798500262,
+       0.058842716524552474
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 0.543
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "cmul7",
+   "mode": "unitary",
+   "qubits": 5,
+   "optimize": {
+    "proven": true,
+    "cx_before": 1116,
+    "cx_after": 236
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 0.0009181916639367402,
+      "esp_with_idle": 4.5594629707804303e-05,
+      "two_qubit_gates": 1865,
+      "depth": 5232,
+      "duration_us": 221.827999999986,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9634999999999058,
+      "physical_qubits": [
+       24,
+       25,
+       26,
+       35,
+       44
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       4.531120018886901e-08,
+       4.5594629707804303e-05
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 4.081
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.23427600728056874,
+      "esp_with_idle": 0.07577432447434829,
+      "two_qubit_gates": 384,
+      "depth": 1394,
+      "duration_us": 44.416000000000274,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.7820000000000001,
+      "physical_qubits": [
+       18,
+       30,
+       31,
+       32,
+       33
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       0.012399406521783028,
+       0.07577432447434829
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 4.548
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "no-go",
+      "verdict": "FAIL",
+      "esp": 2.6696804323199817e-06,
+      "esp_with_idle": 1.714502986926082e-22,
+      "two_qubit_gates": 2595,
+      "depth": 7715,
+      "duration_us": 1518.460000000021,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.9722499999999058,
+      "physical_qubits": [
+       11,
+       12,
+       17,
+       30,
+       31
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       1.543444506034617e-24,
+       1.714502986926082e-22
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 6.416
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.0889135030455097,
+      "esp_with_idle": 0.002381406719697741,
+      "two_qubit_gates": 374,
+      "depth": 1851,
+      "duration_us": 277.06000000000057,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.8937499999999997,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       3.1121811724288236e-07,
+       0.002381406719697741
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 1.835
+     }
+    }
+   }
+  },
+  {
+   "assistant": "chatgpt",
+   "task": "qpe_t",
+   "mode": "state",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 15,
+    "cx_after": 11
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8958439417133065,
+      "esp_with_idle": 0.8742087197186953,
+      "two_qubit_gates": 16,
+      "depth": 60,
+      "duration_us": 3.6480000000000006,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.1024999999999996,
+      "physical_qubits": [
+       54,
+       60,
+       61,
+       62
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.7965243584827144,
+       0.8742087197186953
+      ],
+      "failing_checks": [],
+      "seconds": 0.263
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9042857615247372,
+      "esp_with_idle": 0.8854569873440873,
+      "two_qubit_gates": 13,
+      "depth": 52,
+      "duration_us": 3.336000000000001,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.095,
+      "physical_qubits": [
+       54,
+       60,
+       61,
+       62
+      ],
+      "chosen": "opt3 seed 2028 readout-aware",
+      "layout_esp_range": [
+       0.7669643344922548,
+       0.8854569873440873
+      ],
+      "failing_checks": [],
+      "seconds": 1.778
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8577209902047827,
+      "esp_with_idle": 0.6915196499690394,
+      "two_qubit_gates": 16,
+      "depth": 85,
+      "duration_us": 13.48,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.14149999999999954,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6257178202591469,
+       0.6915196499690394
+      ],
+      "failing_checks": [],
+      "seconds": 0.278
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8531258851578563,
+      "esp_with_idle": 0.7276083668166132,
+      "two_qubit_gates": 17,
+      "depth": 84,
+      "duration_us": 14.139999999999999,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.14375000000000002,
+      "physical_qubits": [
+       61,
+       62,
+       63,
+       64
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5959174688733734,
+       0.7276083668166132
+      ],
+      "failing_checks": [],
+      "seconds": 1.715
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "qpe_t",
+   "mode": "state",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 15,
+    "cx_after": 9
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.899351667956293,
+      "esp_with_idle": 0.8803400333677232,
+      "two_qubit_gates": 15,
+      "depth": 52,
+      "duration_us": 3.452000000000001,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.09999999999999955,
+      "physical_qubits": [
+       54,
+       60,
+       61,
+       62
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.8248116318490544,
+       0.8803400333677232
+      ],
+      "failing_checks": [],
+      "seconds": 0.248
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9083991089115481,
+      "esp_with_idle": 0.8827296293710188,
+      "two_qubit_gates": 12,
+      "depth": 47,
+      "duration_us": 3.1440000000000006,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.08925000000000005,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36
+      ],
+      "chosen": "opt3 seed 2027 readout-aware",
+      "layout_esp_range": [
+       0.8103324070523494,
+       0.8827296293710188
+      ],
+      "failing_checks": [],
+      "seconds": 1.77
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8726618041089541,
+      "esp_with_idle": 0.7358864327919813,
+      "two_qubit_gates": 13,
+      "depth": 76,
+      "duration_us": 11.379999999999999,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.12324999999999955,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111
+      ],
+      "chosen": "opt3 seed 2027 readout-aware",
+      "layout_esp_range": [
+       0.5441968050376131,
+       0.7358864327919813
+      ],
+      "failing_checks": [],
+      "seconds": 0.246
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8427775865049307,
+      "esp_with_idle": 0.7706371643272701,
+      "two_qubit_gates": 19,
+      "depth": 60,
+      "duration_us": 12.099999999999998,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.15075000000000002,
+      "physical_qubits": [
+       61,
+       62,
+       63,
+       64
+      ],
+      "chosen": "opt3 seed 2028 readout-aware",
+      "layout_esp_range": [
+       0.6733975965872789,
+       0.7706371643272701
+      ],
+      "failing_checks": [],
+      "seconds": 1.798
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "qpe_t",
+   "mode": "state",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 15,
+    "cx_after": 9
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.899351667956293,
+      "esp_with_idle": 0.8803400333677232,
+      "two_qubit_gates": 15,
+      "depth": 52,
+      "duration_us": 3.452000000000001,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.09999999999999955,
+      "physical_qubits": [
+       54,
+       60,
+       61,
+       62
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.8248116318490544,
+       0.8803400333677232
+      ],
+      "failing_checks": [],
+      "seconds": 0.258
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9083991089115481,
+      "esp_with_idle": 0.8827296293710188,
+      "two_qubit_gates": 12,
+      "depth": 47,
+      "duration_us": 3.1440000000000006,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.08925000000000005,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36
+      ],
+      "chosen": "opt3 seed 2027 readout-aware",
+      "layout_esp_range": [
+       0.8103324070523494,
+       0.8827296293710188
+      ],
+      "failing_checks": [],
+      "seconds": 1.589
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8726618041089541,
+      "esp_with_idle": 0.7358864327919813,
+      "two_qubit_gates": 13,
+      "depth": 76,
+      "duration_us": 11.379999999999999,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.12324999999999955,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111
+      ],
+      "chosen": "opt3 seed 2027 readout-aware",
+      "layout_esp_range": [
+       0.5441968050376131,
+       0.7358864327919813
+      ],
+      "failing_checks": [],
+      "seconds": 0.237
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8427775865049307,
+      "esp_with_idle": 0.7706371643272701,
+      "two_qubit_gates": 19,
+      "depth": 60,
+      "duration_us": 12.099999999999998,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.15075000000000002,
+      "physical_qubits": [
+       61,
+       62,
+       63,
+       64
+      ],
+      "chosen": "opt3 seed 2028 readout-aware",
+      "layout_esp_range": [
+       0.6733975965872789,
+       0.7706371643272701
+      ],
+      "failing_checks": [],
+      "seconds": 1.592
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "qpe_t",
+   "mode": "state",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 15,
+    "cx_after": 9
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.899351667956293,
+      "esp_with_idle": 0.8803400333677232,
+      "two_qubit_gates": 15,
+      "depth": 52,
+      "duration_us": 3.452000000000001,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.09999999999999955,
+      "physical_qubits": [
+       54,
+       60,
+       61,
+       62
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.8255167518545731,
+       0.8803400333677232
+      ],
+      "failing_checks": [],
+      "seconds": 0.267
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9083991089115481,
+      "esp_with_idle": 0.8827296293710188,
+      "two_qubit_gates": 12,
+      "depth": 47,
+      "duration_us": 3.1440000000000006,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.08925000000000005,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36
+      ],
+      "chosen": "opt3 seed 2027 readout-aware",
+      "layout_esp_range": [
+       0.8103324070523494,
+       0.8827296293710188
+      ],
+      "failing_checks": [],
+      "seconds": 2.002
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8737831763285765,
+      "esp_with_idle": 0.7326916519931203,
+      "two_qubit_gates": 13,
+      "depth": 73,
+      "duration_us": 11.320000000000002,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.12524999999999953,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111
+      ],
+      "chosen": "opt3 seed 2027 readout-aware",
+      "layout_esp_range": [
+       0.5432325755462218,
+       0.7326916519931203
+      ],
+      "failing_checks": [],
+      "seconds": 0.288
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8427775865049307,
+      "esp_with_idle": 0.7706371643272701,
+      "two_qubit_gates": 19,
+      "depth": 60,
+      "duration_us": 12.099999999999998,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.15075000000000002,
+      "physical_qubits": [
+       61,
+       62,
+       63,
+       64
+      ],
+      "chosen": "opt3 seed 2028 readout-aware",
+      "layout_esp_range": [
+       0.6733975965872789,
+       0.7706371643272701
+      ],
+      "failing_checks": [],
+      "seconds": 1.807
+     }
+    }
+   }
+  },
+  {
+   "assistant": "chatgpt",
+   "task": "c3x_linear",
+   "mode": "unitary",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 202,
+    "cx_after": 52
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.5493186693539717,
+      "esp_with_idle": 0.46207265145890936,
+      "two_qubit_gates": 150,
+      "depth": 470,
+      "duration_us": 16.94400000000005,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4454999999999997,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.3237840796625992,
+       0.46207265145890936
+      ],
+      "failing_checks": [],
+      "seconds": 0.615
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.6436764750349562,
+      "esp_with_idle": 0.5860353253838545,
+      "two_qubit_gates": 85,
+      "depth": 305,
+      "duration_us": 11.100000000000012,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.37225,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.4033410309197361,
+       0.5860353253838545
+      ],
+      "failing_checks": [],
+      "seconds": 0.475
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.43032012458907876,
+      "esp_with_idle": 0.08473833028862099,
+      "two_qubit_gates": 150,
+      "depth": 451,
+      "duration_us": 107.79999999999957,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.5427499999999997,
+      "physical_qubits": [
+       11,
+       12,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.01640125446085117,
+       0.08473833028862099
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 0.645
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6135426993857791,
+      "esp_with_idle": 0.34858155609764313,
+      "two_qubit_gates": 74,
+      "depth": 343,
+      "duration_us": 56.50000000000002,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.40225,
+      "physical_qubits": [
+       82,
+       83,
+       84,
+       92
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.05342472310560549,
+       0.34858155609764313
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.495
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "c3x_linear",
+   "mode": "unitary",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 24,
+    "cx_after": 24
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8710349288636718,
+      "esp_with_idle": 0.8380412782447969,
+      "two_qubit_gates": 24,
+      "depth": 63,
+      "duration_us": 3.5920000000000005,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.12999999999999967,
+      "physical_qubits": [
+       80,
+       81,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6731049803590523,
+       0.8380412782447969
+      ],
+      "failing_checks": [],
+      "seconds": 0.219
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8710349288636718,
+      "esp_with_idle": 0.8380412782447969,
+      "two_qubit_gates": 24,
+      "depth": 63,
+      "duration_us": 3.5920000000000005,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.12999999999999956,
+      "physical_qubits": [
+       80,
+       81,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6731049803590523,
+       0.8380412782447969
+      ],
+      "failing_checks": [],
+      "seconds": 0.219
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8240823630135384,
+      "esp_with_idle": 0.6644532220097736,
+      "two_qubit_gates": 24,
+      "depth": 43,
+      "duration_us": 15.16,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.17374999999999965,
+      "physical_qubits": [
+       12,
+       13,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5307907607137163,
+       0.6644532220097736
+      ],
+      "failing_checks": [],
+      "seconds": 0.197
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.8239580742067415,
+      "esp_with_idle": 0.6649138373089424,
+      "two_qubit_gates": 24,
+      "depth": 45,
+      "duration_us": 15.16,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.1739999999999996,
+      "physical_qubits": [
+       12,
+       13,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5307907607137163,
+       0.6649138373089424
+      ],
+      "failing_checks": [],
+      "seconds": 0.201
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "c3x_linear",
+   "mode": "unitary",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 202,
+    "cx_after": 52
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.5493186693539717,
+      "esp_with_idle": 0.46207265145890936,
+      "two_qubit_gates": 150,
+      "depth": 470,
+      "duration_us": 16.94400000000005,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.44549999999999934,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.3237840796625992,
+       0.46207265145890936
+      ],
+      "failing_checks": [],
+      "seconds": 0.464
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.6442596082889126,
+      "esp_with_idle": 0.5865199540174296,
+      "two_qubit_gates": 85,
+      "depth": 301,
+      "duration_us": 10.972000000000012,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.35824999999999896,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.4033410309197361,
+       0.5865199540174296
+      ],
+      "failing_checks": [],
+      "seconds": 0.46
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.43032012458907876,
+      "esp_with_idle": 0.08473833028862099,
+      "two_qubit_gates": 150,
+      "depth": 451,
+      "duration_us": 107.79999999999957,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.5427499999999994,
+      "physical_qubits": [
+       11,
+       12,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.01640125446085117,
+       0.08473833028862099
+      ],
+      "failing_checks": [
+       "Estimated success probability",
+       "Duration vs coherence"
+      ],
+      "seconds": 0.566
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6132599104437129,
+      "esp_with_idle": 0.3477621364867109,
+      "two_qubit_gates": 74,
+      "depth": 343,
+      "duration_us": 56.620000000000026,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.403249999999999,
+      "physical_qubits": [
+       82,
+       83,
+       84,
+       92
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.05342472310560549,
+       0.3477621364867109
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.633
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "c3x_linear",
+   "mode": "unitary",
+   "qubits": 4,
+   "optimize": {
+    "proven": true,
+    "cx_before": 126,
+    "cx_after": 52
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.6545741554324249,
+      "esp_with_idle": 0.5977974357355573,
+      "two_qubit_gates": 92,
+      "depth": 256,
+      "duration_us": 10.056,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.33249999999999963,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.4610531530109439,
+       0.5977974357355573
+      ],
+      "failing_checks": [],
+      "seconds": 0.339
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.6436764750349562,
+      "esp_with_idle": 0.5860353253838545,
+      "two_qubit_gates": 85,
+      "depth": 310,
+      "duration_us": 11.100000000000012,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.37324999999999997,
+      "physical_qubits": [
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.4033410309197361,
+       0.5860353253838545
+      ],
+      "failing_checks": [],
+      "seconds": 0.474
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.5479874166005447,
+      "esp_with_idle": 0.2569324520227349,
+      "two_qubit_gates": 92,
+      "depth": 175,
+      "duration_us": 59.37999999999995,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4372499999999997,
+      "physical_qubits": [
+       11,
+       12,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.06593050349346528,
+       0.2569324520227349
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.383
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6134012886184025,
+      "esp_with_idle": 0.34817160522991913,
+      "two_qubit_gates": 74,
+      "depth": 342,
+      "duration_us": 56.560000000000024,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.40325,
+      "physical_qubits": [
+       82,
+       83,
+       84,
+       92
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.05342472310560549,
+       0.34817160522991913
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.502
+     }
+    }
+   }
+  },
+  {
+   "assistant": "chatgpt",
+   "task": "reverse6_nn",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 45,
+    "cx_after": 45
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7559811115816351,
+      "esp_with_idle": 0.6788411873529556,
+      "two_qubit_gates": 45,
+      "depth": 81,
+      "duration_us": 4.527999999999999,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23674999999999988,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5528074769082132,
+       0.6788411873529556
+      ],
+      "failing_checks": [],
+      "seconds": 0.281
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7559811115816351,
+      "esp_with_idle": 0.6788411873529556,
+      "two_qubit_gates": 45,
+      "depth": 81,
+      "duration_us": 4.527999999999999,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23674999999999988,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5528074769082132,
+       0.6788411873529556
+      ],
+      "failing_checks": [],
+      "seconds": 0.281
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7151511693029022,
+      "esp_with_idle": 0.4881344963567375,
+      "two_qubit_gates": 45,
+      "depth": 107,
+      "duration_us": 21.159999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.26924999999999993,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.28779241581179354,
+       0.4881344963567375
+      ],
+      "failing_checks": [],
+      "seconds": 0.326
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7151511693029022,
+      "esp_with_idle": 0.4881344963567375,
+      "two_qubit_gates": 45,
+      "depth": 107,
+      "duration_us": 21.159999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.26924999999999993,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.28779241581179354,
+       0.4881344963567375
+      ],
+      "failing_checks": [],
+      "seconds": 0.299
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "reverse6_nn",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 45,
+    "cx_after": 45
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7537659790110827,
+      "esp_with_idle": 0.7309548737200644,
+      "two_qubit_gates": 45,
+      "depth": 58,
+      "duration_us": 3.5720000000000005,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23824999999999982,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.574712605980999,
+       0.7309548737200644
+      ],
+      "failing_checks": [],
+      "seconds": 0.285
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7537659790110827,
+      "esp_with_idle": 0.7309548737200644,
+      "two_qubit_gates": 45,
+      "depth": 58,
+      "duration_us": 3.5720000000000005,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23824999999999982,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.574712605980999,
+       0.7309548737200644
+      ],
+      "failing_checks": [],
+      "seconds": 0.279
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7085389582712848,
+      "esp_with_idle": 0.6584721438807065,
+      "two_qubit_gates": 45,
+      "depth": 75,
+      "duration_us": 14.559999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.2754999999999998,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.32843348941563305,
+       0.6584721438807065
+      ],
+      "failing_checks": [],
+      "seconds": 0.285
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7085389582712848,
+      "esp_with_idle": 0.6584721438807065,
+      "two_qubit_gates": 45,
+      "depth": 75,
+      "duration_us": 14.559999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.2754999999999998,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.32843348941563305,
+       0.6584721438807065
+      ],
+      "failing_checks": [],
+      "seconds": 0.28
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "reverse6_nn",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 45,
+    "cx_after": 45
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7559811115816351,
+      "esp_with_idle": 0.6788411873529556,
+      "two_qubit_gates": 45,
+      "depth": 81,
+      "duration_us": 4.527999999999999,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23674999999999988,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5528074769082132,
+       0.6788411873529556
+      ],
+      "failing_checks": [],
+      "seconds": 0.296
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7559811115816351,
+      "esp_with_idle": 0.6788411873529556,
+      "two_qubit_gates": 45,
+      "depth": 81,
+      "duration_us": 4.527999999999999,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23674999999999988,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5528074769082132,
+       0.6788411873529556
+      ],
+      "failing_checks": [],
+      "seconds": 0.274
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7151511693029022,
+      "esp_with_idle": 0.4881344963567375,
+      "two_qubit_gates": 45,
+      "depth": 107,
+      "duration_us": 21.159999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.26924999999999993,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.28779241581179354,
+       0.4881344963567375
+      ],
+      "failing_checks": [],
+      "seconds": 0.304
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7151511693029022,
+      "esp_with_idle": 0.4881344963567375,
+      "two_qubit_gates": 45,
+      "depth": 107,
+      "duration_us": 21.159999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.26924999999999993,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.28779241581179354,
+       0.4881344963567375
+      ],
+      "failing_checks": [],
+      "seconds": 0.305
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "reverse6_nn",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 45,
+    "cx_after": 45
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7559811115816351,
+      "esp_with_idle": 0.6788411873529556,
+      "two_qubit_gates": 45,
+      "depth": 81,
+      "duration_us": 4.527999999999999,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23674999999999988,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5528074769082132,
+       0.6788411873529556
+      ],
+      "failing_checks": [],
+      "seconds": 0.422
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7559811115816351,
+      "esp_with_idle": 0.6788411873529556,
+      "two_qubit_gates": 45,
+      "depth": 81,
+      "duration_us": 4.527999999999999,
+      "proof": "proven",
+      "proof_method": "clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.23674999999999988,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.5528074769082132,
+       0.6788411873529556
+      ],
+      "failing_checks": [],
+      "seconds": 0.274
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7151511693029022,
+      "esp_with_idle": 0.4881344963567375,
+      "two_qubit_gates": 45,
+      "depth": 107,
+      "duration_us": 21.159999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.26924999999999993,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.28779241581179354,
+       0.4881344963567375
+      ],
+      "failing_checks": [],
+      "seconds": 0.309
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7151511693029022,
+      "esp_with_idle": 0.4881344963567375,
+      "two_qubit_gates": 45,
+      "depth": 107,
+      "duration_us": 21.159999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.26924999999999993,
+      "physical_qubits": [
+       12,
+       17,
+       30,
+       31,
+       32,
+       36
+      ],
+      "chosen": "opt3 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.28779241581179354,
+       0.4881344963567375
+      ],
+      "failing_checks": [],
+      "seconds": 0.316
+     }
+    }
+   }
+  },
+  {
+   "assistant": "chatgpt",
+   "task": "bv22",
+   "mode": "state",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 3,
+    "cx_after": 3
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 9,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.062749999999999,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8854683817489273,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.206
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 8,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.06374999999999988,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8863678943205017,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.201
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8174360611833587,
+      "two_qubit_gates": 3,
+      "depth": 13,
+      "duration_us": 3.52,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.077999999999999,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6866758774533157,
+       0.8174360611833587
+      ],
+      "failing_checks": [],
+      "seconds": 0.162
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8207441867391545,
+      "two_qubit_gates": 3,
+      "depth": 12,
+      "duration_us": 3.46,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.07949999999999992,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.6998153766753918,
+       0.8207441867391545
+      ],
+      "failing_checks": [],
+      "seconds": 0.173
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "bv22",
+   "mode": "state",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 3,
+    "cx_after": 3
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 9,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.062749999999999,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8854683817489273,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.175
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 8,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.06374999999999988,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8863678943205017,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.214
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8174360611833587,
+      "two_qubit_gates": 3,
+      "depth": 13,
+      "duration_us": 3.52,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.077999999999999,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6866758774533157,
+       0.8174360611833587
+      ],
+      "failing_checks": [],
+      "seconds": 0.171
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8207441867391545,
+      "two_qubit_gates": 3,
+      "depth": 12,
+      "duration_us": 3.46,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.07949999999999992,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.6998153766753918,
+       0.8207441867391545
+      ],
+      "failing_checks": [],
+      "seconds": 0.165
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "bv22",
+   "mode": "state",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 3,
+    "cx_after": 3
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 9,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.062749999999999,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8854683817489273,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.187
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 8,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.06374999999999988,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8863678943205017,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.172
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8174360611833587,
+      "two_qubit_gates": 3,
+      "depth": 13,
+      "duration_us": 3.52,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.077999999999999,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6866758774533157,
+       0.8174360611833587
+      ],
+      "failing_checks": [],
+      "seconds": 0.163
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8207441867391545,
+      "two_qubit_gates": 3,
+      "depth": 12,
+      "duration_us": 3.46,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.07949999999999992,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.6998153766753918,
+       0.8207441867391545
+      ],
+      "failing_checks": [],
+      "seconds": 0.166
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "bv22",
+   "mode": "state",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 3,
+    "cx_after": 3
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 9,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.062749999999999,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8854683817489273,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.188
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9402733675893419,
+      "esp_with_idle": 0.9340695695105148,
+      "two_qubit_gates": 3,
+      "depth": 8,
+      "duration_us": 1.8760000000000001,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.06374999999999988,
+      "physical_qubits": [
+       28,
+       29,
+       30,
+       36,
+       66,
+       81
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.8863678943205017,
+       0.9340695695105148
+      ],
+      "failing_checks": [],
+      "seconds": 0.178
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8174360611833587,
+      "two_qubit_gates": 3,
+      "depth": 13,
+      "duration_us": 3.52,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.077999999999999,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026 readout-aware",
+      "layout_esp_range": [
+       0.6866758774533157,
+       0.8174360611833587
+      ],
+      "failing_checks": [],
+      "seconds": 0.163
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.9212968247016387,
+      "esp_with_idle": 0.8207441867391545,
+      "two_qubit_gates": 3,
+      "depth": 12,
+      "duration_us": 3.46,
+      "proof": "proven",
+      "proof_method": "partition+clifford-tableau",
+      "vs_reference": "PASS",
+      "tvd": 0.07949999999999992,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       111,
+       112,
+       124
+      ],
+      "chosen": "opt1 seed 2026",
+      "layout_esp_range": [
+       0.6998153766753918,
+       0.8207441867391545
+      ],
+      "failing_checks": [],
+      "seconds": 0.165
+     }
+    }
+   }
+  },
+  {
+   "assistant": "chatgpt",
+   "task": "add3",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 29,
+    "cx_after": 25
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7387811782016197,
+      "esp_with_idle": 0.601516063831396,
+      "two_qubit_gates": 49,
+      "depth": 170,
+      "duration_us": 6.591999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.24924999999999953,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt1 seed 2029",
+      "layout_esp_range": [
+       0.5273156507926229,
+       0.601516063831396
+      ],
+      "failing_checks": [],
+      "seconds": 0.356
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7383676781385781,
+      "esp_with_idle": 0.6014106896309077,
+      "two_qubit_gates": 49,
+      "depth": 172,
+      "duration_us": 6.591999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.25049999999999933,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt1 seed 2029",
+      "layout_esp_range": [
+       0.5257934877940584,
+       0.6014106896309077
+      ],
+      "failing_checks": [],
+      "seconds": 0.424
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6934878081462327,
+      "esp_with_idle": 0.28840742459684043,
+      "two_qubit_gates": 38,
+      "depth": 169,
+      "duration_us": 28.239999999999995,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.28824999999999956,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.11775228086741439,
+       0.28840742459684043
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.352
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6923984880683007,
+      "esp_with_idle": 0.2856065237943772,
+      "two_qubit_gates": 38,
+      "depth": 176,
+      "duration_us": 28.479999999999993,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.2897499999999993,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2027",
+      "layout_esp_range": [
+       0.1437281668159084,
+       0.2856065237943772
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.336
+     }
+    }
+   }
+  },
+  {
+   "assistant": "claude",
+   "task": "add3",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 43,
+    "cx_after": 41
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.677293232213549,
+      "esp_with_idle": 0.5190761372272721,
+      "two_qubit_gates": 85,
+      "depth": 234,
+      "duration_us": 9.827999999999996,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.3104999999999994,
+      "physical_qubits": [
+       18,
+       30,
+       31,
+       32,
+       33,
+       37
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       0.3749338551946308,
+       0.5190761372272721
+      ],
+      "failing_checks": [],
+      "seconds": 0.46
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.6767286936954038,
+      "esp_with_idle": 0.5176404329849482,
+      "two_qubit_gates": 85,
+      "depth": 234,
+      "duration_us": 9.895999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.31099999999999917,
+      "physical_qubits": [
+       18,
+       30,
+       31,
+       32,
+       33,
+       37
+      ],
+      "chosen": "opt3 seed 2028",
+      "layout_esp_range": [
+       0.1432402708085723,
+       0.5176404329849482
+      ],
+      "failing_checks": [],
+      "seconds": 0.419
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.5222343012458569,
+      "esp_with_idle": 0.12108567729450144,
+      "two_qubit_gates": 74,
+      "depth": 301,
+      "duration_us": 49.780000000000015,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4637499999999994,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.027794840181895777,
+       0.12108567729450144
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.505
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.5332593983654773,
+      "esp_with_idle": 0.14463909260132604,
+      "two_qubit_gates": 76,
+      "depth": 324,
+      "duration_us": 53.740000000000016,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.45399999999999907,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.027407435870399698,
+       0.14463909260132604
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.459
+     }
+    }
+   }
+  },
+  {
+   "assistant": "gemini",
+   "task": "add3",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 43,
+    "cx_after": 41
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.5740324927982802,
+      "esp_with_idle": 0.5032357516225212,
+      "two_qubit_gates": 71,
+      "depth": 216,
+      "duration_us": 8.911999999999992,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4072499999999992,
+      "physical_qubits": [
+       87,
+       88,
+       89,
+       90,
+       94,
+       107
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.316501882606409,
+       0.5032357516225212
+      ],
+      "failing_checks": [],
+      "seconds": 0.417
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.5741785616317077,
+      "esp_with_idle": 0.5032534105912543,
+      "two_qubit_gates": 71,
+      "depth": 214,
+      "duration_us": 8.911999999999992,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.40699999999999836,
+      "physical_qubits": [
+       87,
+       88,
+       89,
+       90,
+       94,
+       107
+      ],
+      "chosen": "opt3 seed 2029",
+      "layout_esp_range": [
+       0.31452955525542375,
+       0.5032534105912543
+      ],
+      "failing_checks": [],
+      "seconds": 0.391
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.5443072044905879,
+      "esp_with_idle": 0.1461040005260805,
+      "two_qubit_gates": 73,
+      "depth": 293,
+      "duration_us": 50.320000000000014,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4472499999999995,
+      "physical_qubits": [
+       103,
+       104,
+       105,
+       106,
+       111,
+       122
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.027837697000991084,
+       0.1461040005260805
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.495
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.526476160656515,
+      "esp_with_idle": 0.1573541330788861,
+      "two_qubit_gates": 73,
+      "depth": 314,
+      "duration_us": 50.92,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.4589999999999984,
+      "physical_qubits": [
+       10,
+       11,
+       12,
+       13,
+       17,
+       30
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.03754752589231103,
+       0.1573541330788861
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.469
+     }
+    }
+   }
+  },
+  {
+   "assistant": "perplexity",
+   "task": "add3",
+   "mode": "unitary",
+   "qubits": 6,
+   "optimize": {
+    "proven": true,
+    "cx_before": 29,
+    "cx_after": 25
+   },
+   "backends": {
+    "fake_torino": {
+     "as_written": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7387811782016197,
+      "esp_with_idle": 0.601516063831396,
+      "two_qubit_gates": 49,
+      "depth": 170,
+      "duration_us": 6.591999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.24924999999999953,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt1 seed 2029",
+      "layout_esp_range": [
+       0.5273156507926229,
+       0.601516063831396
+      ],
+      "failing_checks": [],
+      "seconds": 0.373
+     },
+     "optimized": {
+      "gate": "go",
+      "verdict": "PASS",
+      "esp": 0.7383676781385781,
+      "esp_with_idle": 0.6014106896309077,
+      "two_qubit_gates": 49,
+      "depth": 172,
+      "duration_us": 6.591999999999997,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.25049999999999933,
+      "physical_qubits": [
+       73,
+       80,
+       81,
+       82,
+       92,
+       99
+      ],
+      "chosen": "opt1 seed 2029",
+      "layout_esp_range": [
+       0.5257934877940584,
+       0.6014106896309077
+      ],
+      "failing_checks": [],
+      "seconds": 0.342
+     }
+    },
+    "fake_brisbane": {
+     "as_written": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6934878081462327,
+      "esp_with_idle": 0.28840742459684043,
+      "two_qubit_gates": 38,
+      "depth": 169,
+      "duration_us": 28.239999999999995,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.28824999999999956,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2026",
+      "layout_esp_range": [
+       0.11775228086741439,
+       0.28840742459684043
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.392
+     },
+     "optimized": {
+      "gate": "warn",
+      "verdict": "INCONCLUSIVE",
+      "esp": 0.6923984880683007,
+      "esp_with_idle": 0.2856065237943772,
+      "two_qubit_gates": 38,
+      "depth": 176,
+      "duration_us": 28.479999999999993,
+      "proof": "proven",
+      "proof_method": "operator",
+      "vs_reference": "PASS",
+      "tvd": 0.2897499999999993,
+      "physical_qubits": [
+       54,
+       62,
+       63,
+       64,
+       65,
+       66
+      ],
+      "chosen": "opt3 seed 2027",
+      "layout_esp_range": [
+       0.1437281668159084,
+       0.2856065237943772
+      ],
+      "failing_checks": [
+       "Duration vs coherence"
+      ],
+      "seconds": 0.364
+     }
+    }
+   }
+  }
+ ]
+}
