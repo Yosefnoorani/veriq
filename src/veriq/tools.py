@@ -174,7 +174,42 @@ def verify_circuit(candidate: QuantumCircuit, reference: QuantumCircuit | None =
     rep = run_checks(candidate, reference=reference, expect=expect, shots=shots, seed=seed, timeout=timeout,
                      mode=mode, allowed_gates=allowed_gates, coupling=coupling,
                      no_black_boxes=no_black_boxes).to_dict()
-    return report_to_tool_result(rep)
+    out = report_to_tool_result(rep)
+    if out["verdict"] != "PASS":
+        out["repair_report"] = _compact_repair(_repair(candidate, reference, mode, rep))
+    return out
+
+
+def _repair(candidate: QuantumCircuit, reference: QuantumCircuit | None, mode: str,
+            rep: dict[str, Any]) -> dict[str, Any]:
+    from .repair_report import SCHEMA, build_repair_report
+
+    try:
+        return build_repair_report(candidate, reference, mode, result=rep, localize_circuit=rep["verdict"] != "PASS")
+    except Exception as exc:  # never let the explanation break the verdict
+        return {"schema": SCHEMA, "verdict": rep.get("verdict"), "error": f"repair report failed: {exc!r}"[:300]}
+
+
+def _compact_repair(r: dict[str, Any]) -> dict[str, Any]:
+    r = dict(r)
+    loc = r.get("localization")
+    if isinstance(loc, dict):
+        loc = {k: v for k, v in loc.items() if k != "support_size_per_gap"}
+        loc["regions"] = [dict(reg, gates=reg["gates"][:12]) for reg in loc.get("regions", [])[:3]]
+        loc["fixes"] = [{k: v for k, v in f.items() if k != "gate" or "matrix" not in v} for f in loc.get("fixes", [])[:4]]
+        r["localization"] = loc
+    return _trim(r)
+
+
+def repair_hints(candidate: QuantumCircuit, reference: QuantumCircuit | None = None, mode: str = "unitary",
+                 allowed_gates: list[str] | None = None, coupling: str | list | None = None,
+                 no_black_boxes: bool = False, timeout: float = 30.0) -> dict[str, Any]:
+    """Full machine-readable repair report (see veriq.repair_report)."""
+    rep = run_checks(candidate, reference=reference, timeout=timeout, mode=mode, allowed_gates=allowed_gates,
+                     coupling=coupling, no_black_boxes=no_black_boxes, shots=1024).to_dict()
+    out = _repair(candidate, reference, mode, rep)
+    out["summary"] = _one_line(rep)
+    return _trim(out)
 
 
 def _coupling_edges(spec: str | list | None, n: int) -> list[list[int]] | None:

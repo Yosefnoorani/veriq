@@ -41,6 +41,9 @@ INSTRUCTIONS = """Veriq proves quantum circuits correct. Use it BEFORE you prese
 - check_transpile: is Qiskit's compiled output of a circuit still equivalent (flags zero_init_hazard)?
 - circuit_metrics: qubits, depth, 2-qubit gate count, compiled cost.
 - explain_verdict: plain-language explanation of a result.
+- repair_hints: on a FAIL, a machine-readable repair report: counterexample (expected vs actual output),
+  the localized gate region where the bug is, exact single-gate fixes when one exists, hardware
+  violations, metric deltas. verify_circuit also embeds a compact `repair_report` when it does not PASS.
 Statuses are honest: PROVEN_EQUIVALENT is a formal proof; PROBABLY_EQUIVALENT means only that simulations
 found no difference (NOT a proof); NOT_EQUIVALENT comes with a counterexample input when one is found.
 Read veriq://conventions for Qiskit's little-endian bit order. Python sources must define `build()`
@@ -288,6 +291,20 @@ class Counterexample(_Out):
     reference_output_top: dict[str, float] = {}
 
 
+class RepairReport(_Out):
+    verdict: str | None = None
+    mode: str | None = None
+    summary: str | None = None
+    failing_checks: list[dict[str, Any]] = []
+    counterexample: dict[str, Any] | None = None
+    localization: dict[str, Any] | None = Field(None, description="regions: suspected gate ranges; fixes: exact "
+                                                "single-gate edits (delete/replace/insert) that make it correct")
+    hardware_violations: list[dict[str, Any]] = []
+    metric_deltas: dict[str, Any] = {}
+    hints: list[str] = []
+    error: ErrorInfo | None = None
+
+
 class VerifyResult(_Out):
     verdict: Verdict
     summary: str
@@ -295,6 +312,8 @@ class VerifyResult(_Out):
     counterexample: Counterexample | None = None
     metrics: dict[str, Any] = {}
     hints: list[str] = Field(default=[], description="Concrete suggestions for fixing the circuit")
+    repair_report: dict[str, Any] | None = Field(None, description="Compact repair report when not PASS "
+                                                 "(counterexample, localized region, exact fixes)")
     error: ErrorInfo | None = None
     seconds: float | None = None
 
@@ -436,6 +455,30 @@ coupling map with optimization level 3.""")
         cand = runner.source(code, path, function, "candidate")
         return MetricsResult.model_validate(await runner.run("circuit_metrics", {"candidate": cand}, {"compile": compile}))
 
+    @mcp.tool(annotations=READ_ONLY, description="""Repair report for a circuit that fails verification: what is wrong and where.
+
+Same inputs as verify_circuit (candidate `code`/`path`, trusted reference, mode, constraints). Returns
+`counterexample` (an input with the expected = reference and actual = candidate output distributions),
+`localization` (the suspected gate `regions` by index, and exact single-gate `fixes` such as "replace gate #7
+cx(2, 1) by cx(1, 2)" or "delete gate #4" when a 1- or 2-qubit change makes the circuit correct; exact up to
+10 qubits), `hardware_violations` (gate set, coupling map, black boxes), `metric_deltas` vs the reference,
+and `hints`. Apply a fix, then call verify_circuit again: a fix is only accepted once verify_circuit PASSes.""")
+    async def repair_hints(
+        code: Code = None, path: PathArg = None, function: Func = None,
+        reference_code: Code = None, reference_path: PathArg = None, reference_function: Func = None,
+        mode: Mode = "unitary",
+        allowed_gates: Annotated[list[Annotated[str, Field(pattern=GATE)]] | None, Field(max_length=64)] = None,
+        coupling: Annotated[str | None, Field(pattern=COUPLING, max_length=20000)] = None,
+        no_black_boxes: bool = False,
+        timeout: ProofTimeout = 30.0,
+    ) -> RepairReport:
+        cand = runner.source(code, path, function, "candidate")
+        ref = runner.source(reference_code, reference_path, reference_function, "reference", required=False, prefix="reference_")
+        opts = {"mode": mode, "allowed_gates": allowed_gates, "coupling": coupling, "no_black_boxes": no_black_boxes,
+                "timeout": timeout}
+        return RepairReport.model_validate(
+            await runner.run("repair_hints", {"candidate": cand, "reference": ref}, opts))
+
     @mcp.tool(annotations=READ_ONLY, description="""Explain a Veriq result in plain language with concrete next steps.
 
 Pass the JSON object returned by verify_circuit, compare_circuits or check_transpile as `result`. Executes no
@@ -484,6 +527,29 @@ Before you answer:
 4. Answer with the final code and quote the verdict and the proof method from the last result. Never call a
    circuit verified if the last verdict was FAIL, INCONCLUSIVE or ERROR, or the status was only
    PROBABLY_EQUIVALENT; say so explicitly instead."""
+
+    @mcp.prompt(name="verify-and-repair", title="Verify a circuit and repair it until it is proved",
+                description="Generate, verify, read the repair report, fix and re-verify, with bounded retries.")
+    def verify_and_repair(task: str, reference_hint: str = "", mode: str = "unitary", max_attempts: str = "5") -> str:
+        ref = (f"\nTrusted reference: {reference_hint}" if reference_hint else
+               "\nBuild a trusted reference from qiskit.circuit.library (QFTGate, MCXGate, PhaseOracle, ...) or an "
+               "explicit truth table, and pass it as `reference_code`.")
+        return f"""Task: {task}
+
+Write Python that defines `build()` returning a qiskit QuantumCircuit for this task.{ref}
+Loop, at most {max_attempts} attempts:
+1. Call `verify_circuit` with your code, the reference and mode="{mode}".
+2. If the verdict is PASS: stop. If it is INCONCLUSIVE or ERROR: stop and say the circuit is NOT verified
+   (do not keep editing blindly; report what could not be decided).
+3. If it is FAIL: read `repair_report` (or call `repair_hints` for the full report):
+   - `counterexample`: the input where it breaks, expected (reference) vs actual (candidate) outputs;
+   - `localization.regions`: the gate indices where the bug is; `localization.fixes`: exact single-gate
+     edits that make it correct, when one exists;
+   - `hardware_violations`: gates or qubit pairs that the constraints forbid.
+   Fix the code (prefer the smallest edit that the report points to), then go to 1.
+Answer with the final code and quote the last verdict and proof method. If you ran out of attempts, or the
+last verdict was not PASS, say explicitly that the circuit is NOT verified. Never present a circuit as
+verified on PROBABLY_EQUIVALENT."""
 
     _forbid_unknown_arguments(mcp)
     mcp._veriq_runner = runner  # for tests

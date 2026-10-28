@@ -20,7 +20,8 @@ from veriq.sandbox import MAX_SOURCE_BYTES, Limits  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 EX = ROOT / "examples"
-TOOLS = {"verify_circuit", "check_transpile", "compare_circuits", "circuit_metrics", "explain_verdict"}
+TOOLS = {"verify_circuit", "check_transpile", "compare_circuits", "circuit_metrics", "explain_verdict",
+         "repair_hints"}
 
 
 def session(fn, server=None):
@@ -83,7 +84,7 @@ def test_resources_and_prompt():
     assert "little-endian" in conv.lower()
     assert set(idx) == set(EXAMPLES) and "def build" in bell
     assert lim["max_qubits"] == Limits().max_qubits and lim["isolation"]
-    assert prompts == ["write-verified-circuit"]
+    assert prompts == ["write-verified-circuit", "verify-and-repair"]
     text = msg.messages[0].content.text
     assert "4-qubit GHZ" in text and "verify_circuit" in text
 
@@ -98,6 +99,30 @@ def test_verify_fail_then_fix():
     assert r["sandbox"]["isolation"]
     r = ok(call("verify_circuit", {"code": ref, "reference_code": ref, "mode": "state"}))
     assert r["verdict"] == "PASS"
+
+
+def test_verify_failure_embeds_repair_report_and_repair_hints_tool():
+    buggy, ref = EXAMPLES["ghz_buggy"]["code"], EXAMPLES["ghz_reference"]["code"]
+    r = ok(call("verify_circuit", {"code": buggy, "reference_code": ref, "mode": "state"}))
+    rr = r["repair_report"]
+    assert rr["counterexample"]["expected_output_top"] and rr["localization"]["regions"]
+    full = ok(call("repair_hints", {"code": buggy, "reference_code": ref, "mode": "state"}))
+    assert full["schema"] == "veriq.repair_report/1" and full["verdict"] == "FAIL"
+    assert full["localization"]["available"] and full["hints"]
+    r = ok(call("repair_hints", {"path": "examples/qft_buggy.py", "reference_path": str(EX / "qft_reference.py")}))
+    # every cp angle is wrong: no single-gate fix exists, and the report says so instead of inventing one
+    assert r["localization"]["min_support_qubits"] > 2 and not r["localization"].get("fixes")
+    assert any("No single" in h for h in r["hints"])
+    good = ok(call("verify_circuit", {"code": ref, "reference_code": ref, "mode": "state"}))
+    assert good.get("repair_report") is None
+
+
+def test_verify_and_repair_prompt():
+    async def f(c):
+        return await c.get_prompt("verify-and-repair", {"task": "a 3-qubit QFT", "max_attempts": "3"})
+
+    text = session(f).messages[0].content.text
+    assert "at most 3 attempts" in text and "repair_report" in text and "INCONCLUSIVE" in text
 
 
 def test_verify_by_path_with_function_and_constraints():
