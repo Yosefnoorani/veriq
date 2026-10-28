@@ -18,7 +18,7 @@ SYMBOL = {"PASS": "\u2714", "FAIL": "\u2718", "INCONCLUSIVE": "?", "SKIPPED": "-
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="veriq", description="Veriq: verify AI-written quantum circuits.")
     sub = p.add_subparsers(dest="cmd", required=True)
-    c = sub.add_parser("check", help="run all checks on a circuit (.py or .qasm)")
+    c = sub.add_parser("check", aliases=["verify"], help="run all checks on a circuit (.py or .qasm); alias: verify")
     c.add_argument("file", help="candidate circuit: .py exposing `circuit`/`build()`, or OpenQASM 2/3")
     c.add_argument("--reference", "-r", help="trusted reference circuit to prove equivalence against")
     c.add_argument("--expect", "-e", help="expected distribution/property: inline JSON or path to .json")
@@ -37,6 +37,8 @@ def build_parser() -> argparse.ArgumentParser:
                                       "edges like '0-1,1-2,2-3' (FAIL on any 2-qubit gate off an edge or any 3+-qubit gate)")
     c.add_argument("--no-black-boxes", action="store_true",
                    help="FAIL on UnitaryGate, initialize, StatePreparation, PermutationGate, QFTGate or other library blocks")
+    c.add_argument("--repair-report", help="write a machine-readable repair report (JSON) here: counterexample, "
+                                           "localized bug region, hardware violations, metric deltas, hints")
     c.add_argument("--quiet", "-q", action="store_true")
 
     ci = sub.add_parser("ci", help="run every check listed in a .veriq.yml config (for CI)")
@@ -97,6 +99,9 @@ def main(argv: list[str] | None = None) -> int:
     if json_out:
         Path(json_out).write_text(render_json(report))
 
+    if args.repair_report:
+        _write_repair_report(args, report)
+
     if not args.quiet:
         print(f"Veriq  {report.target}" + (f"  vs  {report.reference}" if report.reference else ""))
         for c in report.checks:
@@ -104,7 +109,32 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  => VERDICT: {report.verdict.value}  ({report.seconds:.2f}s)")
         if args.report:
             print(f"  report: {args.report}" + (f"  json: {json_out}" if json_out else ""))
+        if args.repair_report:
+            print(f"  repair report: {args.repair_report}")
     return EXIT[report.verdict]
+
+
+def _write_repair_report(args, report) -> None:
+    import json
+
+    from .loader import load_circuit
+    from .repair_report import SCHEMA, build_repair_report
+
+    rd = report.to_dict()
+    try:
+        cand = load_circuit(args.file, args.function)
+        ref = load_circuit(args.reference, args.reference_function) if args.reference else None
+    except Exception as exc:  # the candidate does not build: the failing Build check is the whole story
+        out = {"schema": SCHEMA, "verdict": rd["verdict"], "mode": args.mode,
+               "failing_checks": [{"name": c["name"], "summary": c["summary"]} for c in rd["checks"]
+                                  if c["status"] == "FAIL"],
+               "counterexample": None, "localization": {"available": False, "reason": f"does not build: {exc}"[:300]},
+               "hardware_violations": [], "metric_deltas": {}, "hints": ["Fix the build error first."]}
+    else:
+        out = build_repair_report(cand, ref, args.mode, result=rd,
+                                  localize_circuit=rd["verdict"] != "PASS")
+    Path(args.repair_report).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.repair_report).write_text(json.dumps(out, indent=1, default=str))
 
 
 if __name__ == "__main__":
