@@ -34,7 +34,18 @@ checks:
     timeout: 30               # seconds for the formal check
     watch: [circuits/_lib.py, "circuits/common/*.py"]   # extra files that affect this check (globs ok)
     expect: pass              # pass (default) | fail | inconclusive
+    preflight: fake_torino    # optional hardware gate (docs/preflight.md); or a mapping:
+    # preflight: {backend: profiles/device.json, min-esp: 0.2, warn-esp: 0.5, max-cx: 120,
+    #             max-duration: 2e-4, warn-t2-fraction: 0.5, seeds: 4, levels: [1, 3],
+    #             noisy-sim: false, max-tvd: 0.3, shots: 4000, timeout: 30}
 ```
+
+`preflight` runs `veriq preflight` on the candidate after the other checks and adds the result as one more check
+(`Hardware preflight`): go = PASS, warn = INCONCLUSIVE, no-go = FAIL, merged into the entry verdict (so
+`expect` applies to it too). The PR comment notes show the gate, the estimated ESP, the two-qubit count and the
+duration, and the entry certificate gets a `preflight` block. A `.json` profile path is relative to the config
+file and also counts as a watched file under `changed-only`. Preflight is offline: the IBM backends are
+frozen calibration snapshots from `qiskit-ibm-runtime` (`pip install veriq[preflight]`).
 
 Paths are relative to the config file. Errors are caught before anything runs, and `veriq ci` exits **3** with a
 message that names the entry and key. The cases are: unknown keys (with a "did you mean" hint), wrong types,

@@ -54,6 +54,9 @@ attacker can re-sign a forged certificate with their own key. Always pin the pub
 including the gate set, coupling and black-box constraints. Otherwise it uses the embedded canonical
 QASM. The QASM export can rename or inline custom gates, so with embedded QASM only the proof is
 re-run when the certificate has constraints. When it has none, the full verdict is compared.
+Preflight certificates are re-proven as *compiled ≡ input* from the stored layout and routing permutation
+(the estimates are not re-run). A CI entry certificate with a `preflight:` key keeps its certified
+preflight status on recheck.
 Optimize certificates are re-proven as output against the unitary part of the input. This is skipped
 when the proof depends on a layout (a coupling map or an allowed permutation).
 
@@ -61,7 +64,7 @@ when the proof depends on a layout (a coupling map or an allowed permutation).
 
 | Field | Content |
 |---|---|
-| `schema`, `kind` | `veriq.certificate/1`; `verify`, `ci` or `optimize` |
+| `schema`, `kind` | `veriq.certificate/1`; `verify`, `ci`, `optimize` or `preflight` |
 | `verdict` | `PASS`, `FAIL` or `INCONCLUSIVE` |
 | `claim` | what the certificate asserts (table below) |
 | `inputs[]` | per circuit: `role` (candidate/reference, or input/output), `path`, `function`, `source_sha256` (file or code bytes), `canonical_format`, `canonical_sha256`, `canonical` (normalized OpenQASM, embedded up to 512 KB), `qpy_sha256` (informational; QPY bytes vary between versions), `num_qubits` |
@@ -72,6 +75,7 @@ when the proof depends on a layout (a coupling map or an allowed permutation).
 | `counterexample` | for `FAIL`: the input state and both outputs, or the failing evidence; `null` otherwise |
 | `tool_versions` | veriq, qiskit, qiskit-aer, mqt.qcec, cryptography, python, platform |
 | `timestamps` | `started`, `issued` (UTC, ISO-8601), `seconds` |
+| `preflight` | (preflight, and CI entries with `preflight:`) `gate` go/warn/no-go, `backend` (name, source, calibration date, data sha256), `chosen` candidate, `esp`, `two_qubit_gates`, `duration_s`; for kind `preflight` the `assumptions` also hold the `layout` (physical qubits, initial/final positions, permutation) and the thresholds. ESP and duration are estimates. |
 | `ci` | (CI only) entry name, `expect`, `as_expected`, and `GITHUB_REPOSITORY`/`SHA`/`REF`/`RUN_ID`/`WORKFLOW` when set |
 | `signature` | `alg` (`Ed25519`), `key_id` (the first 16 hex characters of sha256 of the raw public key), `public_key` (base64), `payload_sha256`, `signed_at`, `value` (base64), `canonicalization` |
 
