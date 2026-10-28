@@ -1,5 +1,8 @@
 # Veriq — a truth layer for AI-written quantum code
 
+[![verified by veriq](https://img.shields.io/badge/verified_by-veriq-6f42c1)](docs/certificates.md)
+[![signed certificates](https://img.shields.io/badge/certificates-Ed25519_signed-6f42c1)](docs/certificates.md)
+
 LLMs now write a lot of quantum code. Some of it is wrong in ways that are hard to spot:
 a swapped CNOT, an off-by-one rotation angle, an oracle that forgets to uncompute.
 Running the circuit once and looking at a histogram often **does not** reveal the bug.
@@ -219,6 +222,28 @@ artifact, and creates or updates **one** PR comment ([sample](docs/sample_pr_com
 verdict that differs from `expect`. Locally, `veriq ci` runs the same thing. Full reference: [docs/ci.md](docs/ci.md).
 This repo dogfoods it: [.veriq.yml](.veriq.yml) and [.github/workflows/](.github/workflows/).
 
+## Signed verification certificates (attestation)
+
+Every `check`/`verify`, `optimize` and `ci` result can be written as a **certificate**: a JSON file with
+the SHA-256 of each input (source file + canonical OpenQASM), the verdict and an explicit `claim`
+(`PROVEN_EQUIVALENT`, `NOT_EQUIVALENT`, `CHECKS_PASSED_NO_PROOF`, `CHECK_FAILED`, or `NONE` for INCONCLUSIVE),
+the proof method and engine, every assumption (initial state, gate set, coupling, permutations, black boxes),
+tool versions, metrics, timestamps and, for FAIL, the counterexample. It is signed with Ed25519.
+
+```bash
+veriq keygen -o veriq-signing.key                          # private key (mode 600, never commit) + .pub
+veriq check cand.py -r ref.py --certificate cert.json --sign-key veriq-signing.key
+veriq cert verify cert.json --key veriq-signing.pub --circuit cand.py --circuit ref.py --recheck
+```
+
+`cert verify` checks the signature against your pinned key, re-hashes the circuit files, enforces the
+semantic rules (an INCONCLUSIVE result can never be certified as PASS) and, with `--recheck`, re-runs the
+proof. In CI, pass `signing-key: ${{ secrets.VERIQ_SIGNING_KEY }}` to the action; the certificates are
+uploaded as the `veriq-reports-certificates` artifact. The MCP `verify_circuit` tool returns an unsigned
+certificate with `certificate=true`. A *verified by veriq* badge means: the certificates for this repo's
+circuits are published, and you can verify them with the public key. Details, schema and key handling are
+in [docs/certificates.md](docs/certificates.md).
+
 ## Use from an AI assistant (MCP server)
 
 `veriq mcp` makes Veriq an [MCP](https://modelcontextprotocol.io) server, so Claude Desktop, Cursor or any MCP
@@ -354,6 +379,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - The statistical test uses a noiseless simulator; noise-aware thresholds come later.
 - Fake-backend support is `GenericBackendV2` only (no vendor calibration snapshots yet).
 - Qiskit is the only front-end today (OpenQASM 2/3 as interchange).
+- Certificates: the canonical circuit hash depends on Qiskit's QASM exporter version (the source-file hash is the stable anchor); a signature checked only against the embedded key proves integrity, not identity; there is no sigstore or transparency log yet.
 
 ## Roadmap
 
@@ -365,6 +391,7 @@ action.yml   composite GitHub Action;  .veriq.yml  this repo's own CI config
 - **Large circuits:** ✅ Clifford tableau, QCEC strategies with hard timeouts, MPS falsification, partitioning, and a scaling benchmark up to 50 qubits (200 for Clifford). Next: decision-diagram (DD) simulation of counterexamples, and noise-aware statistics.
 - **Veriq Bench v0.1:** ✅ tasks, mutant corpus, `veriq bench run|corpus-eval|leaderboard`, leaderboard, paper draft. Next: a sandboxed runner, pinned model versions per submission, more tasks and rounds, and real-world (non-synthetic) bugs.
 - **Week 4 — CI integration:** ✅ GitHub Action + `veriq ci` (see "Use in CI"; not yet run on github.com). Still to do: a `pytest` plugin (`assert_equivalent`, `assert_distribution`) for quantum test suites.
+- **Signed certificates:** ✅ `veriq.certificate/1`, Ed25519 `keygen`/`certify`/`cert verify --recheck`, CI artifacts, MCP. Next: sigstore keyless signing + transparency log, in-toto/SLSA attestation format.
 
 ## License
 
