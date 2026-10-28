@@ -91,6 +91,37 @@ def build_parser() -> argparse.ArgumentParser:
     o.add_argument("--json", dest="json_out", help="write the full candidate report here")
     o.add_argument("--quiet", "-q", action="store_true")
 
+    b = sub.add_parser("bench", help="Veriq Bench: score model outputs or a bug detector against the benchmark")
+    bs = b.add_subparsers(dest="bench_cmd", required=True)
+    br = bs.add_parser("run", help="score a directory of model outputs (proof, constraints, CX cost, optimized-CX gap)")
+    br.add_argument("--model-outputs", "-m", required=True,
+                    help="DIR with <model>.py (all task functions) or <model>/<task>.py|.qasm; optional provenance.json")
+    br.add_argument("--bench", help="bench data directory (default: benchmark/veriqbench/v0.1)")
+    br.add_argument("--out", "-o", help="write the run JSON here")
+    br.add_argument("--no-optimize", action="store_true", help="skip `veriq optimize` (no optimized-CX column)")
+    br.add_argument("--budget", type=float, default=60.0, help="optimizer budget per circuit (s)")
+    br.add_argument("--seeds", type=int, default=4)
+    br.add_argument("--timeout", type=float, default=30.0, help="proof timeout (s)")
+    br.add_argument("--tasks", help="comma-separated task ids (default: all)")
+    br.add_argument("--models", help="comma-separated model names (default: all found)")
+    br.add_argument("--quiet", "-q", action="store_true")
+    bc = bs.add_parser("corpus-eval", help="score a bug detector against the mutant corpus")
+    bc.add_argument("--detector", "-d", required=True,
+                    help="histogram | zero-state | all-basis | proof | veriq | module:function | file.py:function")
+    bc.add_argument("--bench")
+    bc.add_argument("--out", "-o", help="write the evaluation JSON here")
+    bc.add_argument("--limit", type=int, help="evaluate a deterministic subsample of about this many wrong mutants")
+    bc.add_argument("--tasks", help="comma-separated task ids")
+    bc.add_argument("--no-negatives", action="store_true", help="skip the 28 correct originals")
+    bc.add_argument("--shots", type=int, default=4096)
+    bc.add_argument("--seed", type=int, default=7)
+    bc.add_argument("--timeout", type=float, default=30.0)
+    bc.add_argument("--quiet", "-q", action="store_true")
+    bl = bs.add_parser("leaderboard", help="render a static leaderboard (Markdown + self-contained HTML)")
+    bl.add_argument("--run", required=True, help="JSON written by `veriq bench run --out`")
+    bl.add_argument("--corpus-eval", nargs="*", default=[], help="JSON files written by `veriq bench corpus-eval --out`")
+    bl.add_argument("--out-dir", required=True)
+
     m = sub.add_parser("mcp", help="run Veriq as an MCP server (stdio by default; executes circuit code in a sandbox)")
     try:
         from .mcp_server import build_parser as mcp_parser
@@ -114,6 +145,8 @@ def main(argv: list[str] | None = None) -> int:
         return _repair_cmd(args)
     if args.cmd == "optimize":
         return _optimize_cmd(args)
+    if args.cmd == "bench":
+        return _bench_cmd(args)
     if args.cmd == "ci":
         from . import ci
 
@@ -243,3 +276,49 @@ def _optimize_cmd(args) -> int:
         else:
             print("  no candidate could be proven equivalent; nothing returned")
     return 0 if res.get("best") else 2
+
+
+def _csv(x: str | None) -> list[str] | None:
+    return [t.strip() for t in x.split(",") if t.strip()] if x else None
+
+
+def _bench_cmd(args) -> int:
+    import json
+
+    from . import bench
+
+    say = (lambda m: None) if getattr(args, "quiet", False) else (lambda m: print(m, flush=True))
+    if args.bench_cmd == "run":
+        res = bench.run_bench(args.model_outputs, bench=args.bench, optimize=not args.no_optimize, budget=args.budget,
+                              seeds=args.seeds, timeout=args.timeout, only_tasks=_csv(args.tasks),
+                              only_models=_csv(args.models), progress=say)
+        if args.out:
+            Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.out).write_text(json.dumps(res, indent=1, default=str))
+        for m, s in res["summary"].items():
+            say(f"{m:14s} pass {s['pass']}/{s['tasks']}  correct {s['correct']}  compliant {s['compliant']}  "
+                f"CX {s['cx_total_pass']} (best {s['best_cx_total_pass']})  ratio {s['cx_ratio_geomean']}")
+        return 0 if res["summary"] else 2
+    if args.bench_cmd == "corpus-eval":
+        res = bench.corpus_eval(args.detector, bench=args.bench, negatives=not args.no_negatives, limit=args.limit,
+                                only_tasks=_csv(args.tasks), shots=args.shots, seed=args.seed, timeout=args.timeout,
+                                progress=say)
+        if args.out:
+            Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.out).write_text(json.dumps(res, indent=1))
+        s = res["summary"]
+        say(f"{res['detector']}: recall {s['detected']}/{s['wrong_mutants']} = {s['recall']}, false positives "
+            f"{s['false_positives']}/{s['negatives']}, undecided {s['undecided_on_wrong']}, {res['seconds']}s")
+        for c, v in s["by_study_class"].items():
+            say(f"  {c:45s} {v['detected']}/{v['n']}")
+        return 0
+    if args.bench_cmd == "leaderboard":
+        run = json.loads(Path(args.run).read_text())
+        evals = [json.loads(Path(p).read_text()) for p in args.corpus_eval]
+        out = Path(args.out_dir)
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "leaderboard.md").write_text(bench.render_leaderboard_md(run, evals))
+        (out / "leaderboard.html").write_text(bench.render_leaderboard_html(run, evals))
+        print(f"wrote {out / 'leaderboard.md'} and {out / 'leaderboard.html'}")
+        return 0
+    return 2
