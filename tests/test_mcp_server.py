@@ -21,7 +21,7 @@ from veriq.sandbox import MAX_SOURCE_BYTES, Limits  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 EX = ROOT / "examples"
 TOOLS = {"verify_circuit", "check_transpile", "compare_circuits", "circuit_metrics", "explain_verdict",
-         "repair_hints", "optimize_circuit"}
+         "repair_hints", "optimize_circuit", "preflight_circuit"}
 
 
 def session(fn, server=None):
@@ -274,3 +274,20 @@ def test_optimize_circuit_tool_returns_only_proven():
     assert r["best"]["status"] == "PROVEN_EQUIVALENT" and r["best_qasm"].startswith("OPENQASM 2.0")
     assert r["best"]["cx"] <= r["baseline"]["cx"]
     assert all(t["status"] != "PROVEN_EQUIVALENT" for t in r["tried"][:-1])
+
+
+GHZ3 = "from qiskit import QuantumCircuit\ncircuit = QuantumCircuit(3)\ncircuit.h(0)\ncircuit.cx(0, 1)\ncircuit.cx(1, 2)\n"
+
+
+def test_preflight_circuit_tool_go_and_no_go():
+    r = ok(call("preflight_circuit", {"code": GHZ3, "backend": "fake_torino", "seeds": 2, "levels": [1]}))
+    assert r["gate"] == "go" and r["verdict"] == "PASS"
+    assert r["proof"]["status"] == "proven" and 0 < r["estimate"]["esp"] < 1
+    assert "not hardware measurements" in r["disclaimer"] and r["compiled_qasm"].startswith("OPENQASM 3")
+    prof = {"schema": "veriq.backend/1", "name": "toy", "num_qubits": 3, "coupling": "linear",
+            "gates": {"rz": {"error": 0.0, "duration": 0.0}, "sx": {"error": 0.001, "duration": 5e-8},
+                      "x": {"error": 0.001, "duration": 5e-8}, "cz": {"error": 0.01, "duration": 3e-7}},
+            "readout": {"error": 0.01, "duration": 1e-6}, "t1": 1e-4, "t2": 1e-4}
+    r = ok(call("preflight_circuit", {"code": GHZ3, "backend": prof, "max_cx": 1, "seeds": 1, "levels": [1]}))
+    assert r["gate"] == "no-go" and r["backend"]["name"] == "toy"
+    assert "file paths are not accepted" in err_text(call("preflight_circuit", {"code": GHZ3, "backend": "/etc/x.json"}))

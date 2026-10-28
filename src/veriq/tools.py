@@ -371,3 +371,38 @@ def optimize_circuit(candidate: QuantumCircuit, mode: str = "unitary", basis_gat
                     f"(source compiled at opt=0: {r['baseline']['cx']}); proof: {b['method']}" if b else
                     "no candidate could be proven equivalent; nothing is returned")
     return _trim(r)
+
+
+def preflight_circuit(candidate: QuantumCircuit, reference: QuantumCircuit | None = None,
+                      backend: str | dict = "fake_torino", mode: str = "unitary", seeds: int = 4,
+                      levels: list[int] | None = None, min_esp: float | None = None, warn_esp: float | None = None,
+                      max_cx: int | None = None, max_duration: float | None = None, noisy_sim: bool = False,
+                      max_tvd: float | None = None, timeout: float = 30.0) -> dict[str, Any]:
+    """Pre-submission hardware gate (see veriq.preflight): go / warn / no-go."""
+    from qiskit import qasm3
+
+    from .preflight import PreflightError, preflight, to_json
+
+    try:
+        res = preflight(candidate, backend, reference=reference, mode=mode, seeds=seeds,
+                        levels=tuple(levels or (1, 3)), min_esp=min_esp, warn_esp=warn_esp, max_cx=max_cx,
+                        max_duration=max_duration, noisy_sim=noisy_sim, max_tvd=max_tvd, timeout=timeout)
+    except PreflightError as exc:
+        return {"verdict": "ERROR", "gate": None, "summary": f"preflight error: {exc}",
+                "error": {"kind": "input", "detail": str(exc), "stderr_tail": ""}}
+    out = to_json(res)
+    comp = (res.get("compact") or {}).get("circuit")
+    if comp is not None:
+        try:
+            out["compiled_qasm"] = qasm3.dumps(comp)
+        except Exception:  # noqa: BLE001
+            out["compiled_qasm"] = None
+    est = out.get("estimate") or {}
+    bad = [f"{c['name']}: {c['summary']}" for c in out["checks"] if c["status"] not in ("PASS", "SKIPPED")]
+    out["summary"] = (f"{out['gate'].upper()} on {out['backend']['name']}: estimated success probability "
+                      f"{est.get('esp', 0):.3g}, {est.get('two_qubit_gates')} two-qubit gates, "
+                      f"{est.get('duration_s', 0) * 1e6:.3g} us; proof {(out.get('proof') or {}).get('status')}"
+                      + ("; " + "; ".join(bad) if bad else "")) if est else f"{out['gate'].upper()}: " + "; ".join(bad)
+    out["disclaimer"] = "ESP, duration and TVD are estimates from an offline calibration snapshot / profile, " \
+                        "not hardware measurements."
+    return _trim(out)

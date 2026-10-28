@@ -46,6 +46,8 @@ INSTRUCTIONS = """Veriq proves quantum circuits correct. Use it BEFORE you prese
   violations, metric deltas. verify_circuit also embeds a compact `repair_report` when it does not PASS.
 - optimize_circuit: cheapest compilation (two-qubit gate count, then depth) that is PROVEN equivalent to
   the input; unproven candidates are never returned.
+- preflight_circuit: go / warn / no-go for a target backend (offline IBM snapshots or JSON profiles):
+  layout-aware proof of the compiled circuit, native-gate/coupling check, ESP / duration estimates.
 Statuses are honest: PROVEN_EQUIVALENT is a formal proof; PROBABLY_EQUIVALENT means only that simulations
 found no difference (NOT a proof); NOT_EQUIVALENT comes with a counterexample input when one is found.
 Read veriq://conventions for Qiskit's little-endian bit order. Python sources must define `build()`
@@ -316,6 +318,27 @@ class OptimizeResult(_Out):
     proof_scope: str | None = None
 
 
+class PreflightResult(_Out):
+    gate: str | None = Field(None, description="go / warn / no-go")
+    verdict: str | None = Field(None, description="PASS (go) / INCONCLUSIVE (warn) / FAIL (no-go) / ERROR")
+    summary: str | None = None
+    backend: dict[str, Any] | None = Field(None, description="backend name, qubits, calibration source/date")
+    thresholds: dict[str, Any] | None = None
+    checks: list[dict[str, Any]] = []
+    chosen: str | None = Field(None, description="the winning compilation (level, seed)")
+    layout: dict[str, Any] | None = Field(None, description="physical qubits, initial/final layout, permutation")
+    estimate: dict[str, Any] | None = Field(None, description="ESP, two-qubit gates, duration, idle factor "
+                                            "(ESTIMATES from a calibration snapshot, not measurements)")
+    candidates: list[dict[str, Any]] = []
+    layout_selection: dict[str, Any] | None = None
+    proof: dict[str, Any] | None = Field(None, description="compiled vs input, layout-aware")
+    noisy_simulation: dict[str, Any] | None = None
+    compiled_qasm: str | None = Field(None, description="compiled circuit on the active physical qubits (QASM 3)")
+    disclaimer: str | None = None
+    error: ErrorInfo | None = None
+    seconds: float | None = None
+
+
 class RepairReport(_Out):
     verdict: str | None = None
     mode: str | None = None
@@ -533,6 +556,42 @@ lists every proof attempt. mode="state" only requires the same state from |0..0>
         opts = {"mode": mode, "basis_gates": basis_gates, "coupling": coupling, "seeds": seeds,
                 "allow_permutation": allow_permutation, "timeout": timeout, "budget": budget}
         return OptimizeResult.model_validate(await runner.run("optimize_circuit", {"candidate": cand}, opts))
+
+    @mcp.tool(annotations=READ_ONLY, description="""Pre-submission hardware gate: go / warn / no-go for a backend.
+
+Compiles the circuit for `backend` (an offline IBM fake-backend snapshot such as "fake_torino" /
+"fake_brisbane", a built-in illustrative profile such as "ionq_style_25q", or an inline `veriq.backend/1`
+profile object), PROVES the compiled circuit equivalent to the input up to the layout/routing permutation,
+checks native gates and coupling, and estimates quality: ESP = product of gate and readout fidelities,
+duration vs T1/T2, two-qubit gate count; picks the best of several layouts (noise-aware). Optional noisy Aer
+simulation reports TVD vs ideal (<= 12 active qubits). ESP is an ESTIMATE from calibration data, not a
+hardware measurement. Offline: no cloud account is used.""")
+    async def preflight_circuit(
+        code: Code = None, path: PathArg = None, function: Func = None,
+        reference_code: Code = None, reference_path: PathArg = None, reference_function: Func = None,
+        backend: Annotated[str | dict[str, Any], Field(description="backend name or inline profile")] = "fake_torino",
+        mode: Mode = "unitary",
+        seeds: Annotated[int, Field(ge=1, le=8)] = 4,
+        levels: Annotated[list[Annotated[int, Field(ge=0, le=3)]] | None, Field(max_length=4)] = None,
+        min_esp: Annotated[float | None, Field(ge=0, le=1)] = None,
+        warn_esp: Annotated[float | None, Field(ge=0, le=1)] = None,
+        max_cx: Annotated[int | None, Field(ge=0)] = None,
+        max_duration: Annotated[float | None, Field(gt=0, description="seconds")] = None,
+        noisy_sim: bool = False,
+        max_tvd: Annotated[float | None, Field(ge=0, le=1)] = None,
+        timeout: ProofTimeout = 30.0,
+    ) -> PreflightResult:
+        if isinstance(backend, str) and (backend.endswith(".json") or "/" in backend or len(backend) > 80):
+            raise ToolError("backend: give a built-in name (e.g. fake_torino, ionq_style_25q) or an inline "
+                            "profile object; file paths are not accepted")
+        cand = runner.source(code, path, function, "candidate")
+        ref = runner.source(reference_code, reference_path, reference_function, "reference", required=False,
+                            prefix="reference_")
+        opts = {"backend": backend, "mode": mode, "seeds": seeds, "levels": levels, "min_esp": min_esp,
+                "warn_esp": warn_esp, "max_cx": max_cx, "max_duration": max_duration, "noisy_sim": noisy_sim,
+                "max_tvd": max_tvd, "timeout": timeout}
+        return PreflightResult.model_validate(
+            await runner.run("preflight_circuit", {"candidate": cand, "reference": ref}, opts))
 
     @mcp.tool(annotations=READ_ONLY, description="""Explain a Veriq result in plain language with concrete next steps.
 
