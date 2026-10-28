@@ -44,7 +44,7 @@ inputs:
   signing-key:
     description: >
       Ed25519 private key (PKCS8 PEM text, from `veriq keygen`) used to sign the certificates.
-      Pass it from a secret, e.g. `signing-key: ${{ secrets.VERIQ_SIGNING_KEY }}`. Empty = unsigned certificates.
+      Pass it from a secret, e.g. `signing-key: <the VERIQ_SIGNING_KEY secret>` in your workflow. Empty = unsigned certificates.
     default: ""
   signing-key-passphrase:
     description: Passphrase of an encrypted signing key (from a secret). Empty = unencrypted key.
