@@ -39,8 +39,9 @@ All modes ignore global phase.
 | `measured` | every input state gives the same outcome probabilities on the measured qubits (phases just before measurement are don't-cares) | measured algorithm circuits where only statistics matter (≤ 10 qubits) |
 
 `state` is weaker than `unitary`. A circuit can pass `state` and still be wrong on other inputs. In the
-[real-bugs study](../benchmark/real_bugs/README.md), most model solutions that passed their tests but were
-wrong failed in exactly this way.
+[real-bugs study](../benchmark/real_bugs/README.md), half of the model-written circuits that passed their tests
+but were wrong (7 of 14) were gates of this kind: right on every basis input, wrong on superposed inputs. Only
+`unitary` or `measured` catches them.
 
 ## Undecided results
 
