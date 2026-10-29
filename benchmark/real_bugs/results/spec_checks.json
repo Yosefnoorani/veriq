@@ -1,0 +1,452 @@
+[
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 0,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 1,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 2,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 3,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 0,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 1,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 2,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 3,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 4,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 0,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 1,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 2,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": true,
+  "equals_QFT_with_input_and_output_reversal": false
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 4,
+  "equals_QFTGate": false,
+  "equals_QFT_with_output_bit_reversal": false,
+  "equals_QFT_with_input_bit_reversal": false,
+  "equals_QFT_with_input_and_output_reversal": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "09",
+  "sample": 3,
+  "distribution": {
+   "001": 0.021447,
+   "010": 0.213389,
+   "100": 0.426777,
+   "101": 0.125,
+   "110": 0.213388
+  },
+  "mass_on_impossible_outcomes": 0.573224,
+  "impossible_outcomes": {
+   "001": 0.021447,
+   "010": 0.213389,
+   "101": 0.125,
+   "110": 0.213388
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "13",
+  "sample": 0,
+  "distribution": {
+   "00": 0.5,
+   "11": 0.5
+  },
+  "uniform_over_s_perp_s_as_written": true,
+  "uniform_over_s_perp_s_reversed": true,
+  "support_size": 2,
+  "required_support_size": 2
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "13",
+  "sample": 1,
+  "distribution": {
+   "00": 1.0
+  },
+  "uniform_over_s_perp_s_as_written": false,
+  "uniform_over_s_perp_s_reversed": false,
+  "support_size": 1,
+  "required_support_size": 2
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "13",
+  "sample": 3,
+  "distribution": {
+   "00": 0.5,
+   "11": 0.5
+  },
+  "uniform_over_s_perp_s_as_written": true,
+  "uniform_over_s_perp_s_reversed": true,
+  "support_size": 2,
+  "required_support_size": 2
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "13",
+  "sample": 4,
+  "distribution": {
+   "00": 0.5,
+   "11": 0.5
+  },
+  "uniform_over_s_perp_s_as_written": true,
+  "uniform_over_s_perp_s_reversed": true,
+  "support_size": 2,
+  "required_support_size": 2
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "21",
+  "sample": 1,
+  "matches_prompt_text_on_all_basis_inputs": false,
+  "matches_cuccaro_MAJ_on_all_basis_inputs": false,
+  "truth_table_q2q1q0": {
+   "000": "000",
+   "001": "001",
+   "010": "010",
+   "011": "111",
+   "100": "011",
+   "101": "110",
+   "110": "101",
+   "111": "100"
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "21",
+  "sample": 3,
+  "matches_prompt_text_on_all_basis_inputs": false,
+  "matches_cuccaro_MAJ_on_all_basis_inputs": false,
+  "truth_table_q2q1q0": {
+   "000": "000",
+   "001": "001",
+   "010": "010",
+   "011": "111",
+   "100": "011",
+   "101": "110",
+   "110": "101",
+   "111": "100"
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "21",
+  "sample": 4,
+  "matches_prompt_text_on_all_basis_inputs": false,
+  "matches_cuccaro_MAJ_on_all_basis_inputs": false,
+  "truth_table_q2q1q0": {
+   "000": "000",
+   "001": "001",
+   "010": "010",
+   "011": "111",
+   "100": "011",
+   "101": "110",
+   "110": "101",
+   "111": "100"
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 0,
+  "equals_CCCX_on_clean_ancilla_inputs": true,
+  "equals_CCCX_on_all_inputs_including_dirty_ancilla": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 1,
+  "equals_CCCX_on_clean_ancilla_inputs": true,
+  "equals_CCCX_on_all_inputs_including_dirty_ancilla": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 2,
+  "equals_CCCX_on_clean_ancilla_inputs": true,
+  "equals_CCCX_on_all_inputs_including_dirty_ancilla": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 3,
+  "equals_CCCX_on_clean_ancilla_inputs": true,
+  "equals_CCCX_on_all_inputs_including_dirty_ancilla": false
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 4,
+  "equals_CCCX_on_clean_ancilla_inputs": true,
+  "equals_CCCX_on_all_inputs_including_dirty_ancilla": false
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 0,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 1,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.146447,
+  "max_tvd_over_basis_inputs": 0.353553,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "01": 0.1464,
+    "11": 0.8536
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 2,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.146447,
+  "max_tvd_over_basis_inputs": 0.353553,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "01": 0.1464,
+    "11": 0.8536
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 3,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": true,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "01": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 4,
+  "equals_CH_up_to_global_phase": false,
+  "measured_stats_equal_CH_for_every_input": false,
+  "tvd_from_00": 0.0,
+  "max_tvd_over_basis_inputs": 0.0,
+  "input_q0=1_q1=+": {
+   "CH": {
+    "01": 1.0
+   },
+   "candidate": {
+    "11": 1.0
+   }
+  }
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "43",
+  "sample": 0,
+  "equals_CCX_up_to_global_phase": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "43",
+  "sample": 3,
+  "equals_CCX_up_to_global_phase": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "43",
+  "sample": 4,
+  "equals_CCX_up_to_global_phase": true
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "78",
+  "sample": 2,
+  "distribution": {
+   "00": 1.0
+  },
+  "uniform_over_s_perp_s_as_written": false,
+  "uniform_over_s_perp_s_reversed": false,
+  "support_size": 1,
+  "required_support_size": 2
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "81",
+  "sample": 4,
+  "distribution": {
+   "000": 0.5,
+   "100": 0.5
+  },
+  "uniform_over_s_perp_s_as_written": false,
+  "uniform_over_s_perp_s_reversed": false,
+  "support_size": 2,
+  "required_support_size": 4
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "114",
+  "sample": 0,
+  "P(ancilla=0)": 0.75,
+  "expected_P0_for_|++>_vs_|00>": 0.625
+ }
+]
