@@ -1,0 +1,741 @@
+{
+ "normal": {
+  "canonical_fails": 2,
+  "circuit_but_no_applicable_mutant": 2,
+  "mutants": 311,
+  "mutants_killed_by_tests": 206,
+  "mutants_survived": 105,
+  "no_circuit_returned": 72,
+  "skipped_skip_ci": 11,
+  "survived_equivalent": 7,
+  "survived_not_equivalent": 39,
+  "survived_same_state_diff_unitary": 15,
+  "survived_undecided": 44,
+  "tasks_all_mutants_killed": 40,
+  "tasks_run": 140,
+  "tasks_with_any_surviving_non_equivalent_mutant": 13,
+  "tasks_with_mutants": 64,
+  "tasks_with_surviving_state_changing_mutant": 10
+ },
+ "hard": {
+  "canonical_fails": 2,
+  "circuit_but_no_applicable_mutant": 2,
+  "mutants": 312,
+  "mutants_killed_by_tests": 206,
+  "mutants_survived": 106,
+  "no_circuit_returned": 72,
+  "skipped_skip_ci": 11,
+  "survived_equivalent": 7,
+  "survived_not_equivalent": 41,
+  "survived_same_state_diff_unitary": 14,
+  "survived_undecided": 44,
+  "tasks_all_mutants_killed": 40,
+  "tasks_run": 140,
+  "tasks_with_any_surviving_non_equivalent_mutant": 13,
+  "tasks_with_mutants": 64,
+  "tasks_with_surviving_state_changing_mutant": 10
+ },
+ "weak_tasks": [
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/117",
+   "survivors": [
+    {
+     "mutation": "delete #0 u",
+     "kind": "different output state",
+     "state_fidelity": 0.72461781
+    },
+    {
+     "mutation": "delete #1 u",
+     "kind": "different output state",
+     "state_fidelity": 0.08764669
+    },
+    {
+     "mutation": "delete #7 u",
+     "kind": "different output state",
+     "state_fidelity": 0.36720289
+    },
+    {
+     "mutation": "delete #9 u",
+     "kind": "different output state",
+     "state_fidelity": 0.47532098
+    },
+    {
+     "mutation": "negate #0 u",
+     "kind": "different output state",
+     "state_fidelity": 0.14886274
+    },
+    {
+     "mutation": "negate #7 u",
+     "kind": "different output state",
+     "state_fidelity": 0.29118638
+    },
+    {
+     "mutation": "negate #9 u",
+     "kind": "different output state",
+     "state_fidelity": 0.06096494
+    },
+    {
+     "mutation": "negate #10 u",
+     "kind": "different output state",
+     "state_fidelity": 0.30809199
+    },
+    {
+     "mutation": "pi as 3.14 in 8 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999671
+    },
+    {
+     "mutation": "swap qubits of #2 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.51362914
+    },
+    {
+     "mutation": "swap qubits of #5 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.24283696
+    },
+    {
+     "mutation": "swap qubits of #8 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.19288057
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/148",
+   "survivors": [
+    {
+     "mutation": "negate #0 rx",
+     "kind": "different output state",
+     "state_fidelity": 0.02394764
+    },
+    {
+     "mutation": "negate #6 u3",
+     "kind": "different output state",
+     "state_fidelity": 0.98459192
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999936
+    },
+    {
+     "mutation": "negate #15 cu3",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/20",
+   "survivors": [
+    {
+     "mutation": "delete #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "delete #1 sx",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #7 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "delete #12 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "negate #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #2 rz",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999984
+    },
+    {
+     "mutation": "swap qubits of #3 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #4 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #12 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #13 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/21",
+   "survivors": [
+    {
+     "mutation": "delete #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "delete #1 sx",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #2 rz",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #3 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "negate #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #2 rz",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999984
+    },
+    {
+     "mutation": "swap qubits of #3 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/23",
+   "survivors": [
+    {
+     "mutation": "delete #0 x",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/25",
+   "survivors": [
+    {
+     "mutation": "delete #10 swap",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/44",
+   "survivors": [
+    {
+     "mutation": "delete #1 cry",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #1 cry",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "swap qubits of #1 cry",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/64",
+   "survivors": [
+    {
+     "mutation": "delete #0 h",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #14 h",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    },
+    {
+     "mutation": "swap qubits of #5 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #7 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/66",
+   "survivors": [
+    {
+     "mutation": "negate #0 ry",
+     "kind": "different output state",
+     "state_fidelity": 0.11111111
+    },
+    {
+     "mutation": "pi as 3.14 in 1 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999977
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/67",
+   "survivors": [
+    {
+     "mutation": "negate #5 ry",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "pi as 3.14 in 1 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999996
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/71",
+   "survivors": [
+    {
+     "mutation": "swap qubits of #1 csx",
+     "kind": "different output state",
+     "state_fidelity": 0.625
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/84",
+   "survivors": [
+    {
+     "mutation": "negate #0 cu3",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "pi as 3.14 in 1 angles",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "swap qubits of #0 cu3",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "hard",
+   "task_id": "qiskitHumanEval/99",
+   "survivors": [
+    {
+     "mutation": "negate #0 rx",
+     "kind": "different output state",
+     "state_fidelity": 0.99003329
+    },
+    {
+     "mutation": "negate #1 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/117",
+   "survivors": [
+    {
+     "mutation": "delete #0 u",
+     "kind": "different output state",
+     "state_fidelity": 0.25870394
+    },
+    {
+     "mutation": "delete #1 u",
+     "kind": "different output state",
+     "state_fidelity": 0.0166921
+    },
+    {
+     "mutation": "delete #7 u",
+     "kind": "different output state",
+     "state_fidelity": 0.62268227
+    },
+    {
+     "mutation": "delete #9 u",
+     "kind": "different output state",
+     "state_fidelity": 0.0642752
+    },
+    {
+     "mutation": "negate #0 u",
+     "kind": "different output state",
+     "state_fidelity": 0.80553012
+    },
+    {
+     "mutation": "negate #7 u",
+     "kind": "different output state",
+     "state_fidelity": 0.52017134
+    },
+    {
+     "mutation": "negate #9 u",
+     "kind": "different output state",
+     "state_fidelity": 0.23840477
+    },
+    {
+     "mutation": "negate #10 u",
+     "kind": "different output state",
+     "state_fidelity": 0.64792559
+    },
+    {
+     "mutation": "pi as 3.14 in 8 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.9999988
+    },
+    {
+     "mutation": "swap qubits of #2 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.09168906
+    },
+    {
+     "mutation": "swap qubits of #5 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.11110176
+    },
+    {
+     "mutation": "swap qubits of #8 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.32761052
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/148",
+   "survivors": [
+    {
+     "mutation": "negate #0 cu3",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #11 cp",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999922
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/20",
+   "survivors": [
+    {
+     "mutation": "delete #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "delete #1 sx",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #7 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "delete #12 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "negate #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #2 rz",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999984
+    },
+    {
+     "mutation": "swap qubits of #3 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #4 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #12 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #13 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/21",
+   "survivors": [
+    {
+     "mutation": "delete #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "delete #1 sx",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #2 rz",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #3 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "negate #0 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #2 rz",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999984
+    },
+    {
+     "mutation": "swap qubits of #3 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/23",
+   "survivors": [
+    {
+     "mutation": "delete #0 x",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/25",
+   "survivors": [
+    {
+     "mutation": "delete #10 swap",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/44",
+   "survivors": [
+    {
+     "mutation": "delete #1 cry",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "negate #1 cry",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "swap qubits of #1 cry",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/64",
+   "survivors": [
+    {
+     "mutation": "delete #0 h",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "delete #14 h",
+     "kind": "different output state",
+     "state_fidelity": 0.0
+    },
+    {
+     "mutation": "swap qubits of #5 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    },
+    {
+     "mutation": "swap qubits of #7 cx",
+     "kind": "different output state",
+     "state_fidelity": 0.25
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/66",
+   "survivors": [
+    {
+     "mutation": "negate #0 ry",
+     "kind": "different output state",
+     "state_fidelity": 0.11111111
+    },
+    {
+     "mutation": "pi as 3.14 in 1 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999977
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/67",
+   "survivors": [
+    {
+     "mutation": "negate #5 ry",
+     "kind": "different output state",
+     "state_fidelity": 0.5
+    },
+    {
+     "mutation": "pi as 3.14 in 1 angles",
+     "kind": "different output state",
+     "state_fidelity": 0.99999996
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/71",
+   "survivors": [
+    {
+     "mutation": "swap qubits of #1 csx",
+     "kind": "different output state",
+     "state_fidelity": 0.625
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/84",
+   "survivors": [
+    {
+     "mutation": "negate #0 cu3",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "pi as 3.14 in 1 angles",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "swap qubits of #0 cu3",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  },
+  {
+   "dataset": "normal",
+   "task_id": "qiskitHumanEval/99",
+   "survivors": [
+    {
+     "mutation": "negate #0 rx",
+     "kind": "different output state",
+     "state_fidelity": 0.99003329
+    },
+    {
+     "mutation": "negate #1 rz",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    },
+    {
+     "mutation": "pi as 3.14 in 2 angles",
+     "kind": "same |0> state, different unitary",
+     "state_fidelity": 1.0
+    }
+   ]
+  }
+ ]
+}

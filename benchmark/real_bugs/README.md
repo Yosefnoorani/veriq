@@ -78,19 +78,17 @@ whether each surviving mutant is actually wrong.
 <!-- HUMANEVAL_TABLE -->
 | | normal | hard |
 |---|---|---|
-| Tasks in the run (of 151 per split) | 151 | 127 |
-| Canonical returns a circuit and gets mutants | 64 | 57 |
-| Mutants made | 311 | 278 |
-| Killed by the dataset's own tests | 206 (66.2%) | 180 (64.7%) |
-| **Survived the tests** | **105** (33.8%) | **98** (35.3%) |
+| Tasks in the run (of 151 per split) | 151 | 151 |
+| Canonical returns a circuit and gets mutants | 64 | 64 |
+| Mutants made | 311 | 312 |
+| Killed by the dataset's own tests | 206 (66.2%) | 206 (66.0%) |
+| **Survived the tests** | **105** (33.8%) | **106** (34.0%) |
 | of which Veriq: equivalent (harmless) | 7 | 7 |
-| of which Veriq: **different output state** (wrong) | **39** | **38** |
-| of which Veriq: same \|0…0⟩ state, different unitary | 15 | 13 |
-| of which undecided (>12 qubits, parameterised, non-unitary) | 44 | 40 |
-| Tasks with a surviving state-changing mutant | 10 of 64 | 9 of 57 |
-| Tasks with any surviving non-equivalent mutant | 13 of 64 | 12 of 57 |
-
-*Partial run: 151 of 151 normal and 127 of 151 hard tasks so far.*
+| of which Veriq: **different output state** (wrong) | **39** | **41** |
+| of which Veriq: same \|0…0⟩ state, different unitary | 15 | 14 |
+| of which undecided (>12 qubits, parameterised, non-unitary) | 44 | 44 |
+| Tasks with a surviving state-changing mutant | 10 of 64 | 10 of 64 |
+| Tasks with any surviving non-equivalent mutant | 13 of 64 | 13 of 64 |
 <!-- /HUMANEVAL_TABLE -->
 
 Sources: `results/humaneval_mutants_summary.json` and the per-mutant rows in `raw/humaneval_mutants.jsonl`.
