@@ -1,5 +1,18 @@
 # Veriq — a truth layer for AI-written quantum code
 
+![Veriq demo: a compiled circuit passes the histogram test, Veriq proves it wrong with a counterexample and a bug region](docs/assets/veriq_demo.gif)
+
+<sub>Real output, regenerate with `.venv/bin/python demo/render_demo.py` ([still image](docs/assets/veriq_demo.png), [the hazard explained](examples/transpile_hazard/README.md)).</sub>
+
+```bash
+pip install "git+https://github.com/Yosefnoorani/veriq"      # Python 3.10+
+```
+
+```bash
+veriq check candidate.py -r reference.py          # PASS / FAIL / INCONCLUSIVE, exit code 0 / 1 / 2
+veriq check compiled.py -r block.py --repair-report bug.json   # FAIL -> counterexample + bug region
+```
+
 [![verified by veriq](https://img.shields.io/badge/verified_by-veriq-6f42c1)](docs/certificates.md)
 [![signed certificates](https://img.shields.io/badge/certificates-Ed25519_signed-6f42c1)](docs/certificates.md)
 
