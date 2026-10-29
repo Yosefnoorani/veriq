@@ -121,18 +121,66 @@ def compare(ref: QuantumCircuit, cand: QuantumCircuit) -> dict:
         r["unitary_method"] = ev.get("method")
         if r["unitary"] is False and ru.num_qubits <= 12:
             r["counterexample"] = checks.find_counterexample(cu, ru)
+        if r["unitary"] is False and ru.num_qubits <= 10:
+            from qiskit.quantum_info import Operator
+            Ur, Uc = Operator(ru), Operator(cu)
+            r["unitary_equal_after_bit_reversal"] = bool(Uc.equiv(Operator(ru.reverse_bits())))
+            r["unitary_equal_to_inverse"] = bool(Uc.equiv(Ur.adjoint()))
+            if mr is not None and mr == mc:
+                r["measured_equal_all_inputs"] = measured_all_inputs(Ur.data, Uc.data, sorted(mr))
+            # truth table: measured (or full) distribution for every computational-basis input
+            worst = 0.0
+            for x in range(2 ** ru.num_qubits):
+                a_ = np.abs(Ur.data[:, x]) ** 2
+                b_ = np.abs(Uc.data[:, x]) ** 2
+                if mr is not None and mr == mc:
+                    a_, b_ = marginal(a_, sorted(mr)), marginal(b_, sorted(mr))
+                worst = max(worst, 0.5 * float(np.abs(a_ - b_).sum()))
+            r["basis_inputs_max_tvd"] = round(worst, 6)
     r["status"] = "decided"
     return r
 
 
-def pair_calls(calls):
+def marginal(probs, qubits):
+    out = np.zeros(2 ** len(qubits))
+    for idx, p in enumerate(probs):
+        key = sum(((idx >> q) & 1) << i for i, q in enumerate(qubits))
+        out[key] += p
+    return out
+
+
+def measured_all_inputs(Ur, Uc, qubits, tol=1e-8) -> bool:
+    """Same measured-outcome statistics for EVERY input state: Ur^dag P Ur == Uc^dag P Uc for each outcome projector."""
+    n = int(round(np.log2(Ur.shape[0])))
+    for m in range(2 ** len(qubits)):
+        diag = np.array([1.0 if all(((idx >> q) & 1) == ((m >> i) & 1) for i, q in enumerate(qubits)) else 0.0
+                         for idx in range(2 ** n)])
+        A = Ur.conj().T @ (diag[:, None] * Ur)
+        B = Uc.conj().T @ (diag[:, None] * Uc)
+        if np.abs(A - B).max() > tol:
+            return False
+    return True
+
+
+def _norm(text: str) -> str:
+    import re
+    return re.sub(r" at 0x[0-9a-f]+", "", text)
+
+
+def pair_calls(calls, ref_calls=None):
+    """Pair each model call with a canonical call made with the same arguments.
+
+    QuanBench44 tests call both functions (role 'solution' = canonical); QuanBench117 tests only call the
+    model's function, so the canonical calls come from the canonical-only capture of the same task."""
     sol = [c for c in calls if c["role"] == "solution"]
+    if not sol and ref_calls:
+        sol = [c for c in ref_calls if c["role"] == "generated"]
     gen = [c for c in calls if c["role"] == "generated"]
     used = set()
     pairs = []
     for g in gen:
         for i, s in enumerate(sol):
-            if i not in used and s["args"] == g["args"] and s["kwargs"] == g["kwargs"]:
+            if i not in used and _norm(s["args"]) == _norm(g["args"]) and _norm(s["kwargs"]) == _norm(g["kwargs"]):
                 used.add(i)
                 pairs.append((s, g))
                 break
@@ -147,8 +195,8 @@ def flatten(out):
     return []
 
 
-def sample_verdict(row) -> dict:
-    pairs, ns, ng = pair_calls(row["calls"])
+def sample_verdict(row, ref_calls=None) -> dict:
+    pairs, ns, ng = pair_calls(row["calls"], ref_calls)
     comps = []
     for s, g in pairs:
         cs, cg = flatten(s["out"]), flatten(g["out"])
@@ -189,15 +237,25 @@ def sample_verdict(row) -> dict:
     return {"comparisons": uniq, **v}
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("captures", nargs="*", help="capture files (default: raw/*.capture.jsonl)")
+    ap.add_argument("--no-summary", action="store_true")
+    a = ap.parse_args(argv)
+    caps = [Path(c) for c in a.captures] or sorted(RAW.glob("*.capture.jsonl"))
     summary = {}
-    for cap in sorted(RAW.glob("*.capture.jsonl")):
+    for cap in caps:
         rows = [json.loads(line) for line in cap.open()]
+        ref_calls = {}
+        canon = cap.with_name(cap.name.split("_")[0] + "_canonical.capture.jsonl")
+        if canon.exists() and canon != cap:
+            ref_calls = {r["task_id"]: r["calls"] for r in map(json.loads, canon.open())}
         out_path = cap.with_name(cap.name.replace(".capture.jsonl", ".veriq.jsonl"))
         counts: dict = {}
         with out_path.open("w") as f:
             for row in rows:
-                v = sample_verdict(row)
+                v = sample_verdict(row, ref_calls.get(row["task_id"]))
                 rec = {"task_id": row["task_id"], "sample": row["sample"], "tests_passed": row["passed"], **v}
                 f.write(json.dumps(rec, default=str) + "\n")
                 key = ("pass" if row["passed"] else "fail") + ":" + v["class"]
@@ -206,6 +264,8 @@ def main() -> int:
                                                           "tests_passed": sum(r["passed"] for r in rows),
                                                           "by_class": dict(sorted(counts.items()))}
         print(cap.name, json.dumps(summary[cap.name.replace(".capture.jsonl", "")], indent=1))
+    if a.no_summary:
+        return 0
     (ROOT / "results").mkdir(exist_ok=True)
     (ROOT / "results" / "quanbench_summary.json").write_text(json.dumps(summary, indent=1) + "\n")
     return 0
