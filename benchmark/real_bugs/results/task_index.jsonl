@@ -1,0 +1,161 @@
+{"dataset": "QuanBench44", "task_id": "01", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "ok_dont_care": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench44", "task_id": "02", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "ok_dont_care": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench44", "task_id": "03", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "04", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench44", "task_id": "05", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "excluded_no_unique_answer": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench44", "task_id": "06", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "ok_dont_care": 2, "proved": 2, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench44", "task_id": "07", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench44", "task_id": "08", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "qubit_order_convention": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench44", "task_id": "09", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "10", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "11", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "12", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "ok_dont_care": 3, "proved": 2, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "13", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 2, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench44", "task_id": "14", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "15", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "16", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "17", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "18", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "19", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "20", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "21", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "22", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "23", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "24", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "25", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "26", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "27", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "28", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "29", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "30", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "ok_dont_care": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench44", "task_id": "31", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "32", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "33", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "34", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "35", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "36", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "37", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5, "tests_pass": 5, "wrong_on_superposed_inputs": 5}
+{"dataset": "QuanBench44", "task_id": "38", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "39", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "40", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "excluded_no_unique_answer": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "41", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "no_circuit": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench44", "task_id": "42", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "43", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench44", "task_id": "44", "model": "GPT-4.1 (T=0.8)", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "01", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "02", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "03", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "04", "model": "GPT-4o", "canonical_passes_own_tests": true, "excluded_no_unique_answer": 2, "proved": 3, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "05", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "06", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "07", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 2, "proved": 2, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench117", "task_id": "08", "model": "GPT-4o", "canonical_passes_own_tests": true, "qubit_order_convention": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench117", "task_id": "09", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5, "tests_pass": 1, "wrong": 1}
+{"dataset": "QuanBench117", "task_id": "10", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "100", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "101", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "102", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 2, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench117", "task_id": "103", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "104", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "105", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "106", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "proved": 1, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench117", "task_id": "107", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "108", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 3, "samples": 5, "tests_pass": 3}
+{"dataset": "QuanBench117", "task_id": "109", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "11", "model": "GPT-4o", "canonical_passes_own_tests": true, "ambiguous_or_inconsistent_spec": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench117", "task_id": "110", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "111", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "112", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "113", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "114", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5, "tests_pass": 1, "wrong": 1}
+{"dataset": "QuanBench117", "task_id": "115", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "116", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 3, "proved": 2, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "117", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "12", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "proved": 4, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "13", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 3, "samples": 5, "tests_pass": 4, "wrong": 1}
+{"dataset": "QuanBench117", "task_id": "14", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "15", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "16", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "17", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 2, "proved": 3, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "18", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "19", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "20", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 2, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench117", "task_id": "21", "model": "GPT-4o", "canonical_passes_own_tests": false, "ambiguous_or_inconsistent_spec": 3, "samples": 5, "tests_pass": 3}
+{"dataset": "QuanBench117", "task_id": "22", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "23", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "24", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "25", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5, "suspicious_unconfirmed": 1, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "26", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 3, "proved": 2, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "27", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "28", "model": "GPT-4o", "canonical_passes_own_tests": false, "ok_dont_care": 3, "proved": 2, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "29", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "30", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "31", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "32", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "33", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "34", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "35", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "36", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "37", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "samples": 5, "tests_pass": 5, "wrong": 2, "wrong_on_superposed_inputs": 2}
+{"dataset": "QuanBench117", "task_id": "38", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "39", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "40", "model": "GPT-4o", "canonical_passes_own_tests": true, "excluded_no_unique_answer": 4, "samples": 5, "tests_pass": 4}
+{"dataset": "QuanBench117", "task_id": "41", "model": "GPT-4o", "canonical_passes_own_tests": true, "no_circuit": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "42", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "43", "model": "GPT-4o", "canonical_passes_own_tests": false, "ok_dont_care": 3, "samples": 5, "tests_pass": 3}
+{"dataset": "QuanBench117", "task_id": "44", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "45", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "46", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "47", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "48", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "49", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "50", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "51", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "52", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "53", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "54", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "55", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "56", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "57", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "58", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "59", "model": "GPT-4o", "canonical_passes_own_tests": false, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "60", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "61", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "62", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "63", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "64", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5, "tests_pass": 1, "undecided": 1}
+{"dataset": "QuanBench117", "task_id": "65", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 3, "samples": 5, "tests_pass": 3}
+{"dataset": "QuanBench117", "task_id": "66", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "67", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "68", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "69", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "70", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "71", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "72", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "73", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "74", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "75", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "76", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "77", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "78", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5, "tests_pass": 1, "wrong": 1}
+{"dataset": "QuanBench117", "task_id": "79", "model": "GPT-4o", "canonical_passes_own_tests": true, "ambiguous_or_inconsistent_spec": 1, "proved": 1, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench117", "task_id": "80", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "81", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5, "tests_pass": 1, "wrong": 1}
+{"dataset": "QuanBench117", "task_id": "82", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "83", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 3, "proved": 2, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "84", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "85", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 2, "proved": 3, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "86", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 1, "samples": 5, "tests_pass": 1}
+{"dataset": "QuanBench117", "task_id": "87", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "88", "model": "GPT-4o", "canonical_passes_own_tests": true, "ok_dont_care": 1, "proved": 1, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench117", "task_id": "89", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "90", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "91", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "92", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "93", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "94", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 5, "samples": 5, "tests_pass": 5}
+{"dataset": "QuanBench117", "task_id": "95", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "96", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "97", "model": "GPT-4o", "canonical_passes_own_tests": true, "proved": 2, "samples": 5, "tests_pass": 2}
+{"dataset": "QuanBench117", "task_id": "98", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}
+{"dataset": "QuanBench117", "task_id": "99", "model": "GPT-4o", "canonical_passes_own_tests": true, "samples": 5}

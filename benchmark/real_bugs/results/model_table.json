@@ -1,0 +1,30 @@
+[
+ {
+  "dataset": "QuanBench44",
+  "model": "GPT-4.1 (T=0.8)",
+  "tasks": 44,
+  "samples": 220,
+  "samples_per_task": 5.0,
+  "tests_pass": 85,
+  "tests_pass_rate": 0.3864,
+  "veriq_confirmed": 62,
+  "veriq_confirmed_rate": 0.2818,
+  "wrong_but_passed_strict": 0,
+  "wrong_but_passed_incl_superposed": 5,
+  "unverified_passed": 18
+ },
+ {
+  "dataset": "QuanBench117",
+  "model": "GPT-4o",
+  "tasks": 117,
+  "samples": 585,
+  "samples_per_task": 5.0,
+  "tests_pass": 172,
+  "tests_pass_rate": 0.294,
+  "veriq_confirmed": 138,
+  "veriq_confirmed_rate": 0.2359,
+  "wrong_but_passed_strict": 7,
+  "wrong_but_passed_incl_superposed": 9,
+  "unverified_passed": 25
+ }
+]
