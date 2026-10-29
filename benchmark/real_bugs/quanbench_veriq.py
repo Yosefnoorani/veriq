@@ -51,6 +51,33 @@ def bind_pair(a: QuantumCircuit, b: QuantumCircuit, seed: int = 2026):
     return a, b, None
 
 
+def initial_prep_to_unitary(qc: QuantumCircuit) -> QuantumCircuit:
+    """Replace initialize()/reset acting on still-untouched qubits (i.e. on |0>) by a unitary StatePreparation.
+
+    From the all-zero input this is exact, so distribution and state comparisons stay valid; the unitary tier is
+    then only meaningful for the |0> input, which is the contract of the state-preparation tasks it occurs in.
+    """
+    from qiskit.circuit.library import StatePreparation
+    touched: set[int] = set()
+    out = qc.copy_empty_like()
+    changed = False
+    for inst in qc.data:
+        idx = [qc.find_bit(q).index for q in inst.qubits]
+        name = inst.operation.name
+        if name == "reset" and not (set(idx) & touched):
+            changed = True
+            continue
+        if name == "initialize" and not (set(idx) & touched):
+            out.append(StatePreparation(inst.operation.params), inst.qubits)
+            touched |= set(idx)
+            changed = True
+            continue
+        out.append(inst)
+        if name != "barrier":
+            touched |= set(idx)
+    return out if changed else qc
+
+
 def measured_map(qc: QuantumCircuit):
     """qubit index -> clbit index for the final measurements (None if no measurements)."""
     m = {}
@@ -88,6 +115,8 @@ def compare(ref: QuantumCircuit, cand: QuantumCircuit) -> dict:
     ref, cand, err = bind_pair(ref, cand)
     if err:
         return {**r, "status": "undecided", "reason": err}
+    ref, cand = initial_prep_to_unitary(ref), initial_prep_to_unitary(cand)
+    r["initialize_rewritten"] = bool(ref.count_ops().get("state_preparation") or cand.count_ops().get("state_preparation"))
     mr, mc = measured_map(ref), measured_map(cand)
     ru, cu = checks.unitary_part(ref), checks.unitary_part(cand)
     bad = checks.non_unitary_ops(ru) + checks.non_unitary_ops(cu)
