@@ -67,7 +67,48 @@ def main() -> int:
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "results" / "humaneval_mutants_summary.json").write_text(json.dumps(out, indent=1))
     print(json.dumps({k: v for k, v in out.items() if k != "weak_tasks"}, indent=1))
+    update_readme(out, total_tasks={ds: len([r for r in rows if r["dataset"] == ds]) for ds in ("normal", "hard")})
     return 0
+
+
+def _pct(a: int, b: int) -> str:
+    return f"{100 * a / b:.1f}%" if b else "n/a"
+
+
+def render_table(out: dict, total_tasks: dict) -> str:
+    """Markdown table for benchmark/real_bugs/README.md, built only from the summary counts."""
+    rows = [("Tasks in the run (of 151 per split)", lambda d, ds: f"{total_tasks[ds]}"),
+            ("Canonical returns a circuit and gets mutants", lambda d, ds: f"{d.get('tasks_with_mutants', 0)}"),
+            ("Mutants made", lambda d, ds: f"{d.get('mutants', 0)}"),
+            ("Killed by the dataset's own tests", lambda d, ds: f"{d.get('mutants_killed_by_tests', 0)} ({_pct(d.get('mutants_killed_by_tests', 0), d.get('mutants', 0))})"),
+            ("**Survived the tests**", lambda d, ds: f"**{d.get('mutants_survived', 0)}** ({_pct(d.get('mutants_survived', 0), d.get('mutants', 0))})"),
+            ("of which Veriq: equivalent (harmless)", lambda d, ds: f"{d.get('survived_equivalent', 0)}"),
+            ("of which Veriq: **different output state** (wrong)", lambda d, ds: f"**{d.get('survived_not_equivalent', 0)}**"),
+            ("of which Veriq: same \\|0…0⟩ state, different unitary", lambda d, ds: f"{d.get('survived_same_state_diff_unitary', 0)}"),
+            ("of which undecided (>12 qubits, parameterised, non-unitary)", lambda d, ds: f"{d.get('survived_undecided', 0)}"),
+            ("Tasks with a surviving state-changing mutant", lambda d, ds: f"{d.get('tasks_with_surviving_state_changing_mutant', 0)} of {d.get('tasks_with_mutants', 0)}"),
+            ("Tasks with any surviving non-equivalent mutant", lambda d, ds: f"{d.get('tasks_with_any_surviving_non_equivalent_mutant', 0)} of {d.get('tasks_with_mutants', 0)}")]
+    lines = ["| | normal | hard |", "|---|---|---|"]
+    for label, f in rows:
+        lines.append(f"| {label} | {f(out['normal'], 'normal')} | {f(out['hard'], 'hard')} |")
+    done = all(total_tasks[ds] >= 151 for ds in ("normal", "hard"))
+    if not done:
+        lines.append("")
+        lines.append(f"*Partial run: {total_tasks['normal']} of 151 normal and {total_tasks['hard']} of 151 hard tasks so far.*")
+    return "\n".join(lines)
+
+
+def update_readme(out: dict, total_tasks: dict) -> None:
+    readme = HERE / "README.md"
+    if not readme.exists():
+        return
+    text = readme.read_text()
+    start, end = "<!-- HUMANEVAL_TABLE -->", "<!-- /HUMANEVAL_TABLE -->"
+    if start not in text or end not in text:
+        return
+    head, rest = text.split(start, 1)
+    _, tail = rest.split(end, 1)
+    readme.write_text(head + start + "\n" + render_table(out, total_tasks) + "\n" + end + tail)
 
 
 if __name__ == "__main__":
