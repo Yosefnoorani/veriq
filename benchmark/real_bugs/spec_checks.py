@@ -177,10 +177,13 @@ CHECKS = {
 }
 
 
+from quanbench_veriq import open_jsonl  # noqa: E402
+
+
 def main():
     out = []
     for ds, path in CAPTURES.items():
-        for line in path.open():
+        for line in open_jsonl(path):
             row = json.loads(line)
             fn = CHECKS.get((ds, row["task_id"]))
             if fn is None or not row["passed"]:

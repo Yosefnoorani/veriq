@@ -1,0 +1,714 @@
+[
+ {
+  "dataset": "QuanBench44",
+  "task_id": "01",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Grover |00>: fixed-input circuit; same output state, differs only on inputs the task never uses."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "02",
+  "sample": 4,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "State preparation from |000>: identical prepared state."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "05",
+  "sample": 0,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "QAOA knapsack: heuristic; any circuit that samples a good solution is acceptable, no unique output."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "05",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "QAOA knapsack: heuristic; any circuit that samples a good solution is acceptable, no unique output."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "05",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "QAOA knapsack: heuristic; any circuit that samples a good solution is acceptable, no unique output."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "05",
+  "sample": 4,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "QAOA knapsack: heuristic; any circuit that samples a good solution is acceptable, no unique output."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "06",
+  "sample": 1,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Swap test: only the ancilla is measured and its distribution equals the canonical's."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "06",
+  "sample": 2,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Swap test: only the ancilla is measured and its distribution equals the canonical's."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 1,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 2,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "08",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "12",
+  "sample": 0,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Deutsch-Jozsa: measured distribution equal for every input (measured_equal_all_inputs)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "12",
+  "sample": 1,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Deutsch-Jozsa: measured distribution equal for every input (measured_equal_all_inputs)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "12",
+  "sample": 3,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Deutsch-Jozsa: measured distribution equal for every input (measured_equal_all_inputs)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "30",
+  "sample": 0,
+  "veriq_class": "state_equivalent_unitary_unknown",
+  "verdict": "ok_dont_care",
+  "reason": "OR gate: hand-checked on all four inputs (cx,cx,ccx computes a OR b on q2); extra copy qubit is allowed by the prompt's wording."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "30",
+  "sample": 1,
+  "veriq_class": "state_equivalent_unitary_unknown",
+  "verdict": "ok_dont_care",
+  "reason": "OR gate: hand-checked on all four inputs (cx,cx,ccx computes a OR b on q2); extra copy qubit is allowed by the prompt's wording."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "30",
+  "sample": 3,
+  "veriq_class": "state_equivalent_unitary_unknown",
+  "verdict": "ok_dont_care",
+  "reason": "OR gate: hand-checked on all four inputs (cx,cx,ccx computes a OR b on q2); extra copy qubit is allowed by the prompt's wording."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "30",
+  "sample": 4,
+  "veriq_class": "state_equivalent_unitary_unknown",
+  "verdict": "ok_dont_care",
+  "reason": "OR gate: hand-checked on all four inputs (cx,cx,ccx computes a OR b on q2); extra copy qubit is allowed by the prompt's wording."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "ry(pi/4); cx; ry(-pi/4); cx implements controlled-(H.Z), not CH: equal on all basis inputs, but on control=|1>, target=|+> CH gives 01 with certainty and the candidate gives 11. The test composes only X on the control."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 1,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "ry(pi/4); cx; ry(-pi/4); cx implements controlled-(H.Z), not CH: equal on all basis inputs, but on control=|1>, target=|+> CH gives 01 with certainty and the candidate gives 11. The test composes only X on the control."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 2,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "ry(pi/4); cx; ry(-pi/4); cx implements controlled-(H.Z), not CH: equal on all basis inputs, but on control=|1>, target=|+> CH gives 01 with certainty and the candidate gives 11. The test composes only X on the control."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "ry(pi/4); cx; ry(-pi/4); cx implements controlled-(H.Z), not CH: equal on all basis inputs, but on control=|1>, target=|+> CH gives 01 with certainty and the candidate gives 11. The test composes only X on the control."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "37",
+  "sample": 4,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "ry(pi/4); cx; ry(-pi/4); cx implements controlled-(H.Z), not CH: equal on all basis inputs, but on control=|1>, target=|+> CH gives 01 with certainty and the candidate gives 11. The test composes only X on the control."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "40",
+  "sample": 0,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "40",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "40",
+  "sample": 2,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "40",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench44",
+  "task_id": "40",
+  "sample": 4,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "01",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Grover |00>: fixed-input circuit; same output state, differs only on inputs the task never uses."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "04",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "QAOA MaxCut ansatz with free beta/gamma: ZZ/RX angle conventions (rz(2g) vs rzz(g), rx(2b)) are not fixed by the prompt."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "04",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "QAOA MaxCut ansatz with free beta/gamma: ZZ/RX angle conventions (rz(2g) vs rzz(g), rx(2b)) are not fixed by the prompt."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "07",
+  "sample": 2,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Swap tests with individual ancillas: measured ancilla distribution equals the canonical's (fixed input)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "07",
+  "sample": 3,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Swap tests with individual ancillas: measured ancilla distribution equals the canonical's (fixed input)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 1,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 2,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "08",
+  "sample": 4,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "qubit_order_convention",
+  "reason": "6-qubit QFT: spec check shows the candidate equals QFTGate up to bit reversal of inputs and/or outputs (textbook big-endian QFT); the prompt does not fix the qubit order."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "09",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "QPE of X: the eigenphases of X are 0 and 1/2, so a correct 3-bit QPE can only read 000 or 100; the candidate (controlled-phase angles pi, pi/2, pi/4 instead of powers of X) puts 57.3% of its mass on impossible outcomes. It passes because the test only checks the most likely outcome."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "11",
+  "sample": 0,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "DJ 'oracle with bitstring 1100': the candidate implements f(x)=b.x (output 0011), the canonical uses the Qiskit-textbook oracle where the string only selects X padding (output 1111). Both are valid balanced oracles."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "11",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "DJ 'oracle with bitstring 1100': the candidate implements f(x)=b.x (output 0011), the canonical uses the Qiskit-textbook oracle where the string only selects X padding (output 1111). Both are valid balanced oracles."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "11",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "DJ 'oracle with bitstring 1100': the candidate implements f(x)=b.x (output 0011), the canonical uses the Qiskit-textbook oracle where the string only selects X padding (output 1111). Both are valid balanced oracles."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "11",
+  "sample": 4,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "DJ 'oracle with bitstring 1100': the candidate implements f(x)=b.x (output 0011), the canonical uses the Qiskit-textbook oracle where the string only selects X padding (output 1111). Both are valid balanced oracles."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "12",
+  "sample": 0,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Deutsch-Jozsa: measured distribution equal for every input (measured_equal_all_inputs)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "13",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "Simon s=11: candidate's 'oracle' (cx; x) makes the output always 00, which carries no information about s; a valid Simon circuit is uniform over {00,11}."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "17",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "GHZ from |000>: identical distribution/state; the unitary differs only on unused inputs."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "17",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "GHZ from |000>: identical distribution/state; the unitary differs only on unused inputs."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "21",
+  "sample": 1,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "MAJ: the prompt text, the canonical (Cuccaro MAJ) and the tests disagree with each other (the canonical fails the tests); the candidate matches neither text nor canonical but does satisfy the tests."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "21",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "MAJ: the prompt text, the canonical (Cuccaro MAJ) and the tests disagree with each other (the canonical fails the tests); the candidate matches neither text nor canonical but does satisfy the tests."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "21",
+  "sample": 4,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "MAJ: the prompt text, the canonical (Cuccaro MAJ) and the tests disagree with each other (the canonical fails the tests); the candidate matches neither text nor canonical but does satisfy the tests."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "23",
+  "sample": 4,
+  "veriq_class": "state_equivalent_unitary_unknown",
+  "verdict": "ok_dont_care",
+  "reason": "Fixed-input subtractor: same measured sum bits (different ancilla count)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "25",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "suspicious_unconfirmed",
+  "reason": "QPE of the |00>-Grover operator: candidate marks 3 states (~a|~b), applies an extra G and uses H instead of the inverse QFT; its deterministic 000 could still be produced by a correct QPE on a phase-0 eigenstate, so not counted."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "26",
+  "sample": 0,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "GHZ-vs-|+++> swap test: ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "26",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "GHZ-vs-|+++> swap test: ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "26",
+  "sample": 4,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "GHZ-vs-|+++> swap test: ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "CCCNOT: spec check shows the candidate equals CCCX on every clean-ancilla input (samples 0-2 even for a dirty ancilla); the canonical itself is broken (measures the ancilla instead of the target)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 1,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "CCCNOT: spec check shows the candidate equals CCCX on every clean-ancilla input (samples 0-2 even for a dirty ancilla); the canonical itself is broken (measures the ancilla instead of the target)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "28",
+  "sample": 2,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "CCCNOT: spec check shows the candidate equals CCCX on every clean-ancilla input (samples 0-2 even for a dirty ancilla); the canonical itself is broken (measures the ancilla instead of the target)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "Same controlled-(H.Z) construction as above: wrong on control=|1>, target=|+>."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "Extra ry(pi/4) at the end: from |00> the target is rotated even though the control is 0 (P(10)=0.146); the test only checks the control=1 branch."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 2,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "Extra ry(pi/4) at the end: from |00> the target is rotated even though the control is 0 (P(10)=0.146); the test only checks the control=1 branch."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "h/t/cx construction: measured statistics equal CH for every input state (differs only by a diagonal phase before measurement)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "37",
+  "sample": 4,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "wrong_on_superposed_inputs",
+  "reason": "Same controlled-(H.Z) construction as above: wrong on control=|1>, target=|+>."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "40",
+  "sample": 0,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "40",
+  "sample": 1,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "40",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "40",
+  "sample": 4,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "excluded_no_unique_answer",
+  "reason": "VQE ansatz: underspecified, and the canonical itself deviates from the prompt (undocumented U3(pi,0,pi), param[5] on q1)."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "43",
+  "sample": 0,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Toffoli decomposition: spec check shows the candidate equals CCX up to global phase; the canonical is wrong (fails its own test), and the only issue is using h/t instead of the requested rz/sx gate set."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "43",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Toffoli decomposition: spec check shows the candidate equals CCX up to global phase; the canonical is wrong (fails its own test), and the only issue is using h/t instead of the requested rz/sx gate set."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "43",
+  "sample": 4,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Toffoli decomposition: spec check shows the candidate equals CCX up to global phase; the canonical is wrong (fails its own test), and the only issue is using h/t instead of the requested rz/sx gate set."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "62",
+  "sample": 1,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Bernstein-Vazirani: same measured distribution from |0>."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "64",
+  "sample": 1,
+  "veriq_class": "undecided",
+  "verdict": "undecided",
+  "reason": "Veriq could not decide (e.g. mid-circuit measurement); not counted."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "65",
+  "sample": 0,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Grover |11>: same measured distribution; candidate unitary is the inverse of the canonical's on the 2 qubits."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "65",
+  "sample": 2,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Grover |11>: same measured distribution; candidate unitary is the inverse of the canonical's on the 2 qubits."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "65",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Grover |11>: same measured distribution; candidate unitary is the inverse of the canonical's on the 2 qubits."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "78",
+  "sample": 2,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "Simon s=10: candidate's oracle is constant (only an X on the output register), output always 00; a valid instance is uniform over 2 strings."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "79",
+  "sample": 3,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "ambiguous_or_inconsistent_spec",
+  "reason": "'Grover-like brute force' Simon task is internally inconsistent; the candidate (two CZ = identity) outputs 00, which the test accepts. Not counted."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "81",
+  "sample": 4,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "Simon s=001: candidate copies only one input bit (a 4-to-1 function), so the output is uniform over 2 strings instead of the 4 required; s cannot be recovered."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "83",
+  "sample": 1,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Hadamard test (fixed input): ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "83",
+  "sample": 2,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Hadamard test (fixed input): ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "83",
+  "sample": 3,
+  "veriq_class": "same_state_unitary_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Hadamard test (fixed input): ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "85",
+  "sample": 3,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Hadamard test (fixed input): ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "85",
+  "sample": 4,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Hadamard test (fixed input): ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "88",
+  "sample": 4,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Hadamard test (fixed input): ancilla distribution equal."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "106",
+  "sample": 1,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "Swap test against |+>: measured ancilla statistics equal for every input."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "114",
+  "sample": 0,
+  "veriq_class": "output_distribution_differs",
+  "verdict": "wrong",
+  "reason": "Swap test |++> vs |00>: candidate prepares the second register as |+0> (h on qubit 2), giving P(0)=0.75 instead of (1+1/4)/2=0.625."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "116",
+  "sample": 1,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "QFT encoding of 5: measured distribution equal; difference is a phase before measurement."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "116",
+  "sample": 3,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "QFT encoding of 5: measured distribution equal; difference is a phase before measurement."
+ },
+ {
+  "dataset": "QuanBench117",
+  "task_id": "116",
+  "sample": 4,
+  "veriq_class": "same_distribution_state_differs",
+  "verdict": "ok_dont_care",
+  "reason": "QFT encoding of 5: measured distribution equal; difference is a phase before measurement."
+ }
+]

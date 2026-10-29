@@ -1,0 +1,62 @@
+{
+ "quanbench117_canonical": {
+  "samples": 117,
+  "tests_passed": 106,
+  "by_class": {
+   "fail:no_circuit_pair": 11,
+   "pass:no_circuit_pair": 106
+  }
+ },
+ "quanbench117_gpt-4o": {
+  "samples": 585,
+  "tests_passed": 172,
+  "by_class": {
+   "fail:incomparable_layout": 9,
+   "fail:no_circuit_pair": 142,
+   "fail:output_distribution_differs": 195,
+   "fail:same_distribution_state_differs": 23,
+   "fail:same_state_unitary_differs": 14,
+   "fail:state_equivalent_unitary_unknown": 1,
+   "fail:undecided": 22,
+   "fail:unitary_equivalent": 7,
+   "pass:no_circuit_pair": 5,
+   "pass:output_distribution_differs": 22,
+   "pass:same_distribution_state_differs": 12,
+   "pass:same_state_unitary_differs": 24,
+   "pass:state_equivalent_unitary_unknown": 1,
+   "pass:undecided": 1,
+   "pass:unitary_equivalent": 107
+  }
+ },
+ "quanbench44_canonical": {
+  "samples": 44,
+  "tests_passed": 43,
+  "by_class": {
+   "fail:no_circuit_pair": 1,
+   "pass:no_circuit_pair": 6,
+   "pass:partially_undecided": 1,
+   "pass:undecided": 3,
+   "pass:unitary_equivalent": 33
+  }
+ },
+ "quanbench44_gpt-4.1_T0.8": {
+  "samples": 220,
+  "tests_passed": 85,
+  "by_class": {
+   "fail:incomparable_layout": 5,
+   "fail:no_circuit_pair": 36,
+   "fail:output_distribution_differs": 70,
+   "fail:same_distribution_state_differs": 12,
+   "fail:same_state_unitary_differs": 3,
+   "fail:state_equivalent_unitary_unknown": 1,
+   "fail:undecided": 4,
+   "fail:unitary_equivalent": 4,
+   "pass:no_circuit_pair": 5,
+   "pass:output_distribution_differs": 9,
+   "pass:same_distribution_state_differs": 5,
+   "pass:same_state_unitary_differs": 11,
+   "pass:state_equivalent_unitary_unknown": 4,
+   "pass:unitary_equivalent": 51
+  }
+ }
+}

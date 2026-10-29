@@ -14,3 +14,6 @@ veriq-signing.key*
 
 # Private drafts (never publish)
 docs/posts/linkedin_*.md
+
+# real-bugs raw captures are committed gzipped (raw/*.capture.jsonl.gz)
+benchmark/real_bugs/raw/*.capture.jsonl

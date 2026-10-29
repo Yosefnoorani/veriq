@@ -1,0 +1,43 @@
+{
+ "QuanBench44 / GPT-4.1 (T=0.8)": {
+  "tests_passed": 85,
+  "excluded_no_unique_answer": 9,
+  "no_circuit_to_compare": 5,
+  "ok_dont_care": 11,
+  "proved_equivalent_to_canonical": 51,
+  "qubit_order_convention": 4,
+  "wrong_on_superposed_inputs": 5,
+  "wrong_strict": 0,
+  "wrong_incl_superposed_inputs": 5,
+  "decided_and_in_scope": 71,
+  "share_wrong_strict_of_passed": 0.0,
+  "share_wrong_incl_superposed_of_passed": 0.0588
+ },
+ "QuanBench117 / GPT-4o": {
+  "tests_passed": 172,
+  "ambiguous_or_inconsistent_spec": 8,
+  "excluded_no_unique_answer": 6,
+  "no_circuit_to_compare": 5,
+  "ok_dont_care": 31,
+  "proved_equivalent_to_canonical": 107,
+  "qubit_order_convention": 4,
+  "suspicious_unconfirmed": 1,
+  "undecided": 1,
+  "wrong": 7,
+  "wrong_on_superposed_inputs": 2,
+  "wrong_strict": 7,
+  "wrong_incl_superposed_inputs": 9,
+  "decided_and_in_scope": 160,
+  "share_wrong_strict_of_passed": 0.0407,
+  "share_wrong_incl_superposed_of_passed": 0.0523
+ },
+ "combined": {
+  "tests_passed": 257,
+  "wrong_strict": 7,
+  "wrong_incl_superposed_inputs": 14,
+  "decided_and_in_scope": 231,
+  "share_wrong_strict_of_passed": 0.0272,
+  "share_wrong_incl_superposed_of_passed": 0.0545,
+  "share_wrong_incl_superposed_of_decided": 0.0606
+ }
+}

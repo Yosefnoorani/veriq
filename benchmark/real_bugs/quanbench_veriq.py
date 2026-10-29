@@ -266,20 +266,32 @@ def sample_verdict(row, ref_calls=None) -> dict:
     return {"comparisons": uniq, **v}
 
 
+
+def open_jsonl(path):
+    """Open raw/*.jsonl, falling back to the committed gzip copy (raw/*.jsonl.gz)."""
+    import gzip
+    from pathlib import Path as _P
+
+    p = _P(path)
+    if p.exists():
+        return p.open()
+    gz = p.with_name(p.name + ".gz")
+    return gzip.open(gz, "rt")
+
 def main(argv=None) -> int:
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("captures", nargs="*", help="capture files (default: raw/*.capture.jsonl)")
     ap.add_argument("--no-summary", action="store_true")
     a = ap.parse_args(argv)
-    caps = [Path(c) for c in a.captures] or sorted(RAW.glob("*.capture.jsonl"))
+    caps = [Path(c) for c in a.captures] or sorted({RAW / c.name.removesuffix(".gz") for c in [*RAW.glob("*.capture.jsonl"), *RAW.glob("*.capture.jsonl.gz")]})
     summary = {}
     for cap in caps:
-        rows = [json.loads(line) for line in cap.open()]
+        rows = [json.loads(line) for line in open_jsonl(cap)]
         ref_calls = {}
         canon = cap.with_name(cap.name.split("_")[0] + "_canonical.capture.jsonl")
-        if canon.exists() and canon != cap:
-            ref_calls = {r["task_id"]: r["calls"] for r in map(json.loads, canon.open())}
+        if (canon.exists() or canon.with_name(canon.name + ".gz").exists()) and canon != cap:
+            ref_calls = {r["task_id"]: r["calls"] for r in map(json.loads, open_jsonl(canon))}
         out_path = cap.with_name(cap.name.replace(".capture.jsonl", ".veriq.jsonl"))
         counts: dict = {}
         with out_path.open("w") as f:
